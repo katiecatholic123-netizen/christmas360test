@@ -9,71 +9,36 @@
         maximum-scale=1.0,
         user-scalable=no">
 
-  <title>Christmas 360</title>
+  <title>Christmas 360 Test</title>
 
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-    }
-  </style>
 </head>
 
-
-<body>
+<body style="margin:0; overflow:hidden;">
 
 <a-scene>
 
-  <!-- =========================
-       圖片及音樂素材
-  ========================== -->
-
+  <!-- 所有圖片素材 -->
   <a-assets>
-
-    <!-- 360背景 -->
-    <img
-      id="christmas"
-      src="christmas360.jpg">
-
-    <!-- 瑪利亞 -->
-    <img
-      id="mary"
-      src="mary.png">
-
-    <!-- 背景音樂 -->
-    <audio
-      id="bgmusic"
-      src="christmas-music.mp3"
-      preload="auto"
-      loop>
-    </audio>
-
+    <img id="christmas" src="christmas360.jpg">
+    <img id="mary" src="mary.png">
   </a-assets>
 
 
-  <!-- =========================
-       360°背景
-  ========================== -->
-
+  <!-- 360° 背景 -->
   <a-sky
     src="#christmas"
     rotation="0 -90 0">
   </a-sky>
 
 
-  <!-- =========================
-       瑪利亞
-  ========================== -->
-
+  <!-- 瑪利亞 -->
   <a-image
     src="#mary"
 
-    position="0 1 -2"
+    position="0 1.25 -4"
 
-    width="1.8"
+    width="1.5"
     height="2.2"
 
     transparent="true"
@@ -86,83 +51,13 @@
   </a-image>
 
 
-  <!-- =========================
-       Camera
-  ========================== -->
-
+  <!-- Camera -->
   <a-camera
     position="0 1.6 0"
-
-    look-controls="
-      magicWindowTrackingEnabled: true;
-      touchEnabled: true;
-      mouseEnabled: true;">
+    look-controls="magicWindowTrackingEnabled: true">
   </a-camera>
 
-
 </a-scene>
-
-
-
-<!-- =========================
-     音樂控制
-========================== -->
-
-<script>
-
-  const music = document.getElementById('bgmusic');
-
-  music.volume = 0.6;
-
-
-  // 網頁載入後嘗試自動播放
-  window.addEventListener('load', function () {
-
-    music.play()
-      .then(function () {
-        console.log('Music started automatically');
-      })
-      .catch(function () {
-        console.log('Autoplay blocked by browser');
-      });
-
-  });
-
-
-  // 如果手機阻止 autoplay，
-  // 第一次觸碰畫面時播放
-  function startMusic() {
-
-    if (music.paused) {
-
-      music.play()
-        .then(function () {
-          console.log('Music started');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-    }
-
-  }
-
-
-  document.addEventListener(
-    'touchstart',
-    startMusic,
-    { once: true }
-  );
-
-
-  document.addEventListener(
-    'click',
-    startMusic,
-    { once: true }
-  );
-
-</script>
-
 
 </body>
 </html>
