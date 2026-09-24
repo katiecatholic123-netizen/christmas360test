@@ -12,7 +12,6 @@
 
   <title>Christmas 360</title>
 
-  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
   <style>
@@ -24,6 +23,7 @@
       height: 100%;
       overflow: hidden;
       background: black;
+      touch-action: none;
     }
 
     a-scene {
@@ -33,7 +33,6 @@
   </style>
 
 </head>
-
 
 <body>
 
@@ -70,17 +69,142 @@
   =============================== -->
 
   <a-camera
+    id="camera"
     position="0 0 0"
-
+    camera="fov: 80"
     look-controls="
       magicWindowTrackingEnabled: true;
       touchEnabled: true;
       mouseEnabled: true;">
-
   </a-camera>
 
-
 </a-scene>
+
+
+<script>
+
+  const camera = document.querySelector('#camera');
+
+  // 初始視野
+  let currentFov = 80;
+
+  // 最大及最小 Zoom
+  const minFov = 35;
+  const maxFov = 100;
+
+
+  // ==============================
+  // iPhone / Android
+  // 雙指 Pinch Zoom
+  // ==============================
+
+  let previousDistance = null;
+
+  document.addEventListener('touchstart', function(event) {
+
+    if (event.touches.length === 2) {
+
+      const dx =
+        event.touches[0].clientX -
+        event.touches[1].clientX;
+
+      const dy =
+        event.touches[0].clientY -
+        event.touches[1].clientY;
+
+      previousDistance =
+        Math.sqrt(dx * dx + dy * dy);
+
+    }
+
+  });
+
+
+  document.addEventListener('touchmove', function(event) {
+
+    if (event.touches.length !== 2) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const dx =
+      event.touches[0].clientX -
+      event.touches[1].clientX;
+
+    const dy =
+      event.touches[0].clientY -
+      event.touches[1].clientY;
+
+    const distance =
+      Math.sqrt(dx * dx + dy * dy);
+
+
+    if (previousDistance !== null) {
+
+      const difference =
+        distance - previousDistance;
+
+      // 雙指拉開 = 放大
+      // 雙指合起 = 縮小
+
+      currentFov -= difference * 0.12;
+
+      currentFov = Math.max(
+        minFov,
+        Math.min(maxFov, currentFov)
+      );
+
+      camera.setAttribute(
+        'camera',
+        'fov',
+        currentFov
+      );
+
+    }
+
+    previousDistance = distance;
+
+  }, { passive: false });
+
+
+  document.addEventListener('touchend', function(event) {
+
+    if (event.touches.length < 2) {
+      previousDistance = null;
+    }
+
+  });
+
+
+  // ==============================
+  // 電腦滑鼠滾輪 Zoom
+  // ==============================
+
+  document.addEventListener(
+    'wheel',
+    function(event) {
+
+      event.preventDefault();
+
+      currentFov += event.deltaY * 0.05;
+
+      currentFov = Math.max(
+        minFov,
+        Math.min(maxFov, currentFov)
+      );
+
+      camera.setAttribute(
+        'camera',
+        'fov',
+        currentFov
+      );
+
+    },
+    { passive: false }
+  );
+
+</script>
 
 </body>
 
