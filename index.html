@@ -15,117 +15,160 @@
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
   <style>
-    html, body {
+
+    html,
+    body {
       margin: 0;
       padding: 0;
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
+
       background: black;
+
       touch-action: none;
     }
+
 
     a-scene {
       width: 100%;
       height: 100%;
     }
 
-    /* 第一次如瀏覽器阻止影片播放，顯示這個按鈕 */
+
+    /* Safari 如果阻止自動播放，
+       就會顯示這個按鈕 */
+
     #startButton {
+
       position: fixed;
+
       left: 50%;
-      bottom: 35px;
+      bottom: 40px;
+
       transform: translateX(-50%);
+
       z-index: 9999;
 
-      padding: 12px 24px;
+      padding: 13px 26px;
+
       border: none;
+
       border-radius: 30px;
 
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.92);
+
       color: #222;
 
       font-size: 16px;
+
       cursor: pointer;
 
       display: none;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
+  <!-- ==============================
+       PLAY BUTTON
+       ============================== -->
+
   <button id="startButton">
-    Start Animation
+    Start
   </button>
 
 
+
+  <!-- ==============================
+       A-FRAME
+       ============================== -->
+
   <a-scene
+
     embedded
+
     vr-mode-ui="enabled: false"
-    loading-screen="enabled: true">
 
-    <!-- =========================
-         Assets
-         ========================= -->
+    loading-screen="
+      enabled: true;
+      backgroundColor: #000000;
+      dotsColor: #FFFFFF;">
 
-    <a-assets timeout="30000">
 
-      <!-- 360° Background -->
-      <img
-        id="christmas360"
-        src="christmas360b.jpg">
 
-      <!-- Transparent Animation -->
+
+    <!-- ==============================
+         ASSETS
+         ============================== -->
+
+    <a-assets timeout="60000">
+
+
       <video
-        id="starVideo"
-        src="starr-alpha.webm"
+
+        id="christmasVideo"
+
+        src="christmas360.mp4"
+
         autoplay
+
         muted
+
         loop
+
         playsinline
+
         webkit-playsinline
+
+        preload="auto"
+
         crossorigin="anonymous">
+
       </video>
+
 
     </a-assets>
 
 
-    <!-- =========================
-         Static 360° Background
-         ========================= -->
-
-    <a-sky
-      id="backgroundSky"
-      src="#christmas360"
-      radius="100"
-      rotation="0 -90 0">
-    </a-sky>
 
 
-    <!-- =========================
-         Transparent 360° Animation
-         ========================= -->
+    <!-- ==============================
+         360° VIDEO
+         ============================== -->
 
     <a-videosphere
-      id="animationSphere"
-      src="#starVideo"
-      radius="99"
+
+      id="videoSphere"
+
+      src="#christmasVideo"
+
       rotation="0 -90 0"
+
       material="
         shader: flat;
-        transparent: true;
-        alphaTest: 0.01;
         side: back;">
+
     </a-videosphere>
 
 
-    <!-- =========================
-         Camera
-         ========================= -->
+
+
+    <!-- ==============================
+         CAMERA
+         ============================== -->
 
     <a-camera
+
       id="camera"
+
       position="0 0 0"
 
       camera="fov: 105"
@@ -134,243 +177,490 @@
         magicWindowTrackingEnabled: true;
         touchEnabled: true;
         mouseEnabled: true;">
+
     </a-camera>
+
 
   </a-scene>
 
 
+
+
   <script>
 
-    /* ========================================
-       VIDEO AUTOPLAY
-       ======================================== */
 
-    const video = document.querySelector('#starVideo');
-    const startButton = document.querySelector('#startButton');
+    /* ==========================================
+       VIDEO
+       ========================================== */
+
+
+    const video =
+      document.querySelector('#christmasVideo');
+
+
+    const startButton =
+      document.querySelector('#startButton');
+
+
+
+
+    /* ---------- Play Video ---------- */
 
 
     function startVideo() {
 
+
       video.muted = true;
 
-      const playPromise = video.play();
+
+      const playPromise =
+        video.play();
+
+
 
       if (playPromise !== undefined) {
 
+
         playPromise
+
           .then(() => {
 
-            console.log('Animation started');
 
-            startButton.style.display = 'none';
+            console.log(
+              '360 video started'
+            );
+
+
+            startButton.style.display =
+              'none';
+
 
           })
-          .catch(() => {
 
-            console.log('Autoplay blocked');
 
-            startButton.style.display = 'block';
+          .catch((error) => {
+
+
+            console.log(
+              'Autoplay blocked',
+              error
+            );
+
+
+            startButton.style.display =
+              'block';
+
 
           });
 
+
       }
+
 
     }
 
 
-    /* 嘗試自動播放 */
-
-    window.addEventListener('load', () => {
-
-      setTimeout(startVideo, 500);
-
-    });
 
 
-    /* 如果 Safari 阻止 autoplay，
-       使用者按一下即可開始 */
-
-    startButton.addEventListener('click', () => {
-
-      video.play();
-
-      startButton.style.display = 'none';
-
-    });
+    /* ---------- Auto Start ---------- */
 
 
-    /* 第一次觸碰畫面亦嘗試播放 */
+    window.addEventListener(
+      'load',
+      function() {
 
-    document.addEventListener(
-      'touchstart',
-      () => {
 
-        if (video.paused) {
-          video.play();
-        }
+        setTimeout(
+          startVideo,
+          500
+        );
 
-      },
-      { once: true }
+
+      }
     );
 
 
 
-    /* ========================================
-       PINCH ZOOM
-       ======================================== */
 
-    const camera = document.querySelector('#camera');
+    /* ---------- Start Button ---------- */
+
+
+    startButton.addEventListener(
+      'click',
+      function() {
+
+
+        video.muted = true;
+
+
+        video.play();
+
+
+        startButton.style.display =
+          'none';
+
+
+      }
+    );
+
+
+
+
+    /* ---------- First Touch ---------- */
+
+
+    document.addEventListener(
+
+      'touchstart',
+
+      function() {
+
+
+        if (video.paused) {
+
+
+          video.muted = true;
+
+
+          video.play();
+
+
+        }
+
+
+      },
+
+      {
+        once: true
+      }
+
+    );
+
+
+
+
+    /* ==========================================
+       CAMERA ZOOM
+       ========================================== */
+
+
+    const camera =
+      document.querySelector('#camera');
+
+
+
+    /*
+       初始畫面
+
+       數字越大 = 看得越遠 / 越廣
+       數字越小 = Zoom In
+    */
+
 
     let currentFov = 105;
 
+
+
+    /*
+       最大 / 最小 Zoom
+    */
+
+
     const minFov = 35;
+
     const maxFov = 120;
+
+
 
     let previousDistance = null;
 
 
 
-    /* ---------- Two Finger Start ---------- */
+
+    /* ==========================================
+       MOBILE PINCH START
+       ========================================== */
+
 
     document.addEventListener(
+
       'touchstart',
+
       function(event) {
 
-        if (event.touches.length === 2) {
+
+        if (
+          event.touches.length === 2
+        ) {
+
 
           const dx =
+
             event.touches[0].clientX -
+
             event.touches[1].clientX;
 
+
+
           const dy =
+
             event.touches[0].clientY -
+
             event.touches[1].clientY;
 
+
+
           previousDistance =
-            Math.sqrt(dx * dx + dy * dy);
 
-        }
+            Math.sqrt(
 
-      },
-      { passive: false }
-    );
+              dx * dx +
 
+              dy * dy
 
-
-    /* ---------- Two Finger Zoom ---------- */
-
-    document.addEventListener(
-      'touchmove',
-      function(event) {
-
-        if (event.touches.length !== 2) {
-          return;
-        }
-
-        event.preventDefault();
-
-
-        const dx =
-          event.touches[0].clientX -
-          event.touches[1].clientX;
-
-        const dy =
-          event.touches[0].clientY -
-          event.touches[1].clientY;
-
-
-        const distance =
-          Math.sqrt(dx * dx + dy * dy);
-
-
-        if (previousDistance !== null) {
-
-          const difference =
-            distance - previousDistance;
-
-
-          /* 手指拉開 = Zoom In */
-
-          currentFov -= difference * 0.12;
-
-
-          /* 限制 Zoom */
-
-          currentFov =
-            Math.max(
-              minFov,
-              Math.min(maxFov, currentFov)
             );
 
 
-          camera.setAttribute(
-            'camera',
-            'fov',
-            currentFov
-          );
-
         }
 
-
-        previousDistance = distance;
 
       },
-      { passive: false }
+
+      {
+        passive: false
+      }
+
     );
 
 
 
-    /* ---------- Finish Pinch ---------- */
+
+    /* ==========================================
+       MOBILE PINCH ZOOM
+       ========================================== */
+
 
     document.addEventListener(
-      'touchend',
+
+      'touchmove',
+
       function(event) {
 
-        if (event.touches.length < 2) {
 
-          previousDistance = null;
+        if (
+          event.touches.length !== 2
+        ) {
+
+          return;
 
         }
 
-      }
-    );
 
-
-
-    /* ========================================
-       DESKTOP MOUSE WHEEL ZOOM
-       ======================================== */
-
-    document.addEventListener(
-      'wheel',
-      function(event) {
 
         event.preventDefault();
 
 
-        currentFov +=
-          event.deltaY * 0.05;
+
+        const dx =
+
+          event.touches[0].clientX -
+
+          event.touches[1].clientX;
 
 
-        currentFov =
-          Math.max(
-            minFov,
-            Math.min(maxFov, currentFov)
+
+        const dy =
+
+          event.touches[0].clientY -
+
+          event.touches[1].clientY;
+
+
+
+        const distance =
+
+          Math.sqrt(
+
+            dx * dx +
+
+            dy * dy
+
           );
 
 
-        camera.setAttribute(
-          'camera',
-          'fov',
-          currentFov
-        );
+
+        if (
+          previousDistance !== null
+        ) {
+
+
+          const difference =
+
+            distance -
+
+            previousDistance;
+
+
+
+          /*
+             手指拉開
+             → Zoom In
+          */
+
+
+          currentFov -=
+
+            difference * 0.12;
+
+
+
+          /*
+             限制 FOV
+          */
+
+
+          currentFov =
+
+            Math.max(
+
+              minFov,
+
+              Math.min(
+
+                maxFov,
+
+                currentFov
+
+              )
+
+            );
+
+
+
+          camera.setAttribute(
+
+            'camera',
+
+            'fov',
+
+            currentFov
+
+          );
+
+
+        }
+
+
+
+        previousDistance =
+          distance;
+
 
       },
-      { passive: false }
+
+      {
+        passive: false
+      }
+
     );
 
 
+
+
+    /* ==========================================
+       PINCH END
+       ========================================== */
+
+
+    document.addEventListener(
+
+      'touchend',
+
+      function(event) {
+
+
+        if (
+          event.touches.length < 2
+        ) {
+
+
+          previousDistance =
+            null;
+
+
+        }
+
+
+      }
+
+    );
+
+
+
+
+    /* ==========================================
+       DESKTOP MOUSE WHEEL ZOOM
+       ========================================== */
+
+
+    document.addEventListener(
+
+      'wheel',
+
+      function(event) {
+
+
+        event.preventDefault();
+
+
+
+        currentFov +=
+
+          event.deltaY * 0.05;
+
+
+
+        currentFov =
+
+          Math.max(
+
+            minFov,
+
+            Math.min(
+
+              maxFov,
+
+              currentFov
+
+            )
+
+          );
+
+
+
+        camera.setAttribute(
+
+          'camera',
+
+          'fov',
+
+          currentFov
+
+        );
+
+
+      },
+
+      {
+        passive: false
+      }
+
+    );
+
+
+
   </script>
+
 
 </body>
 </html>
