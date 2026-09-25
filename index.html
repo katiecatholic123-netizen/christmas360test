@@ -23,14 +23,10 @@
     body {
       margin: 0;
       padding: 0;
-
       width: 100%;
       height: 100%;
-
       overflow: hidden;
-
       background: black;
-
       touch-action: none;
     }
 
@@ -55,8 +51,8 @@
 
       opacity: 1;
 
-      /* Loading 淡出時間 */
-      transition: opacity 1.5s ease;
+      /* Loading 淡出時間 = 3秒 */
+      transition: opacity 3s ease;
 
     }
 
@@ -168,9 +164,7 @@
        ======================================== -->
 
   <button id="startButton">
-
     進入 360° 場景
-
   </button>
 
 
@@ -223,7 +217,7 @@
 
 
     <!-- ========================================
-         360 VIDEO
+         360 VIDEO SPHERE
          ======================================== -->
 
     <a-videosphere
@@ -298,7 +292,7 @@
 
 
       /*
-      開始 1.5 秒 Fade Out
+      開始3秒 Fade Out
       */
 
       loadingScreen.classList.add('hide');
@@ -309,10 +303,10 @@
 
 
       /*
-      CSS Fade Out 是 1.5 秒
+      CSS Fade Out = 3秒
 
-      所以這裡設定 1600ms，
-      等 Fade 完成後才真正移除 Loading。
+      3100ms 後才真正移除 Loading，
+      避免 Fade 尚未完成就突然消失。
       */
 
       setTimeout(() => {
@@ -324,7 +318,7 @@
         loadingScreen.style.display = 'none';
 
 
-      }, 1600);
+      }, 3100);
 
 
     }
@@ -356,7 +350,7 @@
 
             /*
             360影片成功播放
-            → Loading開始淡出
+            → Loading開始3秒淡出
             */
 
             hideLoadingScreen();
@@ -369,9 +363,7 @@
 
 
             /*
-            如果 iPhone Safari
-            阻止 Autoplay
-
+            iPhone Safari 如果阻止 Autoplay
             顯示進入按鈕
             */
 
@@ -389,12 +381,12 @@
 
 
     /* ========================================
-       360 VIDEO READY
+       VIDEO READY EVENTS
        ======================================== */
 
 
     /*
-    第一個畫面已經下載
+    第一個畫面已載入
     */
 
     christmasVideo.addEventListener(
@@ -411,7 +403,7 @@
 
 
     /*
-    Safari認為已經可以播放
+    Safari認為影片已可以播放
     */
 
     christmasVideo.addEventListener(
@@ -577,7 +569,7 @@
 
 
         /*
-        嘗試自動播放360影片
+        500ms後嘗試播放360影片
         */
 
         setTimeout(
@@ -607,7 +599,7 @@
 
 
     /*
-    開場視野
+    開場 FOV
     數字越大 = 看得越遠
     */
 
@@ -615,14 +607,14 @@
 
 
     /*
-    最 Zoom In
+    最大 Zoom In
     */
 
     const minFov = 35;
 
 
     /*
-    最 Zoom Out
+    最大 Zoom Out
     */
 
     const maxFov = 120;
@@ -744,8 +736,7 @@
 
 
           /*
-          手指拉開
-          → Zoom In
+          手指拉開 = Zoom In
           */
 
           currentFov -=
