@@ -17,17 +17,24 @@
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
+
   <style>
 
     html,
     body {
+
       margin: 0;
       padding: 0;
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
+
       background: black;
+
       touch-action: none;
+
     }
 
 
@@ -51,8 +58,11 @@
 
       opacity: 1;
 
-      /* Loading 淡出時間 = 3秒 */
-      transition: opacity 3s ease;
+      /*
+      Loading 淡出時間
+      */
+
+      transition: opacity 1.5s ease;
 
     }
 
@@ -65,6 +75,10 @@
 
     }
 
+
+    /* ========================================
+       LOADING VIDEO
+       ======================================== */
 
     #loadingVideo {
 
@@ -116,6 +130,11 @@
     }
 
 
+
+    /* ========================================
+       A-FRAME
+       ======================================== */
+
     a-scene {
 
       width: 100%;
@@ -164,7 +183,9 @@
        ======================================== -->
 
   <button id="startButton">
+
     進入 360° 場景
+
   </button>
 
 
@@ -261,64 +282,201 @@
        ELEMENTS
        ======================================== */
 
+
     const loadingScreen =
       document.querySelector('#loadingScreen');
+
 
     const loadingVideo =
       document.querySelector('#loadingVideo');
 
+
     const christmasVideo =
       document.querySelector('#christmasVideo');
+
 
     const startButton =
       document.querySelector('#startButton');
 
 
+    const camera =
+      document.querySelector('#camera');
+
+
 
     /* ========================================
-       LOADING SCREEN FADE OUT
+       LOADING SETTINGS
        ======================================== */
+
+
+    /*
+    Loading 最少顯示時間
+    3000ms = 3秒
+    */
+
+    const MIN_LOADING_TIME = 3000;
+
+
+    /*
+    Loading Fade Out時間
+    1500ms = 1.5秒
+    */
+
+    const FADE_TIME = 1500;
+
+
+    /*
+    記錄網頁開始 Loading 的時間
+    */
+
+    const loadingStartTime =
+      Date.now();
+
+
+    /*
+    場景是否已經開始
+    */
 
     let sceneStarted = false;
 
 
-    function hideLoadingScreen() {
+    /*
+    360影片是否真正 Ready
+    */
+
+    let videoReady = false;
 
 
-      if (sceneStarted) return;
+    /*
+    避免重複建立進場 Timer
+    */
+
+    let enterTimer = null;
 
 
-      sceneStarted = true;
+
+    /* ========================================
+       ENTER SCENE
+       ======================================== */
+
+
+    function tryEnterScene() {
 
 
       /*
-      開始3秒 Fade Out
+      如果已經進場
+      或360影片仍未Ready
+      就不處理
       */
 
-      loadingScreen.classList.add('hide');
+      if (sceneStarted || !videoReady) {
 
+        return;
 
-      startButton.style.display = 'none';
-
+      }
 
 
       /*
-      CSS Fade Out = 3秒
-
-      3100ms 後才真正移除 Loading，
-      避免 Fade 尚未完成就突然消失。
+      計算 Loading 已經播放多久
       */
 
-      setTimeout(() => {
+      const elapsed =
+
+        Date.now() -
+
+        loadingStartTime;
 
 
-        loadingVideo.pause();
+      /*
+      如果未夠3秒，
+      計算仲需要等幾耐
+      */
+
+      const remaining =
+
+        Math.max(
+
+          0,
+
+          MIN_LOADING_TIME - elapsed
+
+        );
 
 
-        loadingScreen.style.display = 'none';
+      /*
+      避免重複建立 Timer
+      */
+
+      if (enterTimer !== null) {
+
+        return;
+
+      }
 
 
-      }, 3100);
+      enterTimer =
+
+        setTimeout(
+
+          function() {
+
+
+            if (sceneStarted) {
+
+              return;
+
+            }
+
+
+            sceneStarted = true;
+
+
+            /*
+            開始 Loading Fade Out
+            */
+
+            loadingScreen
+              .classList
+              .add('hide');
+
+
+            /*
+            隱藏進入按鈕
+            */
+
+            startButton.style.display =
+              'none';
+
+
+            /*
+            等 Fade Out 完成
+            才真正移除 Loading
+            */
+
+            setTimeout(
+
+              function() {
+
+
+                loadingVideo.pause();
+
+
+                loadingScreen.style.display =
+                  'none';
+
+
+              },
+
+              FADE_TIME + 100
+
+            );
+
+
+          },
+
+          remaining
+
+        );
 
 
     }
@@ -329,6 +487,7 @@
        PLAY 360 VIDEO
        ======================================== */
 
+
     function playChristmasVideo() {
 
 
@@ -336,6 +495,7 @@
 
 
       const playPromise =
+
         christmasVideo.play();
 
 
@@ -345,32 +505,41 @@
 
         playPromise
 
-          .then(() => {
+          .then(
+
+            function() {
 
 
-            /*
-            360影片成功播放
-            → Loading開始3秒淡出
-            */
+              /*
+              Play成功。
 
-            hideLoadingScreen();
-
-
-          })
+              真正的 videoReady
+              會由 playing event確認。
+              */
 
 
-          .catch(() => {
+            }
+
+          )
 
 
-            /*
-            iPhone Safari 如果阻止 Autoplay
-            顯示進入按鈕
-            */
+          .catch(
 
-            startButton.style.display = 'block';
+            function() {
 
 
-          });
+              /*
+              Safari如果阻止Autoplay
+              顯示進入按鈕
+              */
+
+              startButton.style.display =
+                'block';
+
+
+            }
+
+          );
 
 
       }
@@ -381,16 +550,19 @@
 
 
     /* ========================================
-       VIDEO READY EVENTS
+       360 VIDEO EVENTS
        ======================================== */
 
 
     /*
-    第一個畫面已載入
+    loadeddata：
+    第一個Frame已下載
     */
 
     christmasVideo.addEventListener(
+
       'loadeddata',
+
       function() {
 
 
@@ -398,16 +570,20 @@
 
 
       }
+
     );
 
 
 
     /*
-    Safari認為影片已可以播放
+    canplay：
+    Safari認為影片已經可以播放
     */
 
     christmasVideo.addEventListener(
+
       'canplay',
+
       function() {
 
 
@@ -415,23 +591,34 @@
 
 
       }
+
     );
 
 
 
     /*
-    360影片真正開始播放
+    playing：
+    影片真正開始播放
+
+    這一刻才正式標記：
+    videoReady = true
     */
 
     christmasVideo.addEventListener(
+
       'playing',
+
       function() {
 
 
-        hideLoadingScreen();
+        videoReady = true;
+
+
+        tryEnterScene();
 
 
       }
+
     );
 
 
@@ -440,8 +627,11 @@
        ENTER BUTTON
        ======================================== */
 
+
     startButton.addEventListener(
+
       'click',
+
       function() {
 
 
@@ -449,26 +639,41 @@
 
 
         christmasVideo
+
           .play()
 
-          .then(() => {
+          .then(
+
+            function() {
 
 
-            hideLoadingScreen();
+              videoReady = true;
 
 
-          })
-
-          .catch(() => {
+              tryEnterScene();
 
 
-            startButton.style.display = 'block';
+            }
+
+          )
 
 
-          });
+          .catch(
+
+            function() {
+
+
+              startButton.style.display =
+                'block';
+
+
+            }
+
+          );
 
 
       }
+
     );
 
 
@@ -477,15 +682,18 @@
        FIRST TOUCH FALLBACK
        ======================================== */
 
+
     document.addEventListener(
+
       'touchstart',
+
       function() {
 
 
         /*
-        如果 Loading Video 未播放，
-        第一次觸碰時嘗試播放
+        Loading Video
         */
+
 
         if (loadingVideo.paused) {
 
@@ -494,7 +702,9 @@
 
 
           loadingVideo
+
             .play()
+
             .catch(() => {});
 
 
@@ -503,9 +713,9 @@
 
 
         /*
-        如果360影片未播放，
-        第一次觸碰時嘗試播放
+        360 Video
         */
+
 
         if (christmasVideo.paused) {
 
@@ -514,14 +724,21 @@
 
 
           christmasVideo
+
             .play()
-            .catch(() => {
+
+            .catch(
+
+              function() {
 
 
-              startButton.style.display = 'block';
+                startButton.style.display =
+                  'block';
 
 
-            });
+              }
+
+            );
 
 
         }
@@ -530,8 +747,11 @@
       },
 
       {
+
         once: true,
+
         passive: true
+
       }
 
     );
@@ -542,20 +762,25 @@
        INITIAL LOAD
        ======================================== */
 
+
     window.addEventListener(
+
       'load',
+
       function() {
 
 
         /*
-        播放 Loading Animation
+        立即播放 Loading動畫
         */
 
         loadingVideo.muted = true;
 
 
         loadingVideo
+
           .play()
+
           .catch(() => {});
 
 
@@ -569,10 +794,11 @@
 
 
         /*
-        500ms後嘗試播放360影片
+        0.5秒後嘗試播放360影片
         */
 
         setTimeout(
+
           function() {
 
 
@@ -582,25 +808,25 @@
           },
 
           500
+
         );
 
 
       }
+
     );
 
 
 
     /* ========================================
-       PINCH ZOOM
+       PINCH ZOOM SETTINGS
        ======================================== */
-
-    const camera =
-      document.querySelector('#camera');
 
 
     /*
-    開場 FOV
-    數字越大 = 看得越遠
+    開場視野
+
+    越大 = 看得越遠
     */
 
     let currentFov = 105;
@@ -628,8 +854,11 @@
        PINCH START
        ======================================== */
 
+
     document.addEventListener(
+
       'touchstart',
+
       function(event) {
 
 
@@ -643,13 +872,11 @@
             event.touches[1].clientX;
 
 
-
           const dy =
 
             event.touches[0].clientY -
 
             event.touches[1].clientY;
-
 
 
           previousDistance =
@@ -669,7 +896,9 @@
       },
 
       {
+
         passive: false
+
       }
 
     );
@@ -680,8 +909,11 @@
        PINCH MOVE
        ======================================== */
 
+
     document.addEventListener(
+
       'touchmove',
+
       function(event) {
 
 
@@ -703,13 +935,11 @@
           event.touches[1].clientX;
 
 
-
         const dy =
 
           event.touches[0].clientY -
 
           event.touches[1].clientY;
-
 
 
         const distance =
@@ -736,7 +966,8 @@
 
 
           /*
-          手指拉開 = Zoom In
+          手指拉開
+          = Zoom In
           */
 
           currentFov -=
@@ -746,7 +977,7 @@
 
 
           /*
-          限制 Zoom 範圍
+          限制 FOV
           */
 
           currentFov =
@@ -788,7 +1019,9 @@
       },
 
       {
+
         passive: false
+
       }
 
     );
@@ -799,8 +1032,11 @@
        PINCH END
        ======================================== */
 
+
     document.addEventListener(
+
       'touchend',
+
       function(event) {
 
 
@@ -814,6 +1050,7 @@
 
 
       }
+
     );
 
 
@@ -822,8 +1059,11 @@
        DESKTOP MOUSE WHEEL ZOOM
        ======================================== */
 
+
     document.addEventListener(
+
       'wheel',
+
       function(event) {
 
 
@@ -869,8 +1109,11 @@
       },
 
       {
+
         passive: false
+
       }
+
     );
 
 
