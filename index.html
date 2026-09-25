@@ -2,25 +2,28 @@
 <html lang="zh-Hant">
 
 <head>
-  <meta charset="utf-8">
+
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width,
              initial-scale=1.0,
              maximum-scale=1.0,
-             user-scalable=no,
-             viewport-fit=cover">
+             user-scalable=no">
 
   <title>Christmas 360</title>
 
+
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
 
   <style>
 
     html,
     body {
+
       margin: 0;
       padding: 0;
 
@@ -29,32 +32,16 @@
 
       overflow: hidden;
 
-      background: #000;
+      background: black;
 
       touch-action: none;
+
     }
 
 
-    /* ================================
-       A-FRAME
-       ================================ */
-
-    a-scene {
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      z-index: 1;
-    }
-
-
-    /* ================================
+    /* ========================================
        LOADING SCREEN
-       ================================ */
+       ======================================== */
 
     #loadingScreen {
 
@@ -68,26 +55,12 @@
 
       z-index: 9999;
 
-
-      background-image: url("loading.jpg");
-
-      background-size: cover;
-
-      background-position: center;
-
-      background-repeat: no-repeat;
-
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
+      background: black;
 
       opacity: 1;
 
       transition: opacity 0.8s ease;
+
     }
 
 
@@ -96,69 +69,65 @@
       opacity: 0;
 
       pointer-events: none;
+
     }
 
 
-    /* ================================
-       LOADING TEXT
-       ================================ */
+    #loadingVideo {
 
-    #loadingText {
+      position: absolute;
 
-      color: white;
+      top: 0;
+      left: 0;
 
-      font-family: Georgia, serif;
+      width: 100%;
+      height: 100%;
 
-      font-size: 42px;
+      object-fit: cover;
 
-      letter-spacing: 2px;
-
-      text-shadow:
-        0 2px 8px rgba(0,0,0,0.45);
     }
 
 
-    /* ================================
+
+    /* ========================================
        ENTER BUTTON
-       ================================ */
+       ======================================== */
 
     #startButton {
 
       position: fixed;
 
       left: 50%;
-
-      bottom: 70px;
+      bottom: 60px;
 
       transform: translateX(-50%);
 
       z-index: 10000;
 
+      padding: 14px 28px;
 
       border: none;
 
-      border-radius: 40px;
-
-
-      padding: 14px 30px;
-
+      border-radius: 30px;
 
       background: rgba(255,255,255,0.92);
 
       color: #222;
 
-
       font-size: 17px;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        sans-serif;
-
 
       display: none;
 
       cursor: pointer;
+
+    }
+
+
+    a-scene {
+
+      width: 100%;
+      height: 100%;
+
     }
 
   </style>
@@ -169,33 +138,49 @@
 <body>
 
 
-  <!-- =================================
-       LOADING SCREEN
-       ================================= -->
+  <!-- ========================================
+       LOADING VIDEO
+       ======================================== -->
 
   <div id="loadingScreen">
 
-    <div id="loadingText">
-      LOADING
-    </div>
+    <video
+      id="loadingVideo"
+
+      autoplay
+      muted
+      loop
+
+      playsinline
+      webkit-playsinline
+
+      preload="auto">
+
+      <source
+        src="loading.mp4"
+        type="video/mp4">
+
+    </video>
 
   </div>
 
 
 
-  <!-- =================================
-       ENTER BUTTON
-       ================================= -->
+  <!-- ========================================
+       FALLBACK BUTTON
+       ======================================== -->
 
   <button id="startButton">
-    Enter 360°
+
+    進入 360° 場景
+
   </button>
 
 
 
-  <!-- =================================
+  <!-- ========================================
        360 SCENE
-       ================================= -->
+       ======================================== -->
 
   <a-scene
 
@@ -203,20 +188,15 @@
 
     vr-mode-ui="enabled: false"
 
-    loading-screen="enabled: false"
-
-    renderer="
-      antialias: true;
-      colorManagement: true;
-    ">
+    loading-screen="enabled: false">
 
 
-    <!-- ================================
-         ASSETS
-         ================================ -->
+    <!-- Assets -->
 
     <a-assets timeout="60000">
 
+
+      <!-- 360 Video -->
 
       <video
 
@@ -226,9 +206,11 @@
 
         preload="auto"
 
-        loop
+        autoplay
 
         muted
+
+        loop
 
         playsinline
 
@@ -243,13 +225,11 @@
 
 
 
-    <!-- ================================
-         360 VIDEO
-         ================================ -->
+    <!-- ========================================
+         360 VIDEO SPHERE
+         ======================================== -->
 
     <a-videosphere
-
-      id="videoSphere"
 
       src="#christmasVideo"
 
@@ -259,9 +239,9 @@
 
 
 
-    <!-- ================================
+    <!-- ========================================
          CAMERA
-         ================================ -->
+         ======================================== -->
 
     <a-camera
 
@@ -283,112 +263,152 @@
 
 
 
+
   <script>
 
-    /* ==========================================
-       ELEMENTS
-       ========================================== */
 
-    const video =
-      document.getElementById("christmasVideo");
+    /* ========================================
+       ELEMENTS
+       ======================================== */
+
 
     const loadingScreen =
-      document.getElementById("loadingScreen");
+      document.querySelector('#loadingScreen');
+
+
+    const loadingVideo =
+      document.querySelector('#loadingVideo');
+
+
+    const christmasVideo =
+      document.querySelector('#christmasVideo');
+
 
     const startButton =
-      document.getElementById("startButton");
-
-    const camera =
-      document.getElementById("camera");
+      document.querySelector('#startButton');
 
 
 
-    /* ==========================================
-       LOADING SCREEN
-       ========================================== */
 
-    let loadingHidden = false;
-
-
-    function hideLoading() {
-
-      if (loadingHidden) {
-        return;
-      }
+    /* ========================================
+       REMOVE LOADING SCREEN
+       ======================================== */
 
 
-      loadingHidden = true;
+    let sceneStarted = false;
 
 
-      loadingScreen.classList.add("hide");
+    function hideLoadingScreen() {
 
 
-      setTimeout(function () {
+      if (sceneStarted) return;
 
-        loadingScreen.style.display = "none";
 
-      }, 850);
+      sceneStarted = true;
+
+
+      loadingScreen.classList.add('hide');
+
+
+      startButton.style.display = 'none';
+
+
+
+      /* 完成 Fade Out 後停止 Loading Video */
+
+
+      setTimeout(() => {
+
+
+        loadingVideo.pause();
+
+
+        loadingScreen.style.display = 'none';
+
+
+      }, 900);
+
 
     }
 
 
 
-    /* ==========================================
+
+    /* ========================================
        PLAY 360 VIDEO
-       ========================================== */
-
-    function playVideo() {
-
-      video.muted = true;
+       ======================================== */
 
 
-      const promise = video.play();
+    function playChristmasVideo() {
 
 
-      if (promise !== undefined) {
+      christmasVideo.muted = true;
 
-        promise
 
-          .then(function () {
+      const playPromise =
+        christmasVideo.play();
 
-            hideLoading();
 
-            startButton.style.display = "none";
 
-          })
+      if (playPromise !== undefined) {
 
-          .catch(function () {
+
+        playPromise
+
+          .then(() => {
+
 
             /*
-              iPhone / Safari 如果阻止 autoplay，
-              顯示 Enter 按鈕。
+            真正開始播放後
+            移除 Loading
             */
 
-            startButton.style.display = "block";
+
+            hideLoadingScreen();
+
+
+          })
+
+
+          .catch(() => {
+
+
+            /*
+            iPhone Safari 如果阻止播放
+            顯示按鈕
+            */
+
+
+            startButton.style.display = 'block';
+
 
           });
 
+
       }
+
 
     }
 
 
 
-    /* ==========================================
-       VIDEO READY
-       ========================================== */
+
+    /* ========================================
+       VIDEO READY EVENTS
+       ======================================== */
 
 
     /*
-      loadeddata：
-      已經取得第一個影片畫面。
+    loadeddata：
+    第一個畫面已經載入
     */
 
-    video.addEventListener(
-      "loadeddata",
-      function () {
 
-        playVideo();
+    christmasVideo.addEventListener(
+      'loadeddata',
+      function() {
+
+        playChristmasVideo();
 
       }
     );
@@ -396,15 +416,16 @@
 
 
     /*
-      canplay：
-      Safari 認為影片可以開始播放。
+    canplay：
+    Safari 認為已經可以播放
     */
 
-    video.addEventListener(
-      "canplay",
-      function () {
 
-        playVideo();
+    christmasVideo.addEventListener(
+      'canplay',
+      function() {
+
+        playChristmasVideo();
 
       }
     );
@@ -412,136 +433,192 @@
 
 
     /*
-      playing：
-      真正開始播放後才移除 Loading。
+    playing：
+    真正開始播放
     */
 
-    video.addEventListener(
-      "playing",
-      function () {
 
-        hideLoading();
+    christmasVideo.addEventListener(
+      'playing',
+      function() {
 
-        startButton.style.display = "none";
+        hideLoadingScreen();
 
       }
     );
 
 
 
-    /* ==========================================
+
+    /* ========================================
        ENTER BUTTON
-       ========================================== */
+       ======================================== */
+
 
     startButton.addEventListener(
-      "click",
-      function () {
-
-        video.muted = true;
+      'click',
+      function() {
 
 
-        video.play()
+        christmasVideo.muted = true;
 
-          .then(function () {
 
-            hideLoading();
+        christmasVideo
+          .play()
 
-            startButton.style.display = "none";
+          .then(() => {
+
+
+            hideLoadingScreen();
+
 
           })
 
-          .catch(function (error) {
+          .catch(() => {
 
-            console.log(
-              "Video playback failed:",
-              error
-            );
+
+            startButton.style.display = 'block';
+
 
           });
+
 
       }
     );
 
 
 
-    /* ==========================================
+
+    /* ========================================
        FIRST TOUCH FALLBACK
-       ========================================== */
+       ======================================== */
+
 
     document.addEventListener(
-      "touchstart",
-      function () {
-
-        if (video.paused) {
-
-          video.muted = true;
+      'touchstart',
+      function() {
 
 
-          video.play()
+        /*
+        Loading Video
+        */
 
-            .then(function () {
 
-              hideLoading();
+        if (loadingVideo.paused) {
 
-              startButton.style.display =
-                "none";
 
-            })
+          loadingVideo.muted = true;
 
-            .catch(function () {
 
-              startButton.style.display =
-                "block";
+          loadingVideo
+            .play()
+            .catch(() => {});
 
-            });
 
         }
 
+
+
+        /*
+        Christmas 360 Video
+        */
+
+
+        if (christmasVideo.paused) {
+
+
+          christmasVideo.muted = true;
+
+
+          christmasVideo
+            .play()
+            .catch(() => {
+
+
+              startButton.style.display = 'block';
+
+
+            });
+
+
+        }
+
+
       },
+
       {
         once: true,
         passive: true
       }
+
     );
 
 
 
-    /* ==========================================
+
+    /* ========================================
        INITIAL LOAD
-       ========================================== */
+       ======================================== */
+
 
     window.addEventListener(
-      "load",
-      function () {
-
-        /*
-          要求 Safari 開始讀取影片
-        */
-
-        video.load();
+      'load',
+      function() {
 
 
         /*
-          稍等一下再嘗試 autoplay
+        Start Loading Animation
         */
+
+
+        loadingVideo.muted = true;
+
+
+        loadingVideo
+          .play()
+          .catch(() => {});
+
+
+
+        /*
+        Start Loading 360 Video
+        */
+
+
+        christmasVideo.load();
+
+
+
+        /*
+        Try Autoplay
+        */
+
 
         setTimeout(
-          function () {
+          function() {
 
-            playVideo();
+
+            playChristmasVideo();
+
 
           },
           500
         );
 
+
       }
     );
 
 
 
-    /* ==========================================
+
+    /* ========================================
        PINCH ZOOM
-       ========================================== */
+       ======================================== */
+
+
+    const camera =
+      document.querySelector('#camera');
 
 
     let currentFov = 105;
@@ -556,13 +633,16 @@
 
 
 
-    /* ------------------------------------------
-       TWO FINGER START
-       ------------------------------------------ */
+
+    /* ----------------------------------------
+       PINCH START
+       ---------------------------------------- */
+
 
     document.addEventListener(
-      "touchstart",
-      function (event) {
+      'touchstart',
+      function(event) {
+
 
         if (event.touches.length === 2) {
 
@@ -593,23 +673,29 @@
 
             );
 
+
         }
 
+
       },
+
       {
         passive: false
       }
+
     );
 
 
 
-    /* ------------------------------------------
-       TWO FINGER ZOOM
-       ------------------------------------------ */
+
+    /* ----------------------------------------
+       PINCH MOVE
+       ---------------------------------------- */
+
 
     document.addEventListener(
-      "touchmove",
-      function (event) {
+      'touchmove',
+      function(event) {
 
 
         if (event.touches.length !== 2) {
@@ -663,12 +749,10 @@
 
 
           /*
-            手指拉開
-            ↓
-            FOV 減少
-            ↓
-            Zoom In
+          手指拉開
+          = Zoom In
           */
+
 
           currentFov -=
 
@@ -696,13 +780,14 @@
 
           camera.setAttribute(
 
-            "camera",
+            'camera',
 
-            "fov",
+            'fov',
 
             currentFov
 
           );
+
 
         }
 
@@ -710,45 +795,55 @@
 
         previousDistance = distance;
 
+
       },
 
       {
         passive: false
       }
+
     );
 
 
 
-    /* ------------------------------------------
-       END PINCH
-       ------------------------------------------ */
+
+    /* ----------------------------------------
+       PINCH END
+       ---------------------------------------- */
+
 
     document.addEventListener(
-      "touchend",
-      function (event) {
+      'touchend',
+      function(event) {
 
 
         if (event.touches.length < 2) {
 
+
           previousDistance = null;
 
+
         }
+
 
       }
     );
 
 
 
-    /* ==========================================
+
+    /* ========================================
        DESKTOP MOUSE WHEEL ZOOM
-       ========================================== */
+       ======================================== */
+
 
     document.addEventListener(
-      "wheel",
-      function (event) {
+      'wheel',
+      function(event) {
 
 
         event.preventDefault();
+
 
 
         currentFov +=
@@ -777,19 +872,21 @@
 
         camera.setAttribute(
 
-          "camera",
+          'camera',
 
-          "fov",
+          'fov',
 
           currentFov
 
         );
+
 
       },
 
       {
         passive: false
       }
+
     );
 
 
