@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8">
 
   <meta
@@ -14,10 +15,12 @@
 
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
+
   <style>
 
     html,
     body {
+
       margin: 0;
       padding: 0;
 
@@ -29,17 +32,84 @@
       background: black;
 
       touch-action: none;
+
     }
 
+
+    /* ==============================
+       A-FRAME
+       ============================== */
 
     a-scene {
+
       width: 100%;
       height: 100%;
+
     }
 
 
-    /* Safari 如果阻止自動播放，
-       就會顯示這個按鈕 */
+    /* ==============================
+       LOADING SCREEN
+       ============================== */
+
+    #loadingScreen {
+
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 9999;
+
+      background: black;
+
+      opacity: 1;
+
+      visibility: visible;
+
+      transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+
+    }
+
+
+    #loadingScreen.hide {
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none;
+
+    }
+
+
+    /* Loading Video */
+
+    #loadingVideo {
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      background: black;
+
+    }
+
+
+    /* ==============================
+       START BUTTON
+       ============================== */
 
     #startButton {
 
@@ -50,7 +120,7 @@
 
       transform: translateX(-50%);
 
-      z-index: 9999;
+      z-index: 10000;
 
       padding: 13px 26px;
 
@@ -58,7 +128,8 @@
 
       border-radius: 30px;
 
-      background: rgba(255,255,255,0.92);
+      background:
+        rgba(255,255,255,0.92);
 
       color: #222;
 
@@ -67,29 +138,62 @@
       cursor: pointer;
 
       display: none;
+
     }
+
 
   </style>
 
 </head>
 
 
+
 <body>
 
 
-  <!-- ==============================
-       PLAY BUTTON
-       ============================== -->
+  <!-- =====================================
+       LOADING VIDEO
+       ===================================== -->
+
+  <div id="loadingScreen">
+
+    <video
+
+      id="loadingVideo"
+
+      src="loading.mp4"
+
+      autoplay
+
+      muted
+
+      loop
+
+      playsinline
+
+      webkit-playsinline
+
+      preload="auto">
+
+    </video>
+
+  </div>
+
+
+
+  <!-- =====================================
+       FALLBACK PLAY BUTTON
+       ===================================== -->
 
   <button id="startButton">
-    Start
+    Enter
   </button>
 
 
 
-  <!-- ==============================
-       A-FRAME
-       ============================== -->
+  <!-- =====================================
+       360 SCENE
+       ===================================== -->
 
   <a-scene
 
@@ -97,12 +201,7 @@
 
     vr-mode-ui="enabled: false"
 
-    loading-screen="
-      enabled: true;
-      backgroundColor: #000000;
-      dotsColor: #FFFFFF;">
-
-
+    loading-screen="enabled: false">
 
 
     <!-- ==============================
@@ -117,8 +216,6 @@
         id="christmasVideo"
 
         src="christmas360.mp4"
-
-        autoplay
 
         muted
 
@@ -139,9 +236,8 @@
 
 
 
-
     <!-- ==============================
-         360° VIDEO
+         360 VIDEO
          ============================== -->
 
     <a-videosphere
@@ -157,7 +253,6 @@
         side: back;">
 
     </a-videosphere>
-
 
 
 
@@ -185,16 +280,23 @@
 
 
 
-
   <script>
 
 
     /* ==========================================
-       VIDEO
+       ELEMENTS
        ========================================== */
 
 
-    const video =
+    const loadingScreen =
+      document.querySelector('#loadingScreen');
+
+
+    const loadingVideo =
+      document.querySelector('#loadingVideo');
+
+
+    const christmasVideo =
       document.querySelector('#christmasVideo');
 
 
@@ -202,19 +304,56 @@
       document.querySelector('#startButton');
 
 
+    const camera =
+      document.querySelector('#camera');
 
 
-    /* ---------- Play Video ---------- */
 
 
-    function startVideo() {
+    /* ==========================================
+       LOADING VIDEO
+       ========================================== */
 
 
-      video.muted = true;
+    loadingVideo.muted = true;
+
+
+    loadingVideo.play().catch(() => {
+
+      /*
+        如果 Safari 阻止 loading autoplay，
+        第一次觸碰畫面時再播放。
+      */
+
+    });
+
+
+
+
+    /* ==========================================
+       HIDE LOADING SCREEN
+       ========================================== */
+
+
+    let enteredScene = false;
+
+
+    function enterChristmasScene() {
+
+
+      if (enteredScene) {
+        return;
+      }
+
+
+      enteredScene = true;
+
+
+      christmasVideo.muted = true;
 
 
       const playPromise =
-        video.play();
+        christmasVideo.play();
 
 
 
@@ -226,25 +365,57 @@
           .then(() => {
 
 
-            console.log(
-              '360 video started'
-            );
+            /*
+              360影片已真正開始播放。
+
+              稍等一點點，
+              再 Fade Out Loading。
+            */
 
 
-            startButton.style.display =
-              'none';
+            setTimeout(() => {
+
+
+              loadingScreen.classList.add('hide');
+
+
+              startButton.style.display =
+                'none';
+
+
+              /*
+                Fade Out 完成後，
+                停止 Loading Video，
+                節省手機資源。
+              */
+
+
+              setTimeout(() => {
+
+
+                loadingVideo.pause();
+
+
+              }, 900);
+
+
+            }, 250);
 
 
           })
 
 
-          .catch((error) => {
+          .catch(() => {
 
 
-            console.log(
-              'Autoplay blocked',
-              error
-            );
+            /*
+              如果 Safari 阻止360影片播放，
+              Loading畫面保持顯示，
+              並顯示 Enter 按鈕。
+            */
+
+
+            enteredScene = false;
 
 
             startButton.style.display =
@@ -262,51 +433,138 @@
 
 
 
-    /* ---------- Auto Start ---------- */
+    /* ==========================================
+       CHECK 360 VIDEO
+       ========================================== */
+
+
+    function checkVideoReady() {
+
+
+      /*
+        readyState >= 3
+
+        代表影片已經有足夠資料
+        可以開始播放。
+      */
+
+
+      if (
+        christmasVideo.readyState >= 3
+      ) {
+
+
+        enterChristmasScene();
+
+
+      }
+
+
+    }
+
+
+
+
+    /* ==========================================
+       VIDEO READY EVENTS
+       ========================================== */
+
+
+    christmasVideo.addEventListener(
+
+      'canplay',
+
+      checkVideoReady
+
+    );
+
+
+    christmasVideo.addEventListener(
+
+      'canplaythrough',
+
+      checkVideoReady
+
+    );
+
+
+
+
+    /* 如果影片非常快已經載好 */
 
 
     window.addEventListener(
+
       'load',
+
       function() {
 
 
         setTimeout(
-          startVideo,
-          500
+
+          checkVideoReady,
+
+          300
+
         );
 
 
       }
+
     );
 
 
 
 
-    /* ---------- Start Button ---------- */
+    /* ==========================================
+       FALLBACK ENTER BUTTON
+       ========================================== */
 
 
     startButton.addEventListener(
+
       'click',
+
       function() {
 
 
-        video.muted = true;
+        christmasVideo.muted = true;
 
 
-        video.play();
+        christmasVideo.play()
+
+          .then(() => {
 
 
-        startButton.style.display =
-          'none';
+            loadingScreen.classList.add('hide');
+
+
+            startButton.style.display =
+              'none';
+
+
+            setTimeout(() => {
+
+
+              loadingVideo.pause();
+
+
+            }, 900);
+
+
+          });
 
 
       }
+
     );
 
 
 
 
-    /* ---------- First Touch ---------- */
+    /* ==========================================
+       FIRST TOUCH
+       ========================================== */
 
 
     document.addEventListener(
@@ -316,13 +574,37 @@
       function() {
 
 
-        if (video.paused) {
+        /* Loading Video */
 
 
-          video.muted = true;
+        if (loadingVideo.paused) {
 
 
-          video.play();
+          loadingVideo.muted = true;
+
+
+          loadingVideo.play()
+            .catch(() => {});
+
+
+        }
+
+
+
+        /* 360 Video */
+
+
+        if (
+          christmasVideo.readyState >= 2 &&
+          christmasVideo.paused
+        ) {
+
+
+          christmasVideo.muted = true;
+
+
+          christmasVideo.play()
+            .catch(() => {});
 
 
         }
@@ -340,30 +622,11 @@
 
 
     /* ==========================================
-       CAMERA ZOOM
+       PINCH ZOOM
        ========================================== */
 
 
-    const camera =
-      document.querySelector('#camera');
-
-
-
-    /*
-       初始畫面
-
-       數字越大 = 看得越遠 / 越廣
-       數字越小 = Zoom In
-    */
-
-
     let currentFov = 105;
-
-
-
-    /*
-       最大 / 最小 Zoom
-    */
 
 
     const minFov = 35;
@@ -371,15 +634,12 @@
     const maxFov = 120;
 
 
-
     let previousDistance = null;
 
 
 
 
-    /* ==========================================
-       MOBILE PINCH START
-       ========================================== */
+    /* ---------- Pinch Start ---------- */
 
 
     document.addEventListener(
@@ -435,9 +695,7 @@
 
 
 
-    /* ==========================================
-       MOBILE PINCH ZOOM
-       ========================================== */
+    /* ---------- Pinch Zoom ---------- */
 
 
     document.addEventListener(
@@ -454,7 +712,6 @@
           return;
 
         }
-
 
 
         event.preventDefault();
@@ -503,8 +760,8 @@
 
 
           /*
-             手指拉開
-             → Zoom In
+            手指拉開
+            → Zoom In
           */
 
 
@@ -512,11 +769,6 @@
 
             difference * 0.12;
 
-
-
-          /*
-             限制 FOV
-          */
 
 
           currentFov =
@@ -567,9 +819,7 @@
 
 
 
-    /* ==========================================
-       PINCH END
-       ========================================== */
+    /* ---------- Pinch End ---------- */
 
 
     document.addEventListener(
@@ -656,7 +906,6 @@
       }
 
     );
-
 
 
   </script>
