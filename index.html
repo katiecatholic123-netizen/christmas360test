@@ -14,16 +14,13 @@
 
   <title>Christmas 360</title>
 
-
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-
 
   <style>
 
     html,
     body {
-
       margin: 0;
       padding: 0;
 
@@ -35,7 +32,6 @@
       background: black;
 
       touch-action: none;
-
     }
 
 
@@ -59,7 +55,8 @@
 
       opacity: 1;
 
-      transition: opacity 0.8s ease;
+      /* Loading 淡出時間 */
+      transition: opacity 1.5s ease;
 
     }
 
@@ -191,12 +188,12 @@
     loading-screen="enabled: false">
 
 
-    <!-- Assets -->
+    <!-- ========================================
+         ASSETS
+         ======================================== -->
 
     <a-assets timeout="60000">
 
-
-      <!-- 360 Video -->
 
       <video
 
@@ -226,7 +223,7 @@
 
 
     <!-- ========================================
-         360 VIDEO SPHERE
+         360 VIDEO
          ======================================== -->
 
     <a-videosphere
@@ -263,7 +260,6 @@
 
 
 
-
   <script>
 
 
@@ -271,29 +267,23 @@
        ELEMENTS
        ======================================== */
 
-
     const loadingScreen =
       document.querySelector('#loadingScreen');
-
 
     const loadingVideo =
       document.querySelector('#loadingVideo');
 
-
     const christmasVideo =
       document.querySelector('#christmasVideo');
-
 
     const startButton =
       document.querySelector('#startButton');
 
 
 
-
     /* ========================================
-       REMOVE LOADING SCREEN
+       LOADING SCREEN FADE OUT
        ======================================== */
-
 
     let sceneStarted = false;
 
@@ -307,6 +297,10 @@
       sceneStarted = true;
 
 
+      /*
+      開始 1.5 秒 Fade Out
+      */
+
       loadingScreen.classList.add('hide');
 
 
@@ -314,8 +308,12 @@
 
 
 
-      /* 完成 Fade Out 後停止 Loading Video */
+      /*
+      CSS Fade Out 是 1.5 秒
 
+      所以這裡設定 1600ms，
+      等 Fade 完成後才真正移除 Loading。
+      */
 
       setTimeout(() => {
 
@@ -326,18 +324,16 @@
         loadingScreen.style.display = 'none';
 
 
-      }, 900);
+      }, 1600);
 
 
     }
 
 
 
-
     /* ========================================
        PLAY 360 VIDEO
        ======================================== */
-
 
     function playChristmasVideo() {
 
@@ -359,10 +355,9 @@
 
 
             /*
-            真正開始播放後
-            移除 Loading
+            360影片成功播放
+            → Loading開始淡出
             */
-
 
             hideLoadingScreen();
 
@@ -374,10 +369,11 @@
 
 
             /*
-            iPhone Safari 如果阻止播放
-            顯示按鈕
-            */
+            如果 iPhone Safari
+            阻止 Autoplay
 
+            顯示進入按鈕
+            */
 
             startButton.style.display = 'block';
 
@@ -392,23 +388,22 @@
 
 
 
-
     /* ========================================
-       VIDEO READY EVENTS
+       360 VIDEO READY
        ======================================== */
 
 
     /*
-    loadeddata：
-    第一個畫面已經載入
+    第一個畫面已經下載
     */
-
 
     christmasVideo.addEventListener(
       'loadeddata',
       function() {
 
+
         playChristmasVideo();
+
 
       }
     );
@@ -416,16 +411,16 @@
 
 
     /*
-    canplay：
-    Safari 認為已經可以播放
+    Safari認為已經可以播放
     */
-
 
     christmasVideo.addEventListener(
       'canplay',
       function() {
 
+
         playChristmasVideo();
+
 
       }
     );
@@ -433,27 +428,25 @@
 
 
     /*
-    playing：
-    真正開始播放
+    360影片真正開始播放
     */
-
 
     christmasVideo.addEventListener(
       'playing',
       function() {
 
+
         hideLoadingScreen();
+
 
       }
     );
-
 
 
 
     /* ========================================
        ENTER BUTTON
        ======================================== */
-
 
     startButton.addEventListener(
       'click',
@@ -488,11 +481,9 @@
 
 
 
-
     /* ========================================
        FIRST TOUCH FALLBACK
        ======================================== */
-
 
     document.addEventListener(
       'touchstart',
@@ -500,9 +491,9 @@
 
 
         /*
-        Loading Video
+        如果 Loading Video 未播放，
+        第一次觸碰時嘗試播放
         */
-
 
         if (loadingVideo.paused) {
 
@@ -520,9 +511,9 @@
 
 
         /*
-        Christmas 360 Video
+        如果360影片未播放，
+        第一次觸碰時嘗試播放
         */
-
 
         if (christmasVideo.paused) {
 
@@ -555,11 +546,9 @@
 
 
 
-
     /* ========================================
        INITIAL LOAD
        ======================================== */
-
 
     window.addEventListener(
       'load',
@@ -567,9 +556,8 @@
 
 
         /*
-        Start Loading Animation
+        播放 Loading Animation
         */
-
 
         loadingVideo.muted = true;
 
@@ -581,18 +569,16 @@
 
 
         /*
-        Start Loading 360 Video
+        開始載入360影片
         */
-
 
         christmasVideo.load();
 
 
 
         /*
-        Try Autoplay
+        嘗試自動播放360影片
         */
-
 
         setTimeout(
           function() {
@@ -602,6 +588,7 @@
 
 
           },
+
           500
         );
 
@@ -611,20 +598,32 @@
 
 
 
-
     /* ========================================
        PINCH ZOOM
        ======================================== */
-
 
     const camera =
       document.querySelector('#camera');
 
 
+    /*
+    開場視野
+    數字越大 = 看得越遠
+    */
+
     let currentFov = 105;
 
 
+    /*
+    最 Zoom In
+    */
+
     const minFov = 35;
+
+
+    /*
+    最 Zoom Out
+    */
 
     const maxFov = 120;
 
@@ -633,11 +632,9 @@
 
 
 
-
-    /* ----------------------------------------
+    /* ========================================
        PINCH START
-       ---------------------------------------- */
-
+       ======================================== */
 
     document.addEventListener(
       'touchstart',
@@ -687,11 +684,9 @@
 
 
 
-
-    /* ----------------------------------------
+    /* ========================================
        PINCH MOVE
-       ---------------------------------------- */
-
+       ======================================== */
 
     document.addEventListener(
       'touchmove',
@@ -750,15 +745,18 @@
 
           /*
           手指拉開
-          = Zoom In
+          → Zoom In
           */
-
 
           currentFov -=
 
             difference * 0.12;
 
 
+
+          /*
+          限制 Zoom 範圍
+          */
 
           currentFov =
 
@@ -806,11 +804,9 @@
 
 
 
-
-    /* ----------------------------------------
+    /* ========================================
        PINCH END
-       ---------------------------------------- */
-
+       ======================================== */
 
     document.addEventListener(
       'touchend',
@@ -831,11 +827,9 @@
 
 
 
-
     /* ========================================
        DESKTOP MOUSE WHEEL ZOOM
        ======================================== */
-
 
     document.addEventListener(
       'wheel',
@@ -886,7 +880,6 @@
       {
         passive: false
       }
-
     );
 
 
