@@ -1,212 +1,801 @@
-/* ==========================================
-   START 360 VIDEO
-   ========================================== */
+<!DOCTYPE html>
+<html lang="zh-Hant">
 
-let sceneStarted = false;
+<head>
+  <meta charset="utf-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             maximum-scale=1.0,
+             user-scalable=no,
+             viewport-fit=cover">
 
-/* 移除 Loading 畫面 */
+  <title>Christmas 360</title>
 
-function hideLoadingScreen() {
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
-  if (sceneStarted) {
-    return;
-  }
+  <style>
 
-  sceneStarted = true;
+    html,
+    body {
+      margin: 0;
+      padding: 0;
 
-  loadingScreen.classList.add('hide');
+      width: 100%;
+      height: 100%;
 
-  startButton.style.display = 'none';
+      overflow: hidden;
 
-  /* Fade out 完成後停止 Loading Video */
+      background: #000;
 
-  setTimeout(() => {
-
-    loadingVideo.pause();
-
-    loadingVideo.removeAttribute('src');
-    loadingVideo.load();
-
-  }, 900);
-
-}
-
-
-/* ==========================================
-   PLAY 360 VIDEO
-   ========================================== */
-
-function playChristmasVideo() {
-
-  christmasVideo.muted = true;
-
-  const playPromise = christmasVideo.play();
-
-  if (playPromise !== undefined) {
-
-    playPromise.catch(() => {
-
-      /*
-        Safari 阻止 autoplay 時
-        顯示 Enter 按鈕
-      */
-
-      startButton.style.display = 'block';
-
-    });
-
-  }
-
-}
+      touch-action: none;
+    }
 
 
-/* ==========================================
-   VIDEO EVENTS
-   ========================================== */
+    /* ================================
+       A-FRAME
+       ================================ */
+
+    a-scene {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 1;
+    }
 
 
-/*
-  loadeddata = 第一個畫面已經載入
-*/
+    /* ================================
+       LOADING SCREEN
+       ================================ */
 
-christmasVideo.addEventListener(
-  'loadeddata',
-  function() {
+    #loadingScreen {
 
-    playChristmasVideo();
+      position: fixed;
 
-  }
-);
+      top: 0;
+      left: 0;
 
+      width: 100%;
+      height: 100%;
 
-/*
-  canplay = Safari 認為已經可以開始播放
-*/
-
-christmasVideo.addEventListener(
-  'canplay',
-  function() {
-
-    playChristmasVideo();
-
-  }
-);
+      z-index: 9999;
 
 
-/*
-  最重要：
-  真正開始播放後才移除 Loading
-*/
+      background-image: url("loading.jpg");
 
-christmasVideo.addEventListener(
-  'playing',
-  function() {
+      background-size: cover;
 
-    hideLoadingScreen();
+      background-position: center;
 
-  }
-);
+      background-repeat: no-repeat;
 
 
-/* ==========================================
-   ENTER BUTTON
-   ========================================== */
+      display: flex;
 
-startButton.addEventListener(
-  'click',
-  function() {
+      align-items: center;
 
-    christmasVideo.muted = true;
-
-    christmasVideo.play()
-      .then(() => {
-
-        hideLoadingScreen();
-
-      })
-      .catch(() => {
-
-        startButton.style.display = 'block';
-
-      });
-
-  }
-);
+      justify-content: center;
 
 
-/* ==========================================
-   FIRST TOUCH FALLBACK
-   ========================================== */
+      opacity: 1;
 
-document.addEventListener(
-  'touchstart',
-  function() {
+      transition: opacity 0.8s ease;
+    }
 
-    /* Loading Video */
 
-    if (loadingVideo.paused) {
+    #loadingScreen.hide {
 
-      loadingVideo.muted = true;
+      opacity: 0;
 
-      loadingVideo.play()
-        .catch(() => {});
+      pointer-events: none;
+    }
+
+
+    /* ================================
+       LOADING TEXT
+       ================================ */
+
+    #loadingText {
+
+      color: white;
+
+      font-family: Georgia, serif;
+
+      font-size: 42px;
+
+      letter-spacing: 2px;
+
+      text-shadow:
+        0 2px 8px rgba(0,0,0,0.45);
+    }
+
+
+    /* ================================
+       ENTER BUTTON
+       ================================ */
+
+    #startButton {
+
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 70px;
+
+      transform: translateX(-50%);
+
+      z-index: 10000;
+
+
+      border: none;
+
+      border-radius: 40px;
+
+
+      padding: 14px 30px;
+
+
+      background: rgba(255,255,255,0.92);
+
+      color: #222;
+
+
+      font-size: 17px;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+
+      display: none;
+
+      cursor: pointer;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =================================
+       LOADING SCREEN
+       ================================= -->
+
+  <div id="loadingScreen">
+
+    <div id="loadingText">
+      LOADING
+    </div>
+
+  </div>
+
+
+
+  <!-- =================================
+       ENTER BUTTON
+       ================================= -->
+
+  <button id="startButton">
+    Enter 360°
+  </button>
+
+
+
+  <!-- =================================
+       360 SCENE
+       ================================= -->
+
+  <a-scene
+
+    embedded
+
+    vr-mode-ui="enabled: false"
+
+    loading-screen="enabled: false"
+
+    renderer="
+      antialias: true;
+      colorManagement: true;
+    ">
+
+
+    <!-- ================================
+         ASSETS
+         ================================ -->
+
+    <a-assets timeout="60000">
+
+
+      <video
+
+        id="christmasVideo"
+
+        src="christmas360.mp4"
+
+        preload="auto"
+
+        loop
+
+        muted
+
+        playsinline
+
+        webkit-playsinline
+
+        crossorigin="anonymous">
+
+      </video>
+
+
+    </a-assets>
+
+
+
+    <!-- ================================
+         360 VIDEO
+         ================================ -->
+
+    <a-videosphere
+
+      id="videoSphere"
+
+      src="#christmasVideo"
+
+      rotation="0 -90 0">
+
+    </a-videosphere>
+
+
+
+    <!-- ================================
+         CAMERA
+         ================================ -->
+
+    <a-camera
+
+      id="camera"
+
+      position="0 0 0"
+
+      camera="fov: 105"
+
+      look-controls="
+        magicWindowTrackingEnabled: true;
+        touchEnabled: true;
+        mouseEnabled: true;">
+
+    </a-camera>
+
+
+  </a-scene>
+
+
+
+  <script>
+
+    /* ==========================================
+       ELEMENTS
+       ========================================== */
+
+    const video =
+      document.getElementById("christmasVideo");
+
+    const loadingScreen =
+      document.getElementById("loadingScreen");
+
+    const startButton =
+      document.getElementById("startButton");
+
+    const camera =
+      document.getElementById("camera");
+
+
+
+    /* ==========================================
+       LOADING SCREEN
+       ========================================== */
+
+    let loadingHidden = false;
+
+
+    function hideLoading() {
+
+      if (loadingHidden) {
+        return;
+      }
+
+
+      loadingHidden = true;
+
+
+      loadingScreen.classList.add("hide");
+
+
+      setTimeout(function () {
+
+        loadingScreen.style.display = "none";
+
+      }, 850);
 
     }
 
 
-    /* Christmas 360 Video */
 
-    if (christmasVideo.paused) {
+    /* ==========================================
+       PLAY 360 VIDEO
+       ========================================== */
 
-      christmasVideo.muted = true;
+    function playVideo() {
 
-      christmasVideo.play()
-        .catch(() => {
+      video.muted = true;
 
-          startButton.style.display = 'block';
 
-        });
+      const promise = video.play();
+
+
+      if (promise !== undefined) {
+
+        promise
+
+          .then(function () {
+
+            hideLoading();
+
+            startButton.style.display = "none";
+
+          })
+
+          .catch(function () {
+
+            /*
+              iPhone / Safari 如果阻止 autoplay，
+              顯示 Enter 按鈕。
+            */
+
+            startButton.style.display = "block";
+
+          });
+
+      }
 
     }
 
-  },
-  {
-    once: true
-  }
-);
 
 
-/* ==========================================
-   INITIAL LOAD
-   ========================================== */
-
-window.addEventListener(
-  'load',
-  function() {
-
-    loadingVideo.muted = true;
-
-    loadingVideo.play()
-      .catch(() => {});
+    /* ==========================================
+       VIDEO READY
+       ========================================== */
 
 
     /*
-      主動要求360影片開始載入
+      loadeddata：
+      已經取得第一個影片畫面。
     */
 
-    christmasVideo.load();
+    video.addEventListener(
+      "loadeddata",
+      function () {
+
+        playVideo();
+
+      }
+    );
+
 
 
     /*
-      嘗試 autoplay
+      canplay：
+      Safari 認為影片可以開始播放。
     */
 
-    setTimeout(() => {
+    video.addEventListener(
+      "canplay",
+      function () {
 
-      playChristmasVideo();
+        playVideo();
 
-    }, 300);
+      }
+    );
 
-  }
-);
+
+
+    /*
+      playing：
+      真正開始播放後才移除 Loading。
+    */
+
+    video.addEventListener(
+      "playing",
+      function () {
+
+        hideLoading();
+
+        startButton.style.display = "none";
+
+      }
+    );
+
+
+
+    /* ==========================================
+       ENTER BUTTON
+       ========================================== */
+
+    startButton.addEventListener(
+      "click",
+      function () {
+
+        video.muted = true;
+
+
+        video.play()
+
+          .then(function () {
+
+            hideLoading();
+
+            startButton.style.display = "none";
+
+          })
+
+          .catch(function (error) {
+
+            console.log(
+              "Video playback failed:",
+              error
+            );
+
+          });
+
+      }
+    );
+
+
+
+    /* ==========================================
+       FIRST TOUCH FALLBACK
+       ========================================== */
+
+    document.addEventListener(
+      "touchstart",
+      function () {
+
+        if (video.paused) {
+
+          video.muted = true;
+
+
+          video.play()
+
+            .then(function () {
+
+              hideLoading();
+
+              startButton.style.display =
+                "none";
+
+            })
+
+            .catch(function () {
+
+              startButton.style.display =
+                "block";
+
+            });
+
+        }
+
+      },
+      {
+        once: true,
+        passive: true
+      }
+    );
+
+
+
+    /* ==========================================
+       INITIAL LOAD
+       ========================================== */
+
+    window.addEventListener(
+      "load",
+      function () {
+
+        /*
+          要求 Safari 開始讀取影片
+        */
+
+        video.load();
+
+
+        /*
+          稍等一下再嘗試 autoplay
+        */
+
+        setTimeout(
+          function () {
+
+            playVideo();
+
+          },
+          500
+        );
+
+      }
+    );
+
+
+
+    /* ==========================================
+       PINCH ZOOM
+       ========================================== */
+
+
+    let currentFov = 105;
+
+
+    const minFov = 35;
+
+    const maxFov = 120;
+
+
+    let previousDistance = null;
+
+
+
+    /* ------------------------------------------
+       TWO FINGER START
+       ------------------------------------------ */
+
+    document.addEventListener(
+      "touchstart",
+      function (event) {
+
+        if (event.touches.length === 2) {
+
+
+          const dx =
+
+            event.touches[0].clientX -
+
+            event.touches[1].clientX;
+
+
+
+          const dy =
+
+            event.touches[0].clientY -
+
+            event.touches[1].clientY;
+
+
+
+          previousDistance =
+
+            Math.sqrt(
+
+              dx * dx +
+
+              dy * dy
+
+            );
+
+        }
+
+      },
+      {
+        passive: false
+      }
+    );
+
+
+
+    /* ------------------------------------------
+       TWO FINGER ZOOM
+       ------------------------------------------ */
+
+    document.addEventListener(
+      "touchmove",
+      function (event) {
+
+
+        if (event.touches.length !== 2) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+
+        const dx =
+
+          event.touches[0].clientX -
+
+          event.touches[1].clientX;
+
+
+
+        const dy =
+
+          event.touches[0].clientY -
+
+          event.touches[1].clientY;
+
+
+
+        const distance =
+
+          Math.sqrt(
+
+            dx * dx +
+
+            dy * dy
+
+          );
+
+
+
+        if (previousDistance !== null) {
+
+
+          const difference =
+
+            distance -
+
+            previousDistance;
+
+
+
+          /*
+            手指拉開
+            ↓
+            FOV 減少
+            ↓
+            Zoom In
+          */
+
+          currentFov -=
+
+            difference * 0.12;
+
+
+
+          currentFov =
+
+            Math.max(
+
+              minFov,
+
+              Math.min(
+
+                maxFov,
+
+                currentFov
+
+              )
+
+            );
+
+
+
+          camera.setAttribute(
+
+            "camera",
+
+            "fov",
+
+            currentFov
+
+          );
+
+        }
+
+
+
+        previousDistance = distance;
+
+      },
+
+      {
+        passive: false
+      }
+    );
+
+
+
+    /* ------------------------------------------
+       END PINCH
+       ------------------------------------------ */
+
+    document.addEventListener(
+      "touchend",
+      function (event) {
+
+
+        if (event.touches.length < 2) {
+
+          previousDistance = null;
+
+        }
+
+      }
+    );
+
+
+
+    /* ==========================================
+       DESKTOP MOUSE WHEEL ZOOM
+       ========================================== */
+
+    document.addEventListener(
+      "wheel",
+      function (event) {
+
+
+        event.preventDefault();
+
+
+        currentFov +=
+
+          event.deltaY * 0.05;
+
+
+
+        currentFov =
+
+          Math.max(
+
+            minFov,
+
+            Math.min(
+
+              maxFov,
+
+              currentFov
+
+            )
+
+          );
+
+
+
+        camera.setAttribute(
+
+          "camera",
+
+          "fov",
+
+          currentFov
+
+        );
+
+      },
+
+      {
+        passive: false
+      }
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
