@@ -59,7 +59,7 @@
       opacity: 1;
 
       /*
-      Loading 淡出時間
+      Loading Fade Out = 1.5秒
       */
 
       transition: opacity 1.5s ease;
@@ -175,6 +175,23 @@
     </video>
 
   </div>
+
+
+
+  <!-- ========================================
+       BACKGROUND MUSIC
+       ======================================== -->
+
+  <audio
+    id="backgroundMusic"
+
+    src="christmassong2025.mp3"
+
+    preload="auto"
+
+    loop>
+
+  </audio>
 
 
 
@@ -295,6 +312,10 @@
       document.querySelector('#christmasVideo');
 
 
+    const backgroundMusic =
+      document.querySelector('#backgroundMusic');
+
+
     const startButton =
       document.querySelector('#startButton');
 
@@ -310,7 +331,8 @@
 
 
     /*
-    Loading 最少顯示時間
+    Loading最少播放時間
+
     3000ms = 3秒
     */
 
@@ -318,7 +340,8 @@
 
 
     /*
-    Loading Fade Out時間
+    Loading Fade Out
+
     1500ms = 1.5秒
     */
 
@@ -326,7 +349,7 @@
 
 
     /*
-    記錄網頁開始 Loading 的時間
+    記錄Loading開始時間
     */
 
     const loadingStartTime =
@@ -334,24 +357,251 @@
 
 
     /*
-    場景是否已經開始
+    場景是否已開始
     */
 
     let sceneStarted = false;
 
 
     /*
-    360影片是否真正 Ready
+    360影片是否真正Ready
     */
 
     let videoReady = false;
 
 
     /*
-    避免重複建立進場 Timer
+    避免重複建立進場Timer
     */
 
     let enterTimer = null;
+
+
+
+    /* ========================================
+       BACKGROUND MUSIC SETTINGS
+       ======================================== */
+
+
+    /*
+    音樂最終音量
+
+    0.6 = 60%
+    */
+
+    const MUSIC_TARGET_VOLUME = 0.6;
+
+
+    /*
+    音樂Fade In時間
+
+    2000ms = 2秒
+    */
+
+    const MUSIC_FADE_TIME = 2000;
+
+
+    /*
+    音樂是否已經成功開始播放
+    */
+
+    let musicStarted = false;
+
+
+    /*
+    Fade In Timer
+    */
+
+    let musicFadeTimer = null;
+
+
+
+    /* ========================================
+       MUSIC FADE IN
+       ======================================== */
+
+
+    function fadeInBackgroundMusic() {
+
+
+      /*
+      清除舊Timer
+      */
+
+      clearInterval(musicFadeTimer);
+
+
+      /*
+      Fade分成40步
+      */
+
+      const steps = 40;
+
+
+      /*
+      每一步時間
+      */
+
+      const interval =
+        MUSIC_FADE_TIME / steps;
+
+
+      /*
+      每一步增加的音量
+      */
+
+      const volumeStep =
+        MUSIC_TARGET_VOLUME / steps;
+
+
+      /*
+      由0開始
+      */
+
+      backgroundMusic.volume = 0;
+
+
+
+      musicFadeTimer = setInterval(
+
+        function() {
+
+
+          let newVolume =
+
+            backgroundMusic.volume +
+
+            volumeStep;
+
+
+
+          /*
+          到達60%
+          */
+
+          if (newVolume >= MUSIC_TARGET_VOLUME) {
+
+
+            backgroundMusic.volume =
+              MUSIC_TARGET_VOLUME;
+
+
+            clearInterval(
+              musicFadeTimer
+            );
+
+
+            return;
+
+          }
+
+
+
+          /*
+          繼續增加音量
+          */
+
+          backgroundMusic.volume =
+            newVolume;
+
+
+        },
+
+        interval
+
+      );
+
+
+    }
+
+
+
+    /* ========================================
+       START BACKGROUND MUSIC
+       ======================================== */
+
+
+    function startBackgroundMusic() {
+
+
+      /*
+      如果已經播放
+      不再重新開始
+      */
+
+      if (musicStarted) {
+
+        return;
+
+      }
+
+
+      /*
+      先設為0音量
+      */
+
+      backgroundMusic.volume = 0;
+
+
+
+      const musicPromise =
+
+        backgroundMusic.play();
+
+
+
+      if (musicPromise !== undefined) {
+
+
+        musicPromise
+
+          .then(
+
+            function() {
+
+
+              /*
+              音樂成功開始
+              */
+
+              musicStarted = true;
+
+
+              /*
+              開始2秒Fade In
+              */
+
+              fadeInBackgroundMusic();
+
+
+            }
+
+          )
+
+
+          .catch(
+
+            function() {
+
+
+              /*
+              iPhone Safari可能阻止
+              有聲音自動播放。
+
+              不做任何事，
+              等使用者第一次觸碰。
+              */
+
+
+            }
+
+          );
+
+
+      }
+
+
+    }
 
 
 
@@ -364,8 +614,8 @@
 
 
       /*
-      如果已經進場
-      或360影片仍未Ready
+      已經進場
+      或360影片未Ready
       就不處理
       */
 
@@ -377,7 +627,7 @@
 
 
       /*
-      計算 Loading 已經播放多久
+      Loading已播放多久
       */
 
       const elapsed =
@@ -389,7 +639,7 @@
 
       /*
       如果未夠3秒，
-      計算仲需要等幾耐
+      計算仍需等待多久
       */
 
       const remaining =
@@ -404,7 +654,7 @@
 
 
       /*
-      避免重複建立 Timer
+      避免建立重複Timer
       */
 
       if (enterTimer !== null) {
@@ -412,6 +662,7 @@
         return;
 
       }
+
 
 
       enterTimer =
@@ -431,13 +682,25 @@
             sceneStarted = true;
 
 
-            /*
-            開始 Loading Fade Out
-            */
+
+            /* ==================================
+               開始 Loading Fade Out
+               ================================== */
+
 
             loadingScreen
               .classList
               .add('hide');
+
+
+
+            /*
+            Loading開始淡出時
+            嘗試開始背景音樂
+            */
+
+            startBackgroundMusic();
+
 
 
             /*
@@ -448,9 +711,10 @@
               'none';
 
 
+
             /*
-            等 Fade Out 完成
-            才真正移除 Loading
+            Fade Out完成後
+            才真正移除Loading
             */
 
             setTimeout(
@@ -513,8 +777,8 @@
               /*
               Play成功。
 
-              真正的 videoReady
-              會由 playing event確認。
+              真正Ready會由
+              playing event確認。
               */
 
 
@@ -529,7 +793,7 @@
 
 
               /*
-              Safari如果阻止Autoplay
+              Safari阻止Autoplay時
               顯示進入按鈕
               */
 
@@ -555,7 +819,6 @@
 
 
     /*
-    loadeddata：
     第一個Frame已下載
     */
 
@@ -576,7 +839,6 @@
 
 
     /*
-    canplay：
     Safari認為影片已經可以播放
     */
 
@@ -597,11 +859,7 @@
 
 
     /*
-    playing：
-    影片真正開始播放
-
-    這一刻才正式標記：
-    videoReady = true
+    360影片真正開始播放
     */
 
     christmasVideo.addEventListener(
@@ -636,6 +894,16 @@
 
 
         christmasVideo.muted = true;
+
+
+
+        /*
+        按鈕是使用者主動操作，
+        同時嘗試啟動音樂
+        */
+
+        startBackgroundMusic();
+
 
 
         christmasVideo
@@ -679,7 +947,7 @@
 
 
     /* ========================================
-       FIRST TOUCH FALLBACK
+       FIRST TOUCH
        ======================================== */
 
 
@@ -691,9 +959,9 @@
 
 
         /*
-        Loading Video
+        如果Loading影片未播放
+        嘗試播放
         */
-
 
         if (loadingVideo.paused) {
 
@@ -713,9 +981,9 @@
 
 
         /*
-        360 Video
+        如果360影片未播放
+        嘗試播放
         */
-
 
         if (christmasVideo.paused) {
 
@@ -744,6 +1012,23 @@
         }
 
 
+
+        /*
+        iPhone Safari：
+
+        使用者第一次觸碰畫面時
+        嘗試播放背景音樂
+        */
+
+        if (!musicStarted) {
+
+
+          startBackgroundMusic();
+
+
+        }
+
+
       },
 
       {
@@ -751,6 +1036,44 @@
         once: true,
 
         passive: true
+
+      }
+
+    );
+
+
+
+    /* ========================================
+       DESKTOP FIRST CLICK
+       ======================================== */
+
+
+    document.addEventListener(
+
+      'click',
+
+      function() {
+
+
+        /*
+        Desktop第一次Click
+        嘗試播放音樂
+        */
+
+        if (!musicStarted) {
+
+
+          startBackgroundMusic();
+
+
+        }
+
+
+      },
+
+      {
+
+        once: true
 
       }
 
@@ -771,7 +1094,7 @@
 
 
         /*
-        立即播放 Loading動畫
+        播放Loading動畫
         */
 
         loadingVideo.muted = true;
@@ -782,6 +1105,14 @@
           .play()
 
           .catch(() => {});
+
+
+
+        /*
+        預先載入背景音樂
+        */
+
+        backgroundMusic.load();
 
 
 
@@ -824,7 +1155,7 @@
 
 
     /*
-    開場視野
+    開場FOV
 
     越大 = 看得越遠
     */
@@ -833,14 +1164,14 @@
 
 
     /*
-    最大 Zoom In
+    最大Zoom In
     */
 
     const minFov = 35;
 
 
     /*
-    最大 Zoom Out
+    最大Zoom Out
     */
 
     const maxFov = 120;
@@ -977,7 +1308,7 @@
 
 
           /*
-          限制 FOV
+          限制FOV
           */
 
           currentFov =
