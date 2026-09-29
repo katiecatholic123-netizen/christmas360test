@@ -142,6 +142,364 @@
 
     }
 
+
+    /* ========================================
+       許願功能 (WISH FEATURE)
+       ======================================== */
+
+    #wishButton {
+
+      position: fixed;
+
+      right: calc(18px + env(safe-area-inset-right, 0px));
+      bottom: calc(26px + env(safe-area-inset-bottom, 0px));
+
+      z-index: 10001;
+
+      display: none;
+
+      align-items: center;
+      gap: 6px;
+
+      padding: 12px 22px;
+
+      border: none;
+
+      border-radius: 30px;
+
+      background: rgba(255,255,255,0.92);
+
+      color: #222;
+
+      font-size: 17px;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
+                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+
+      letter-spacing: 1px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 0 0 1px rgba(255,215,120,0.55),
+        0 4px 18px rgba(255,200,90,0.35);
+
+      opacity: 0;
+
+      transform: translateY(12px);
+
+      transition: opacity 0.6s ease, transform 0.6s ease;
+
+      -webkit-tap-highlight-color: transparent;
+
+      user-select: none;
+      -webkit-user-select: none;
+
+      touch-action: manipulation;
+
+    }
+
+    #wishButton.show {
+
+      opacity: 1;
+
+      transform: translateY(0);
+
+      animation: wishGlow 3.2s ease-in-out 0.6s infinite;
+
+    }
+
+    #wishButton:active {
+
+      transform: scale(0.96);
+
+    }
+
+    #wishButton .wishIcon {
+
+      color: #d9a520;
+
+      font-size: 18px;
+
+      line-height: 1;
+
+    }
+
+    @keyframes wishGlow {
+
+      0%, 100% {
+        box-shadow:
+          0 0 0 1px rgba(255,215,120,0.55),
+          0 4px 18px rgba(255,200,90,0.30);
+      }
+
+      50% {
+        box-shadow:
+          0 0 0 1px rgba(255,215,120,0.85),
+          0 4px 26px rgba(255,200,90,0.60);
+      }
+
+    }
+
+
+    /* Overlay：永遠在 a-scene 之上 */
+
+    #wishOverlay {
+
+      position: fixed;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 10002;
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      box-sizing: border-box;
+
+      padding:
+        calc(16px + env(safe-area-inset-top, 0px))
+        calc(16px + env(safe-area-inset-right, 0px))
+        calc(16px + env(safe-area-inset-bottom, 0px))
+        calc(16px + env(safe-area-inset-left, 0px));
+
+      background: rgba(0,0,0,0.35);
+
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
+
+      opacity: 0;
+
+      transition: opacity 0.25s ease;
+
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
+                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+
+    }
+
+    #wishOverlay.open {
+
+      opacity: 1;
+
+    }
+
+    #wishPanel {
+
+      width: 100%;
+      max-width: 360px;
+
+      box-sizing: border-box;
+
+      padding: 20px 18px 16px;
+
+      border-radius: 22px;
+
+      background: rgba(255,255,255,0.95);
+
+      color: #222;
+
+      box-shadow:
+        0 0 0 1px rgba(255,215,120,0.6),
+        0 10px 40px rgba(0,0,0,0.35);
+
+      transform: translateY(10px) scale(0.98);
+
+      transition: transform 0.25s ease;
+
+    }
+
+    #wishOverlay.open #wishPanel {
+
+      transform: none;
+
+    }
+
+    #wishPanel h2 {
+
+      margin: 0 0 12px;
+
+      font-size: 18px;
+      font-weight: 600;
+
+      text-align: center;
+
+      letter-spacing: 1px;
+
+    }
+
+    #wishPanel h2 span {
+
+      color: #d9a520;
+
+    }
+
+    #wishText {
+
+      display: block;
+
+      width: 100%;
+
+      box-sizing: border-box;
+
+      min-height: 88px;
+
+      padding: 12px 14px;
+
+      border: 1px solid rgba(0,0,0,0.12);
+
+      border-radius: 14px;
+
+      background: #fffdf6;
+
+      color: #222;
+
+      /* >= 16px：避免 iPhone focus 時自動放大 */
+      font-size: 16px;
+      font-family: inherit;
+
+      line-height: 1.5;
+
+      resize: none;
+
+      outline: none;
+
+      -webkit-appearance: none;
+      appearance: none;
+
+      touch-action: auto;
+
+    }
+
+    #wishText:focus {
+
+      border-color: rgba(217,165,32,0.8);
+
+      box-shadow: 0 0 0 3px rgba(255,215,120,0.35);
+
+    }
+
+    #wishCount {
+
+      margin: 6px 2px 0;
+
+      font-size: 12px;
+
+      color: #999;
+
+      text-align: right;
+
+    }
+
+    #wishActions {
+
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 12px;
+
+    }
+
+    #wishActions button {
+
+      flex: 1;
+
+      padding: 12px 0;
+
+      border: none;
+
+      border-radius: 30px;
+
+      font-size: 17px;
+      font-family: inherit;
+
+      cursor: pointer;
+
+      -webkit-tap-highlight-color: transparent;
+
+      touch-action: manipulation;
+
+    }
+
+    #wishCancel {
+
+      background: rgba(0,0,0,0.06);
+
+      color: #444;
+
+    }
+
+    #wishSubmit {
+
+      background: linear-gradient(135deg, #c8102e, #a50d25);
+
+      color: #fff;
+
+      box-shadow: 0 2px 10px rgba(200,16,46,0.35);
+
+    }
+
+    #wishSubmit:disabled {
+
+      opacity: 0.45;
+
+      cursor: default;
+
+      box-shadow: none;
+
+    }
+
+
+    /* 提示訊息 */
+
+    #wishToast {
+
+      position: fixed;
+
+      left: 50%;
+      top: calc(22px + env(safe-area-inset-top, 0px));
+
+      z-index: 10003;
+
+      padding: 10px 20px;
+
+      border-radius: 30px;
+
+      background: rgba(255,255,255,0.92);
+
+      color: #222;
+
+      font-size: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
+                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+
+      white-space: nowrap;
+
+      box-shadow: 0 4px 18px rgba(255,200,90,0.35);
+
+      opacity: 0;
+
+      transform: translate(-50%, -8px);
+
+      transition: opacity 0.4s ease, transform 0.4s ease;
+
+      pointer-events: none;
+
+    }
+
+    #wishToast.show {
+
+      opacity: 1;
+
+      transform: translate(-50%, 0);
+
+    }
+
   </style>
 
 </head>
@@ -204,6 +562,54 @@
     進入 360° 場景
 
   </button>
+
+
+  <!-- ========================================
+       許願功能 (WISH FEATURE)
+       ======================================== -->
+
+  <button id="wishButton" type="button" aria-label="許願">
+
+    <span class="wishIcon">✦</span> 許願
+
+  </button>
+
+
+  <div id="wishOverlay" aria-hidden="true">
+
+    <div id="wishPanel" role="dialog" aria-modal="true" aria-labelledby="wishTitle">
+
+      <h2 id="wishTitle"><span>✦</span> 聖誕許願 <span>✦</span></h2>
+
+      <textarea
+        id="wishText"
+        maxlength="60"
+        rows="3"
+        placeholder="寫低你嘅聖誕願望…"
+        enterkeyhint="send"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"></textarea>
+
+      <div id="wishCount">0 / 60</div>
+
+      <div id="wishActions">
+
+        <button id="wishCancel" type="button">取消</button>
+
+        <button id="wishSubmit" type="button" disabled>送出</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div id="wishToast" role="status" aria-live="polite">
+    願望已經送上天 ✨
+  </div>
+
 
 
 
@@ -293,8 +699,6 @@
 
 
   <script>
-
-
     /* ========================================
        ELEMENTS
        ======================================== */
@@ -727,6 +1131,14 @@
 
                 loadingScreen.style.display =
                   'none';
+
+
+                /*
+                【許願】Loading完全消失後
+                顯示許願按鈕
+                */
+
+                showWishButton();
 
 
               },
@@ -1193,6 +1605,18 @@
       function(event) {
 
 
+        /*
+        【許願】許願介面上的觸碰
+        不處理Zoom
+        */
+
+        if (isInWishUI(event.target)) {
+
+          return;
+
+        }
+
+
         if (event.touches.length === 2) {
 
 
@@ -1249,6 +1673,18 @@
 
 
         if (event.touches.length !== 2) {
+
+          return;
+
+        }
+
+
+        /*
+        【許願】許願介面上的觸碰
+        不處理Zoom
+        */
+
+        if (isInWishUI(event.target)) {
 
           return;
 
@@ -1398,6 +1834,18 @@
       function(event) {
 
 
+        /*
+        【許願】面板打開時或
+        滑鼠在許願介面上，不處理Zoom
+        */
+
+        if (wishOpen || isInWishUI(event.target)) {
+
+          return;
+
+        }
+
+
         event.preventDefault();
 
 
@@ -1446,6 +1894,273 @@
       }
 
     );
+const wishStars = [];
+
+    function addStarEntity(attrs, position) {
+
+      const ent = document.createElement('a-entity');
+      if (position) {
+        const p = { x: position.x, y: position.y, z: position.z };
+        ent.setAttribute('position', p);
+        attrs.start = p;
+      } else {
+        const e = skyPosition(attrs.az, attrs.el, WISH_SKY_DIST);
+        ent.setAttribute('position', { x: e.x, y: e.y, z: e.z });
+      }
+      ent.setAttribute('wish-star', attrs);
+      sceneEl.appendChild(ent);
+      wishStars.push(ent);
+
+      while (wishStars.length > WISH_MAX_SKY_STARS) {
+        const old = wishStars.shift();
+        if (old.parentNode) old.parentNode.removeChild(old);
+      }
+
+      return ent;
+
+    }
+
+
+    function spawnWishStar(text) {
+
+      const cam = sceneEl.camera;
+      if (!cam) return null;
+
+      cam.updateMatrixWorld(true);
+
+      const dir = new THREE.Vector3();
+      cam.getWorldDirection(dir);            // THREE camera：望向方向 (-Z)
+
+      const origin = new THREE.Vector3();
+      cam.getWorldPosition(origin);
+
+      const start = origin.clone().addScaledVector(dir, WISH_SPAWN_DIST);
+
+      /* 按目前 FOV / 畫面比例計算大小，手機直向同電腦都睇得清楚 */
+      const viewH = 2 * WISH_SPAWN_DIST * Math.tan((cam.fov || 105) * Math.PI / 360);
+      const viewW = viewH * (cam.aspect || 1);
+
+      /* 最終天空位置：同一方位，仰角高啲 */
+      const az = Math.atan2(-dir.x, -dir.z) + (Math.random() - 0.5) * 0.25;
+      const curEl = Math.asin(Math.max(-1, Math.min(1, dir.y)));
+      const deg = Math.PI / 180;
+      const el = Math.min(70 * deg,
+        Math.max(32 * deg, curEl + 22 * deg)) + (Math.random() - 0.5) * 8 * deg;
+
+      addStarEntity({ text: text, az: az, el: el, settled: false,
+        size: viewH * 0.12, viewH: viewH, viewW: viewW }, start);
+
+      saveWish({ text: text, az: az, el: el, ts: Date.now() });
+
+      return { az: az, el: el };
+
+    }
+
+
+    /* ---------- localStorage ---------- */
+
+    function loadWishes() {
+      try {
+        const arr = JSON.parse(localStorage.getItem(WISH_STORAGE_KEY) || '[]');
+        return Array.isArray(arr) ? arr.filter(function(w) {
+          return w && isFinite(w.az) && isFinite(w.el);
+        }) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveWish(w) {
+      try {
+        const arr = loadWishes();
+        arr.push(w);
+        localStorage.setItem(WISH_STORAGE_KEY,
+          JSON.stringify(arr.slice(-WISH_MAX_STORED)));
+      } catch (e) { /* 私隱模式等情況：忽略 */ }
+    }
+
+    function restoreWishes() {
+      loadWishes().forEach(function(w) {
+        addStarEntity({ text: '', az: +w.az, el: +w.el, settled: true });
+      });
+    }
+
+    if (sceneEl.hasLoaded) {
+      restoreWishes();
+    } else {
+      sceneEl.addEventListener('loaded', restoreWishes, { once: true });
+    }
+
+
+    /* ========================================
+       按鈕 / 面板
+       ======================================== */
+
+    function showWishButton() {
+
+      wishButton.style.display = 'inline-flex';
+
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          wishButton.classList.add('show');
+        });
+      });
+
+    }
+
+
+    function setLookControls(enabled) {
+      if (camera && camera.components && camera.components['look-controls']) {
+        camera.setAttribute('look-controls', 'enabled', enabled);
+      }
+    }
+
+
+    function updateWishCount() {
+      const len = Array.from(wishText.value).length;
+      wishCount.textContent = len + ' / ' + WISH_MAX_CHARS;
+      wishSubmit.disabled = wishText.value.trim().length === 0;
+    }
+
+
+    /*
+    iPhone 鍵盤彈出時，令面板留喺可見範圍內
+    */
+
+    function fitOverlayToViewport() {
+
+      const vv = window.visualViewport;
+      if (!vv || !wishOpen) return;
+
+      wishOverlay.style.top = vv.offsetTop + 'px';
+      wishOverlay.style.left = vv.offsetLeft + 'px';
+      wishOverlay.style.height = vv.height + 'px';
+      wishOverlay.style.width = vv.width + 'px';
+
+    }
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', fitOverlayToViewport);
+      window.visualViewport.addEventListener('scroll', fitOverlayToViewport);
+    }
+
+
+    function openWishPanel() {
+
+      if (wishOpen) return;
+      wishOpen = true;
+
+      setLookControls(false);
+
+      wishText.value = '';
+      updateWishCount();
+
+      wishOverlay.style.display = 'flex';
+      wishOverlay.setAttribute('aria-hidden', 'false');
+      wishButton.style.visibility = 'hidden';
+      fitOverlayToViewport();
+
+      /* 必須喺 tap handler 內同步 focus，iPhone 先會彈出鍵盤 */
+      try { wishText.focus({ preventScroll: true }); } catch (e) { wishText.focus(); }
+
+      requestAnimationFrame(function() {
+        wishOverlay.classList.add('open');
+      });
+
+    }
+
+
+    function closeWishPanel(onClosed) {
+
+      if (!wishOpen) return;
+      wishOpen = false;
+
+      wishText.blur();
+      wishOverlay.classList.remove('open');
+      wishOverlay.setAttribute('aria-hidden', 'true');
+
+      setTimeout(function() {
+
+        wishOverlay.style.display = 'none';
+        wishOverlay.style.top = wishOverlay.style.left = '';
+        wishOverlay.style.width = wishOverlay.style.height = '';
+        wishButton.style.visibility = '';
+
+        /* iPhone 收起鍵盤後有時頁面會殘留捲動 */
+        window.scrollTo(0, 0);
+
+        setLookControls(true);
+
+        /* 等兩個 frame 令鏡頭方向更新（陀螺儀）後先執行 */
+        if (onClosed) {
+          requestAnimationFrame(function() {
+            requestAnimationFrame(onClosed);
+          });
+        }
+
+      }, 260);
+
+    }
+
+
+    function showWishToast() {
+      wishToast.classList.add('show');
+      clearTimeout(showWishToast.timer);
+      showWishToast.timer = setTimeout(function() {
+        wishToast.classList.remove('show');
+      }, 2600);
+    }
+
+
+    function submitWish() {
+
+      const text = wishText.value.replace(/\s+/g, ' ').trim();
+      if (!text) return;
+
+      closeWishPanel(function() {
+        spawnWishStar(Array.from(text).slice(0, WISH_MAX_CHARS).join(''));
+        showWishToast();
+      });
+
+    }
+
+
+    wishButton.addEventListener('click', function(event) {
+      event.stopPropagation();
+      openWishPanel();
+    });
+
+    wishCancel.addEventListener('click', function() { closeWishPanel(); });
+
+    wishSubmit.addEventListener('click', submitWish);
+
+    wishText.addEventListener('input', updateWishCount);
+
+    wishText.addEventListener('keydown', function(event) {
+
+      /* 中文輸入法選字時唔好當送出 */
+      if (event.isComposing || event.keyCode === 229) return;
+
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        submitWish();
+      } else if (event.key === 'Escape') {
+        closeWishPanel();
+      }
+
+    });
+
+    /* 撳面板外面：只收起鍵盤（避免誤撳清走已打嘅字） */
+    wishOverlay.addEventListener('click', function(event) {
+      if (event.target === wishOverlay) wishText.blur();
+    });
+
+    /* 面板上拖動唔好令成個頁面郁（textarea 本身捲動除外） */
+    wishOverlay.addEventListener('touchmove', function(event) {
+      if (event.target !== wishText || event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
 
 
   </script>
