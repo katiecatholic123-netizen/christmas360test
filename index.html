@@ -568,6 +568,26 @@
   font-size: 13px;
   opacity: 0.85;
 }
+    .wishButtonText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.wishButtonZh {
+  display: block;
+  font-size: 17px;
+}
+
+.wishButtonEn {
+  display: block;
+  margin-top: 3px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  opacity: 0.75;
+  white-space: nowrap;
+}
 
   </style>
 
@@ -637,11 +657,16 @@
        許願功能 (WISH FEATURE)
        ======================================== -->
 
-  <button id="wishButton" type="button" aria-label="許願">
+  <button id="wishButton" type="button" aria-label="許願 Christmas Wish">
 
-    <span class="wishIcon">✦</span> 許願
+  <span class="wishIcon">✦</span>
 
-  </button>
+  <span class="wishButtonText">
+    <span class="wishButtonZh">許願</span>
+    <span class="wishButtonEn">Christmas Wish</span>
+  </span>
+
+</button>
 
 
   <div id="wishOverlay" aria-hidden="true">
