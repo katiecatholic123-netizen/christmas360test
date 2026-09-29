@@ -540,6 +540,34 @@
       transform: translate(-50%, 0);
 
     }
+    /* 中英雙語上下排列 */
+
+.wishTitleZh,
+.wishTitleEn,
+.wishNoteZh,
+.wishNoteEn,
+.buttonZh,
+.buttonEn {
+  display: block;
+}
+
+.wishTitleEn {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+.wishNoteEn {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.buttonEn {
+  margin-top: 2px;
+  font-size: 13px;
+  opacity: 0.85;
+}
 
   </style>
 
@@ -620,13 +648,16 @@
 
     <div id="wishPanel" role="dialog" aria-modal="true" aria-labelledby="wishTitle">
 
-      <h2 id="wishTitle"><span>✦</span> 聖誕許願 CHRISTMAS WISH <span>✦</span></h2>
+     <h2 id="wishTitle">
+  <span class="wishTitleZh"><span>✦</span> 聖誕許願 <span>✦</span></span>
+  <span class="wishTitleEn">CHRISTMAS WISH</span>
+</h2>
 
       <textarea
         id="wishText"
         maxlength="60"
         rows="3"
-        placeholder="寫低你嘅聖誕願望… Write your christmas wish..."
+        placeholder="寫低你嘅聖誕願望…&#10;Write your Christmas wish…"
         enterkeyhint="send"
         autocomplete="off"
         autocorrect="off"
@@ -634,8 +665,10 @@
 
       <div id="wishCount">0 / 60</div>
 
-      <div id="wishNote" hidden>你嘅願望會匿名傳送俾主辦單位</div>
-      <div id="wishNote" hidden>Your wish will be sent annoymously</div>
+      <div id="wishNote" hidden>
+        <span class="wishNoteZh">你嘅願望會匿名傳送俾主辦單位</span>
+        <span class="wishNoteEn">Your wish will be sent anonymously to the organizer.</span>
+      </div>
 
       <div id="wishActions">
 
@@ -650,7 +683,10 @@
   </div>
 
 
-  <div id="wishToast" role="status" aria-live="polite">願望已經送上天 ✨</div>
+  <div id="wishToast" role="status" aria-live="polite">
+  願望已經送上天 ✨<br>
+  <span style="font-size:13px;">Your wish has been sent to the stars.</span>
+</div>
 
 
 
