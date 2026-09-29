@@ -497,7 +497,6 @@
       opacity: 1;
 
       transform: translate(-50%, 0);
-
     }
 
   </style>
@@ -606,9 +605,7 @@
   </div>
 
 
-  <div id="wishToast" role="status" aria-live="polite">
-    願望已經送上天 ✨
-  </div>
+  <div id="wishToast" role="status" aria-live="polite">願望已經送上天 ✨</div>
 
 
 
@@ -699,6 +696,8 @@
 
 
   <script>
+
+
     /* ========================================
        ELEMENTS
        ======================================== */
@@ -998,7 +997,6 @@
 
 
             }
-
           );
 
 
@@ -1496,8 +1494,6 @@
     /* ========================================
        INITIAL LOAD
        ======================================== */
-
-
     window.addEventListener(
 
       'load',
@@ -1894,7 +1890,475 @@
       }
 
     );
-const wishStars = [];
+
+
+
+
+    /* ========================================
+       許願功能 (WISH FEATURE)
+       ======================================== */
+
+
+    const wishButton  = document.querySelector('#wishButton');
+    const wishOverlay = document.querySelector('#wishOverlay');
+    const wishText    = document.querySelector('#wishText');
+    const wishCount   = document.querySelector('#wishCount');
+    const wishSubmit  = document.querySelector('#wishSubmit');
+    const wishCancel  = document.querySelector('#wishCancel');
+    const wishToast   = document.querySelector('#wishToast');
+    const sceneEl     = document.querySelector('a-scene');
+
+
+    const WISH_MAX_CHARS    = 60;
+    const WISH_STORAGE_KEY  = 'xmas360-wishes-v1';
+    const WISH_MAX_STORED   = 30;
+    const WISH_SPAWN_DIST   = 4;      // 米：在鏡頭前方 4 米出現
+    const WISH_SKY_DIST     = 30;     // 米：最後停在天空的距離（< videosphere 半徑 500）
+    const WISH_RISE_TIME    = 7.5;      // 秒：上升時間
+    const WISH_MAX_SKY_STARS = 40;
+    const WISH_SKY_STAR_SIZE = 2.2;   // 米：天空小星（30 米外）
+
+    let wishOpen = false;
+
+
+    /*
+    判斷事件是否來自許願 UI
+    （給原本 pinch / wheel handler 用）
+    */
+
+    function isInWishUI(target) {
+
+      return !!(target && target.closest &&
+        target.closest('#wishOverlay, #wishButton, #wishToast'));
+
+    }
+
+
+    /* ---------- Canvas 紋理工具 ---------- */
+
+
+    function makeCanvasTexture(canvas) {
+
+      const tex = new THREE.CanvasTexture(canvas);
+
+      if ('colorSpace' in tex && THREE.SRGBColorSpace) {
+        tex.colorSpace = THREE.SRGBColorSpace;
+      }
+
+      tex.needsUpdate = true;
+
+      return tex;
+
+    }
+
+
+    const wishTextures = {};
+
+
+    function getGlowTexture() {
+
+      if (wishTextures.glow) return wishTextures.glow;
+
+      const c = document.createElement('canvas');
+      c.width = c.height = 128;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grd.addColorStop(0.0, 'rgba(255,255,240,1)');
+      grd.addColorStop(0.2, 'rgba(255,230,150,0.75)');
+      grd.addColorStop(0.5, 'rgba(255,190,80,0.22)');
+      grd.addColorStop(1.0, 'rgba(255,160,60,0)');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 128, 128);
+
+      return (wishTextures.glow = makeCanvasTexture(c));
+
+    }
+
+
+    function getStarTexture() {
+
+      if (wishTextures.star) return wishTextures.star;
+
+      const c = document.createElement('canvas');
+      c.width = c.height = 256;
+      const g = c.getContext('2d');
+      const cx = 128, cy = 128;
+
+      /* 四角閃光 */
+      g.save();
+      g.translate(cx, cy);
+      const rays = g.createLinearGradient(-128, 0, 128, 0);
+      rays.addColorStop(0, 'rgba(255,230,160,0)');
+      rays.addColorStop(0.5, 'rgba(255,250,220,0.9)');
+      rays.addColorStop(1, 'rgba(255,230,160,0)');
+      g.fillStyle = rays;
+      for (let i = 0; i < 2; i++) {
+        g.beginPath();
+        g.moveTo(-124, 0); g.lineTo(0, -5); g.lineTo(124, 0); g.lineTo(0, 5);
+        g.closePath();
+        g.fill();
+        g.rotate(Math.PI / 2);
+      }
+      g.restore();
+
+      /* 五角星 */
+      g.save();
+      g.translate(cx, cy);
+      g.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const r = (i % 2 === 0) ? 78 : 32;
+        const a = -Math.PI / 2 + i * Math.PI / 5;
+        g.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      g.closePath();
+      g.shadowColor = 'rgba(255,210,90,1)';
+      g.shadowBlur = 36;
+      const fill = g.createRadialGradient(0, 0, 0, 0, 0, 78);
+      fill.addColorStop(0, '#ffffff');
+      fill.addColorStop(0.45, '#fff3b0');
+      fill.addColorStop(1, '#ffc93c');
+      g.fillStyle = fill;
+      g.fill();
+      g.restore();
+
+      return (wishTextures.star = makeCanvasTexture(c));
+
+    }
+
+
+    function getDotTexture() {
+
+      if (wishTextures.dot) return wishTextures.dot;
+
+      const c = document.createElement('canvas');
+      c.width = c.height = 32;
+      const g = c.getContext('2d');
+      const grd = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grd.addColorStop(0, 'rgba(255,255,255,1)');
+      grd.addColorStop(0.35, 'rgba(255,235,170,0.8)');
+      grd.addColorStop(1, 'rgba(255,200,100,0)');
+      g.fillStyle = grd;
+      g.fillRect(0, 0, 32, 32);
+
+      return (wishTextures.dot = makeCanvasTexture(c));
+
+    }
+
+
+    /*
+    A-Frame 預設 MSDF 字型唔支援中文，
+    所以用 canvas 畫字再做成貼圖
+    */
+
+    function makeWishTextSprite(text, metresPerPx, maxWorldW, narrow) {
+
+      const FONT_PX = 44;
+      const LINE_H = 60;
+      const MAX_W = narrow ? 500 : 720;   // 直向手機每行字少啲
+      const PAD_X = 36, PAD_Y = 22;
+      const font = '500 ' + FONT_PX + 'px -apple-system, BlinkMacSystemFont, ' +
+        '"PingFang HK", "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", ' +
+        '"Microsoft JhengHei", "Heiti TC", sans-serif';
+
+      const c = document.createElement('canvas');
+      let g = c.getContext('2d');
+      g.font = font;
+
+      /*
+      斷行：中文逐個字，英文 / 數字成個字一齊（保留 emoji 完整）
+      */
+      const tokens = text.match(/[A-Za-z0-9'’\-]+|\s+|[\s\S]/gu) || [];
+      const lines = [];
+      let line = '';
+      const pushChar = function(ch) {
+        const test = line + ch;
+        if (g.measureText(test).width > MAX_W && line.trim()) {
+          lines.push(line.trimEnd());
+          line = /^\s+$/.test(ch) ? '' : ch;
+        } else {
+          line = (!line && /^\s+$/.test(ch)) ? '' : test;
+        }
+      };
+      for (const tk of tokens) {
+        if (tk.length > 1 && g.measureText(tk).width <= MAX_W) {
+          pushChar(tk);                     // 英文字：成個搬去下一行
+        } else {
+          Array.from(tk).forEach(pushChar); // 中文 / 太長嘅字：逐個字元
+        }
+      }
+      if (line.trim()) lines.push(line.trimEnd());
+      const shown = lines.slice(0, 4);
+      if (lines.length > 4) shown[3] = shown[3].replace(/.$/u, '…');
+
+      let textW = 0;
+      shown.forEach(function(l) { textW = Math.max(textW, g.measureText(l).width); });
+
+      c.width = Math.ceil(textW + PAD_X * 2);
+      c.height = Math.ceil(shown.length * LINE_H + PAD_Y * 2);
+
+      g = c.getContext('2d');   // resize 後要重設 context 狀態
+
+      /* 圓角半透明底 */
+      const r = Math.min(40, c.height / 2);
+      g.beginPath();
+      g.moveTo(r, 0);
+      g.arcTo(c.width, 0, c.width, c.height, r);
+      g.arcTo(c.width, c.height, 0, c.height, r);
+      g.arcTo(0, c.height, 0, 0, r);
+      g.arcTo(0, 0, c.width, 0, r);
+      g.closePath();
+      g.fillStyle = 'rgba(20,12,4,0.45)';
+      g.fill();
+      g.lineWidth = 3;
+      g.strokeStyle = 'rgba(255,215,120,0.55)';
+      g.stroke();
+
+      g.font = font;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.shadowColor = 'rgba(255,200,90,0.9)';
+      g.shadowBlur = 14;
+      g.fillStyle = '#fffaf0';
+      shown.forEach(function(l, i) {
+        g.fillText(l, c.width / 2, PAD_Y + LINE_H * (i + 0.5));
+      });
+
+      const mat = new THREE.SpriteMaterial({
+        map: makeCanvasTexture(c),
+        transparent: true,
+        depthWrite: false,
+        opacity: 0
+      });
+
+      const sprite = new THREE.Sprite(mat);
+      const worldW = Math.min(c.width * metresPerPx, maxWorldW);
+      sprite.scale.set(worldW, worldW * c.height / c.width, 1);
+
+      return sprite;
+
+    }
+
+
+    /* ---------- 小工具 ---------- */
+
+    function clamp01(x) { return Math.max(0, Math.min(1, x)); }
+
+    function easeInOutSine(x) { return -(Math.cos(Math.PI * x) - 1) / 2; }
+
+    function easeOutBack(x) {
+      const c1 = 1.70158, c3 = c1 + 1;
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    }
+
+    function skyPosition(az, el, dist) {
+      /* az / el 用 radian；鏡頭 (0,0,0) 預設望向 -Z */
+      return new THREE.Vector3(
+        -Math.sin(az) * Math.cos(el) * dist,
+        Math.sin(el) * dist,
+        -Math.cos(az) * Math.cos(el) * dist
+      );
+    }
+
+
+    /* ========================================
+       wish-star COMPONENT
+       ======================================== */
+
+    AFRAME.registerComponent('wish-star', {
+
+      schema: {
+        text:    { type: 'string', default: '' },
+        az:      { type: 'number', default: 0 },   // 最終天空位置 (radian)
+        el:      { type: 'number', default: 0.8 },
+        settled: { type: 'boolean', default: false },
+        size:    { type: 'number', default: 1 },    // 星星大小（米）
+        viewH:   { type: 'number', default: 10 },   // 出現位置可見高度（米）
+        viewW:   { type: 'number', default: 10 },   // 出現位置可見闊度（米）
+        start:   { type: 'vec3', default: { x: 0, y: 0, z: -4 } }
+      },
+
+      init: function() {
+
+        const data = this.data;
+        const group = this.el.object3D;
+
+        this.elapsed = 0;
+        this.phase = Math.random() * Math.PI * 2;
+        this.end = skyPosition(data.az, data.el, WISH_SKY_DIST);
+
+        this.glow = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: getGlowTexture(), color: 0xffffff, transparent: true,
+          depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.9
+        }));
+
+        this.core = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: getStarTexture(), transparent: true, depthWrite: false
+        }));
+
+        group.add(this.glow);
+        group.add(this.core);
+
+        if (data.settled) {
+
+          group.position.copy(this.end);
+          this.baseScale = WISH_SKY_STAR_SIZE;
+          this.dim = 0.7;
+          this.done = true;
+
+        } else {
+
+          this.start = new THREE.Vector3(data.start.x, data.start.y, data.start.z);
+          group.position.copy(this.start);
+          this.startScale = data.size;
+          this.baseScale = data.size;
+
+          if (data.text) {
+            /* 字高約為畫面高度 3.2%，但唔超過畫面闊度 85% */
+            this.label = makeWishTextSprite(data.text,
+              data.viewH * 0.032 / 44, data.viewW * 0.85, data.viewW < data.viewH);
+            this.label.position.set(0,
+              -(data.size * 0.42 + this.label.scale.y / 2), 0);
+            group.add(this.label);
+          }
+
+          this.makeBurst();
+
+        }
+
+        this.applyScale(data.settled ? 1 : 0);
+
+      },
+
+      makeBurst: function() {
+
+        const N = 42;
+        const pos = new Float32Array(N * 3);
+        this.burstVel = [];
+        for (let i = 0; i < N; i++) {
+          const u = Math.random() * 2 - 1;
+          const th = Math.random() * Math.PI * 2;
+          const s = Math.sqrt(1 - u * u);
+          const speed = (0.6 + Math.random() * 1.2) * this.data.size;
+          this.burstVel.push(new THREE.Vector3(s * Math.cos(th), u, s * Math.sin(th))
+            .multiplyScalar(speed));
+        }
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        this.burst = new THREE.Points(geo, new THREE.PointsMaterial({
+          map: getDotTexture(), size: this.data.size * 0.14, sizeAttenuation: true,
+          color: 0xffe7a0, transparent: true, depthWrite: false,
+          blending: THREE.AdditiveBlending, opacity: 1
+        }));
+        this.burst.frustumCulled = false;
+        this.el.object3D.add(this.burst);
+
+      },
+
+      applyScale: function(k) {
+
+        const tw = 1 + 0.18 * Math.sin(this.elapsed * 5.5 + this.phase) +
+                   0.08 * Math.sin(this.elapsed * 13 + this.phase * 2);
+        const s = this.baseScale * k * tw;
+        this.core.scale.set(s, s, 1);
+        this.glow.scale.set(s * 2.6, s * 2.6, 1);
+        this.glow.material.opacity = (0.55 + 0.35 * tw - 0.35) * (this.dim || 1);
+        this.core.material.rotation = 0.15 * Math.sin(this.elapsed * 0.8 + this.phase);
+
+      },
+
+      tick: function(time, delta) {
+
+        const dt = Math.min(delta || 16, 100) / 1000;
+        this.elapsed += dt;
+        const t = this.elapsed;
+        const group = this.el.object3D;
+
+        if (this.done) {
+          this.applyScale(1);
+          return;
+        }
+
+        /* 出現 */
+        const pop = easeOutBack(clamp01(t / 0.55));
+
+        /* 閃粉 */
+        if (this.burst) {
+          const life = 1.3;
+          const p = this.burst.geometry.attributes.position;
+          for (let i = 0; i < this.burstVel.length; i++) {
+            const v = this.burstVel[i];
+            v.y -= 0.6 * dt;
+            v.multiplyScalar(0.985);
+            p.setXYZ(i, p.getX(i) + v.x * dt, p.getY(i) + v.y * dt, p.getZ(i) + v.z * dt);
+          }
+          p.needsUpdate = true;
+          this.burst.material.opacity = 1 - clamp01(t / life);
+          if (t > life) {
+            group.remove(this.burst);
+            this.burst.geometry.dispose();
+            this.burst.material.dispose();
+            this.burst = null;
+          }
+        }
+
+        /*
+        上升分兩段：
+        1) 0.6–3.8 秒：喺面前慢慢向上飄（可以睇清楚願望）
+        2) 3.8 秒後：飛向天空，縮細成小星
+        */
+        const floatT = 1 - Math.pow(1 - clamp01((t - 0.6) / 3.2), 2);
+        if (!this.mid) {
+          this.mid = this.start.clone();
+          this.mid.y += this.data.size * 1.6;
+        }
+        const riseT = clamp01((t - 3.8) / (WISH_RISE_TIME - 3.8));
+        const e = easeInOutSine(riseT);
+        const cur = this.start.clone().lerp(this.mid, floatT);
+        group.position.lerpVectors(cur, this.end, e);
+        group.position.x += Math.sin(t * 1.3 + this.phase) * 0.06 * this.data.size * (1 - e);
+
+        /* 距離越遠，星本身要大少少先唔會完全消失 */
+        this.baseScale = this.startScale + (WISH_SKY_STAR_SIZE - this.startScale) * e;
+        this.dim = 1 - 0.3 * e;
+        this.applyScale(pop);
+
+        /* 文字：淡入 → 跟住星上升 → 淡出 */
+        if (this.label) {
+          const fadeIn = clamp01((t - 0.3) / 0.5);
+          const fadeOut = 1 - clamp01((t - 3.4) / 1.4);
+          this.label.material.opacity = fadeIn * fadeOut;
+          if (t > 6) {
+            group.remove(this.label);
+            this.label.material.map.dispose();
+            this.label.material.dispose();
+            this.label = null;
+          }
+        }
+
+        if (riseT >= 1) {
+          this.done = true;
+          this.baseScale = WISH_SKY_STAR_SIZE;
+          this.dim = 0.7;
+        }
+
+      },
+
+      remove: function() {
+
+        [this.glow, this.core].forEach(function(s) { if (s) s.material.dispose(); });
+        if (this.label) { this.label.material.map.dispose(); this.label.material.dispose(); }
+        if (this.burst) { this.burst.geometry.dispose(); this.burst.material.dispose(); }
+
+      }
+
+    });
+
+
+    /* ========================================
+       生成星星
+       ======================================== */
+
+    const wishStars = [];
 
     function addStarEntity(attrs, position) {
 
@@ -2169,3 +2633,4 @@ const wishStars = [];
 </body>
 
 </html>
+
