@@ -198,6 +198,7 @@
 
     }
 
+
     #wishButton.show {
 
       opacity: 1;
@@ -208,11 +209,13 @@
 
     }
 
+
     #wishButton:active {
 
       transform: scale(0.96);
 
     }
+
 
     #wishButton .wishIcon {
 
@@ -223,6 +226,7 @@
       line-height: 1;
 
     }
+
 
     @keyframes wishGlow {
 
@@ -282,11 +286,13 @@
 
     }
 
+
     #wishOverlay.open {
 
       opacity: 1;
 
     }
+
 
     #wishPanel {
 
@@ -313,11 +319,13 @@
 
     }
 
+
     #wishOverlay.open #wishPanel {
 
       transform: none;
 
     }
+
 
     #wishPanel h2 {
 
@@ -332,11 +340,13 @@
 
     }
 
+
     #wishPanel h2 span {
 
       color: #d9a520;
 
     }
+
 
     #wishText {
 
@@ -375,6 +385,7 @@
 
     }
 
+
     #wishText:focus {
 
       border-color: rgba(217,165,32,0.8);
@@ -382,6 +393,7 @@
       box-shadow: 0 0 0 3px rgba(255,215,120,0.35);
 
     }
+
 
     #wishCount {
 
@@ -395,6 +407,29 @@
 
     }
 
+
+    #wishNote {
+
+      margin: 2px 2px 0;
+
+      font-size: 12px;
+
+      line-height: 1.4;
+
+      color: #999;
+
+      text-align: center;
+
+    }
+
+
+    #wishNote[hidden] {
+
+      display: none;
+
+    }
+
+
     #wishActions {
 
       display: flex;
@@ -404,6 +439,7 @@
       margin-top: 12px;
 
     }
+
 
     #wishActions button {
 
@@ -426,6 +462,7 @@
 
     }
 
+
     #wishCancel {
 
       background: rgba(0,0,0,0.06);
@@ -433,6 +470,7 @@
       color: #444;
 
     }
+
 
     #wishSubmit {
 
@@ -443,6 +481,7 @@
       box-shadow: 0 2px 10px rgba(200,16,46,0.35);
 
     }
+
 
     #wishSubmit:disabled {
 
@@ -479,6 +518,7 @@
                    "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
 
       white-space: nowrap;
+      white-space: nowrap;
 
       box-shadow: 0 4px 18px rgba(255,200,90,0.35);
 
@@ -492,11 +532,13 @@
 
     }
 
+
     #wishToast.show {
 
       opacity: 1;
 
       transform: translate(-50%, 0);
+
     }
 
   </style>
@@ -592,6 +634,8 @@
 
       <div id="wishCount">0 / 60</div>
 
+      <div id="wishNote" hidden>你嘅願望會匿名傳送俾主辦單位</div>
+
       <div id="wishActions">
 
         <button id="wishCancel" type="button">取消</button>
@@ -634,7 +678,7 @@
 
         id="christmasVideo"
 
-        src="Christmas ar_v2.mp4"
+        src="Christmas ar_v2a.mp4"
 
         preload="auto"
 
@@ -975,8 +1019,6 @@
               */
 
               fadeInBackgroundMusic();
-
-
             }
 
           )
@@ -997,6 +1039,7 @@
 
 
             }
+
           );
 
 
@@ -1474,8 +1517,6 @@
 
 
           startBackgroundMusic();
-
-
         }
 
 
@@ -1494,6 +1535,8 @@
     /* ========================================
        INITIAL LOAD
        ======================================== */
+
+
     window.addEventListener(
 
       'load',
@@ -1899,6 +1942,17 @@
        ======================================== */
 
 
+    /* ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+       Google Sheet 收集願望：
+       請喺下面填入 Google Apps Script
+       「網頁應用程式」網址（/exec 結尾）
+       留空 = 唔傳送，只喺畫面顯示星星
+       （可以用 set-endpoint.sh 自動填）
+       ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★ */
+
+    const WISH_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCrBzBm5rgP0bsMPkpZ6HBzHGnrUgRfNm3-6aAEQH4u4ZQY8tUB2qT-0DPwjjX9uTI/exec';
+
+
     const wishButton  = document.querySelector('#wishButton');
     const wishOverlay = document.querySelector('#wishOverlay');
     const wishText    = document.querySelector('#wishText');
@@ -1906,15 +1960,16 @@
     const wishSubmit  = document.querySelector('#wishSubmit');
     const wishCancel  = document.querySelector('#wishCancel');
     const wishToast   = document.querySelector('#wishToast');
+    const wishNote    = document.querySelector('#wishNote');
     const sceneEl     = document.querySelector('a-scene');
 
 
     const WISH_MAX_CHARS    = 60;
-    const WISH_STORAGE_KEY  = 'xmas360-wishes-v1';
-    const WISH_MAX_STORED   = 30;
     const WISH_SPAWN_DIST   = 4;      // 米：在鏡頭前方 4 米出現
     const WISH_SKY_DIST     = 30;     // 米：最後停在天空的距離（< videosphere 半徑 500）
     const WISH_RISE_TIME    = 7.5;      // 秒：上升時間
+    const WISH_SETTLE_HOLD  = 10;     // 秒：抵達天空後再留幾多秒（之後淡出移除）
+    const WISH_SETTLE_FADE  = 2;      // 秒：最後淡出時間（包含喺 HOLD 入面）
     const WISH_MAX_SKY_STARS = 40;
     const WISH_SKY_STAR_SIZE = 2.2;   // 米：天空小星（30 米外）
 
@@ -2170,7 +2225,6 @@
         text:    { type: 'string', default: '' },
         az:      { type: 'number', default: 0 },   // 最終天空位置 (radian)
         el:      { type: 'number', default: 0.8 },
-        settled: { type: 'boolean', default: false },
         size:    { type: 'number', default: 1 },    // 星星大小（米）
         viewH:   { type: 'number', default: 10 },   // 出現位置可見高度（米）
         viewW:   { type: 'number', default: 10 },   // 出現位置可見闊度（米）
@@ -2198,34 +2252,25 @@
         group.add(this.glow);
         group.add(this.core);
 
-        if (data.settled) {
+        this.start = new THREE.Vector3(data.start.x, data.start.y, data.start.z);
+        group.position.copy(this.start);
+        this.startScale = data.size;
+        this.baseScale = data.size;
+        this.fade = 1;
+        this.settledAt = null;
+        this.removing = false;
 
-          group.position.copy(this.end);
-          this.baseScale = WISH_SKY_STAR_SIZE;
-          this.dim = 0.7;
-          this.done = true;
-
-        } else {
-
-          this.start = new THREE.Vector3(data.start.x, data.start.y, data.start.z);
-          group.position.copy(this.start);
-          this.startScale = data.size;
-          this.baseScale = data.size;
-
-          if (data.text) {
-            /* 字高約為畫面高度 3.2%，但唔超過畫面闊度 85% */
-            this.label = makeWishTextSprite(data.text,
-              data.viewH * 0.032 / 44, data.viewW * 0.85, data.viewW < data.viewH);
-            this.label.position.set(0,
-              -(data.size * 0.42 + this.label.scale.y / 2), 0);
-            group.add(this.label);
-          }
-
-          this.makeBurst();
-
+        if (data.text) {
+          /* 字高約為畫面高度 3.2%，但唔超過畫面闊度 85% */
+          this.label = makeWishTextSprite(data.text,
+            data.viewH * 0.032 / 44, data.viewW * 0.85, data.viewW < data.viewH);
+          this.label.position.set(0,
+            -(data.size * 0.42 + this.label.scale.y / 2), 0);
+          group.add(this.label);
         }
 
-        this.applyScale(data.settled ? 1 : 0);
+        this.makeBurst();
+        this.applyScale(0);
 
       },
 
@@ -2258,10 +2303,13 @@
 
         const tw = 1 + 0.18 * Math.sin(this.elapsed * 5.5 + this.phase) +
                    0.08 * Math.sin(this.elapsed * 13 + this.phase * 2);
+        const fade = (this.fade == null ? 1 : this.fade);
         const s = this.baseScale * k * tw;
         this.core.scale.set(s, s, 1);
         this.glow.scale.set(s * 2.6, s * 2.6, 1);
-        this.glow.material.opacity = (0.55 + 0.35 * tw - 0.35) * (this.dim || 1);
+        this.glow.material.opacity =
+          (0.55 + 0.35 * tw - 0.35) * (this.dim || 1) * fade;
+        this.core.material.opacity = fade;
         this.core.material.rotation = 0.15 * Math.sin(this.elapsed * 0.8 + this.phase);
 
       },
@@ -2273,8 +2321,22 @@
         const t = this.elapsed;
         const group = this.el.object3D;
 
-        if (this.done) {
+        /* 抵達天空後：閃烁 → 淡出 → 移除 */
+        if (this.settledAt !== null) {
+          const since = t - this.settledAt;
+          const fadeStart = Math.max(0, WISH_SETTLE_HOLD - WISH_SETTLE_FADE);
+          this.fade = 1 - clamp01((since - fadeStart) / WISH_SETTLE_FADE);
           this.applyScale(1);
+          if (since >= WISH_SETTLE_HOLD && !this.removing) {
+            this.removing = true;
+            const el = this.el;
+            /* 下一個 tick 先移除，避免喺 tick 入面拆自己 */
+            setTimeout(function() {
+              if (el && el.parentNode) el.parentNode.removeChild(el);
+              const i = wishStars.indexOf(el);
+              if (i >= 0) wishStars.splice(i, 1);
+            }, 0);
+          }
           return;
         }
 
@@ -2336,9 +2398,10 @@
         }
 
         if (riseT >= 1) {
-          this.done = true;
+          this.settledAt = t;
           this.baseScale = WISH_SKY_STAR_SIZE;
           this.dim = 0.7;
+          this.fade = 1;
         }
 
       },
@@ -2411,49 +2474,91 @@
       const el = Math.min(70 * deg,
         Math.max(32 * deg, curEl + 22 * deg)) + (Math.random() - 0.5) * 8 * deg;
 
-      addStarEntity({ text: text, az: az, el: el, settled: false,
+      addStarEntity({ text: text, az: az, el: el,
         size: viewH * 0.12, viewH: viewH, viewW: viewW }, start);
-
-      saveWish({ text: text, az: az, el: el, ts: Date.now() });
 
       return { az: az, el: el };
 
     }
 
 
-    /* ---------- localStorage ---------- */
+    /* ---------- 傳送願望去 Google Sheet ---------- */
 
-    function loadWishes() {
+    /*
+    匿名裝置ID：隨機產生，存喺 localStorage
+    （唔可以用 localStorage 就每次開頁面用一個新嘅）
+    */
+
+    let wishSessionId = null;
+
+    function randomId() {
       try {
-        const arr = JSON.parse(localStorage.getItem(WISH_STORAGE_KEY) || '[]');
-        return Array.isArray(arr) ? arr.filter(function(w) {
-          return w && isFinite(w.az) && isFinite(w.el);
-        }) : [];
+        if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      } catch (e) { /* ignore */ }
+      return 'id-' + Date.now().toString(36) + '-' +
+        Math.random().toString(36).slice(2, 10) +
+        Math.random().toString(36).slice(2, 10);
+    }
+
+    function getDeviceId() {
+      const KEY = 'xmas360-device-id';
+      try {
+        let id = localStorage.getItem(KEY);
+        if (!id) {
+          id = randomId();
+          localStorage.setItem(KEY, id);
+        }
+        return id;
       } catch (e) {
-        return [];
+        if (!wishSessionId) wishSessionId = randomId();
+        return wishSessionId;
       }
     }
+    /*
+    Fire-and-forget：
+    - mode 'no-cors' + text/plain → 唔會觸發 CORS preflight
+    - 失敗 / 離線都唔影響星星動畫
+    */
 
-    function saveWish(w) {
+    function sendWishToSheet(text) {
+
+      if (!WISH_ENDPOINT) return;
+
       try {
-        const arr = loadWishes();
-        arr.push(w);
-        localStorage.setItem(WISH_STORAGE_KEY,
-          JSON.stringify(arr.slice(-WISH_MAX_STORED)));
-      } catch (e) { /* 私隱模式等情況：忽略 */ }
+
+        const body = JSON.stringify({
+          wish: text,
+          deviceId: getDeviceId(),
+          ua: String(navigator.userAgent || '').slice(0, 300),
+          page: String(location.href || '').split('#')[0].slice(0, 300)
+        });
+
+        const p = fetch(WISH_ENDPOINT, {
+          method: 'POST',
+          mode: 'no-cors',
+          credentials: 'omit',
+          cache: 'no-store',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: body
+        });
+
+        if (p && p.catch) p.catch(function() { /* 離線 / 失敗：忽略 */ });
+
+      } catch (e) { /* 舊瀏覽器冇 fetch 等：忽略 */ }
+
     }
 
-    function restoreWishes() {
-      loadWishes().forEach(function(w) {
-        addStarEntity({ text: '', az: +w.az, el: +w.el, settled: true });
-      });
-    }
 
-    if (sceneEl.hasLoaded) {
-      restoreWishes();
-    } else {
-      sceneEl.addEventListener('loaded', restoreWishes, { once: true });
-    }
+    /* 有設定網址先顯示「匿名傳送」提示 */
+    if (wishNote) wishNote.hidden = !WISH_ENDPOINT;
+
+
+    /*
+    願望星會淡出移除，唔再重載顯示舊星。
+    清走舊版 localStorage（如有）以免佔位。
+    裝置 ID（xmas360-device-id）繼續保留俾 Sheet。
+    */
+    try { localStorage.removeItem('xmas360-wishes-v1'); } catch (e) { /* ignore */ }
 
 
     /* ========================================
@@ -2578,11 +2683,16 @@
 
     function submitWish() {
 
-      const text = wishText.value.replace(/\s+/g, ' ').trim();
-      if (!text) return;
+      const raw = wishText.value.replace(/\s+/g, ' ').trim();
+      if (!raw) return;
+
+      const text = Array.from(raw).slice(0, WISH_MAX_CHARS).join('');
+
+      /* 背景傳送，唔等結果 */
+      sendWishToSheet(text);
 
       closeWishPanel(function() {
-        spawnWishStar(Array.from(text).slice(0, WISH_MAX_CHARS).join(''));
+        spawnWishStar(text);
         showWishToast();
       });
 
