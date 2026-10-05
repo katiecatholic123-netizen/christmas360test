@@ -764,7 +764,25 @@
   <!-- ========================================
        WISH BUTTON
        ======================================== -->
-
+<!-- 臨時：大星星位置校準按鈕 -->
+<button
+  id="calibrateStarButton"
+  type="button"
+  style="
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    z-index: 20000;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.95);
+    color: #222;
+    font-size: 14px;
+    font-weight: 600;
+  ">
+  ⭐ 校準大星星
+</button>
   <button
     id="wishButton"
     type="button"
@@ -4298,7 +4316,97 @@ Write your Christmas wish…"
 
     );
 
+/* ========================================
+   TEMP BIG STAR CALIBRATION
+   ======================================== */
 
+const calibrateStarButton =
+  document.querySelector('#calibrateStarButton');
+
+
+calibrateStarButton.addEventListener(
+  'click',
+  function() {
+
+    const scene =
+      document.querySelector('a-scene');
+
+    if (
+      !scene ||
+      !scene.camera
+    ) {
+      alert('Camera not ready');
+      return;
+    }
+
+
+    const threeCamera =
+      scene.camera;
+
+    threeCamera.updateMatrixWorld(true);
+
+
+    /*
+    取得相機真正望向的世界方向
+    */
+
+    const direction =
+      new THREE.Vector3();
+
+    threeCamera.getWorldDirection(
+      direction
+    );
+
+    direction.normalize();
+
+
+    /*
+    將方向轉成 Yaw / Pitch
+    */
+
+    const yaw =
+      THREE.MathUtils.radToDeg(
+        Math.atan2(
+          -direction.x,
+          -direction.z
+        )
+      );
+
+
+    const pitch =
+      THREE.MathUtils.radToDeg(
+        Math.asin(
+          THREE.MathUtils.clamp(
+            direction.y,
+            -1,
+            1
+          )
+        )
+      );
+
+
+    const result =
+      '大星星位置\n\n' +
+      'Yaw: ' +
+      yaw.toFixed(2) +
+      '°\n' +
+      'Pitch: ' +
+      pitch.toFixed(2) +
+      '°';
+
+
+    alert(result);
+
+
+    console.log(
+      'BIG STAR YAW:',
+      yaw.toFixed(2),
+      'PITCH:',
+      pitch.toFixed(2)
+    );
+
+  }
+);
   </script>
 
 
