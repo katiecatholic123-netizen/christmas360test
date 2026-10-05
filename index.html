@@ -58,10 +58,6 @@
 
       opacity: 1;
 
-      /*
-      Loading Fade Out = 1.5秒
-      */
-
       transition: opacity 1.5s ease;
 
     }
@@ -93,7 +89,6 @@
       object-fit: cover;
 
     }
-
 
 
     /* ========================================
@@ -130,7 +125,6 @@
     }
 
 
-
     /* ========================================
        A-FRAME
        ======================================== */
@@ -144,7 +138,7 @@
 
 
     /* ========================================
-       許願功能 (WISH FEATURE)
+       許願功能
        ======================================== */
 
     #wishButton {
@@ -172,8 +166,15 @@
       color: #222;
 
       font-size: 17px;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
-                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang HK",
+        "PingFang TC",
+        "Noto Sans CJK TC",
+        "Microsoft JhengHei",
+        sans-serif;
 
       letter-spacing: 1px;
 
@@ -187,7 +188,9 @@
 
       transform: translateY(12px);
 
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
 
       -webkit-tap-highlight-color: transparent;
 
@@ -205,7 +208,12 @@
 
       transform: translateY(0);
 
-      animation: wishGlow 3.2s ease-in-out 0.6s infinite;
+      animation:
+        wishGlow
+        3.2s
+        ease-in-out
+        0.6s
+        infinite;
 
     }
 
@@ -231,21 +239,27 @@
     @keyframes wishGlow {
 
       0%, 100% {
+
         box-shadow:
           0 0 0 1px rgba(255,215,120,0.55),
           0 4px 18px rgba(255,200,90,0.30);
+
       }
 
       50% {
+
         box-shadow:
           0 0 0 1px rgba(255,215,120,0.85),
           0 4px 26px rgba(255,200,90,0.60);
+
       }
 
     }
 
 
-    /* Overlay：永遠在 a-scene 之上 */
+    /* ========================================
+       WISH OVERLAY
+       ======================================== */
 
     #wishOverlay {
 
@@ -281,8 +295,14 @@
 
       transition: opacity 0.25s ease;
 
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
-                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang HK",
+        "PingFang TC",
+        "Noto Sans CJK TC",
+        "Microsoft JhengHei",
+        sans-serif;
 
     }
 
@@ -313,9 +333,12 @@
         0 0 0 1px rgba(255,215,120,0.6),
         0 10px 40px rgba(0,0,0,0.35);
 
-      transform: translateY(10px) scale(0.98);
+      transform:
+        translateY(10px)
+        scale(0.98);
 
-      transition: transform 0.25s ease;
+      transition:
+        transform 0.25s ease;
 
     }
 
@@ -360,7 +383,9 @@
 
       padding: 12px 14px;
 
-      border: 1px solid rgba(0,0,0,0.12);
+      border:
+        1px solid
+        rgba(0,0,0,0.12);
 
       border-radius: 14px;
 
@@ -368,8 +393,8 @@
 
       color: #222;
 
-      /* >= 16px：避免 iPhone focus 時自動放大 */
       font-size: 16px;
+
       font-family: inherit;
 
       line-height: 1.5;
@@ -388,9 +413,12 @@
 
     #wishText:focus {
 
-      border-color: rgba(217,165,32,0.8);
+      border-color:
+        rgba(217,165,32,0.8);
 
-      box-shadow: 0 0 0 3px rgba(255,215,120,0.35);
+      box-shadow:
+        0 0 0 3px
+        rgba(255,215,120,0.35);
 
     }
 
@@ -452,20 +480,24 @@
       border-radius: 30px;
 
       font-size: 17px;
+
       font-family: inherit;
 
       cursor: pointer;
 
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:
+        transparent;
 
-      touch-action: manipulation;
+      touch-action:
+        manipulation;
 
     }
 
 
     #wishCancel {
 
-      background: rgba(0,0,0,0.06);
+      background:
+        rgba(0,0,0,0.06);
 
       color: #444;
 
@@ -474,11 +506,18 @@
 
     #wishSubmit {
 
-      background: linear-gradient(135deg, #c8102e, #a50d25);
+      background:
+        linear-gradient(
+          135deg,
+          #c8102e,
+          #a50d25
+        );
 
       color: #fff;
 
-      box-shadow: 0 2px 10px rgba(200,16,46,0.35);
+      box-shadow:
+        0 2px 10px
+        rgba(200,16,46,0.35);
 
     }
 
@@ -494,14 +533,21 @@
     }
 
 
-    /* 提示訊息 */
+    /* ========================================
+       SUCCESS MESSAGE
+       ======================================== */
 
     #wishToast {
 
       position: fixed;
 
       left: 50%;
-      top: calc(22px + env(safe-area-inset-top, 0px));
+
+      top:
+        calc(
+          22px +
+          env(safe-area-inset-top, 0px)
+        );
 
       z-index: 10003;
 
@@ -509,23 +555,36 @@
 
       border-radius: 30px;
 
-      background: rgba(255,255,255,0.92);
+      background:
+        rgba(255,255,255,0.92);
 
       color: #222;
 
       font-size: 16px;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "PingFang TC",
-                   "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "PingFang HK",
+        "PingFang TC",
+        "Noto Sans CJK TC",
+        "Microsoft JhengHei",
+        sans-serif;
 
       white-space: nowrap;
 
-      box-shadow: 0 4px 18px rgba(255,200,90,0.35);
+      box-shadow:
+        0 4px 18px
+        rgba(255,200,90,0.35);
 
       opacity: 0;
 
-      transform: translate(-50%, -8px);
+      transform:
+        translate(-50%, -8px);
 
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
 
       pointer-events: none;
 
@@ -536,12 +595,11 @@
 
       opacity: 1;
 
-      transform: translate(-50%, 0);
+      transform:
+        translate(-50%, 0);
 
     }
 
-
-    /* 中英雙語上下排列 */
 
     .wishTitleZh,
     .wishTitleEn,
@@ -549,46 +607,81 @@
     .wishNoteEn,
     .buttonZh,
     .buttonEn {
+
       display: block;
+
     }
+
 
     .wishTitleEn {
+
       margin-top: 4px;
+
       font-size: 14px;
+
       font-weight: 500;
+
       letter-spacing: 1.5px;
+
     }
+
 
     .wishNoteEn {
+
       margin-top: 3px;
+
       font-size: 11px;
+
     }
+
 
     .buttonEn {
+
       margin-top: 2px;
+
       font-size: 13px;
+
       opacity: 0.85;
+
     }
+
 
     .wishButtonText {
+
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
+
       line-height: 1.1;
+
     }
+
 
     .wishButtonZh {
+
       display: block;
+
       font-size: 17px;
+
     }
 
+
     .wishButtonEn {
+
       display: block;
+
       margin-top: 3px;
+
       font-size: 10px;
+
       letter-spacing: 0.5px;
+
       opacity: 0.75;
+
       white-space: nowrap;
+
     }
 
   </style>
@@ -607,14 +700,11 @@
 
     <video
       id="loadingVideo"
-
       autoplay
       muted
       loop
-
       playsinline
       webkit-playsinline
-
       preload="auto">
 
       <source
@@ -626,44 +716,53 @@
   </div>
 
 
-
   <!-- ========================================
        BACKGROUND MUSIC
        ======================================== -->
 
   <audio
     id="backgroundMusic"
-
     src="christmassong2025.mp3"
-
     preload="auto"
-
     loop>
-
   </audio>
-
 
 
   <!-- ========================================
        ENTER 360 BUTTON
        ======================================== -->
 
-  <button id="startButton" type="button">
+  <button
+    id="startButton"
+    type="button">
 
-    <span style="display:block; font-size:17px;">
+    <span
+      style="
+        display:block;
+        font-size:17px;
+      ">
+
       進入 360° 體驗
+
     </span>
 
-    <span style="display:block; margin-top:3px; font-size:11px; opacity:0.75;">
+    <span
+      style="
+        display:block;
+        margin-top:3px;
+        font-size:11px;
+        opacity:0.75;
+      ">
+
       Enter 360° Experience
+
     </span>
 
   </button>
 
 
-
   <!-- ========================================
-       許願功能 (WISH FEATURE)
+       WISH BUTTON
        ======================================== -->
 
   <button
@@ -671,7 +770,9 @@
     type="button"
     aria-label="許願 Wish">
 
-    <span class="wishIcon">✦</span>
+    <span class="wishIcon">
+      ✦
+    </span>
 
     <span class="wishButtonText">
 
@@ -688,7 +789,13 @@
   </button>
 
 
-  <div id="wishOverlay" aria-hidden="true">
+  <!-- ========================================
+       WISH PANEL
+       ======================================== -->
+
+  <div
+    id="wishOverlay"
+    aria-hidden="true">
 
     <div
       id="wishPanel"
@@ -699,9 +806,13 @@
       <h2 id="wishTitle">
 
         <span class="wishTitleZh">
+
           <span>✦</span>
+
           聖誕許願
+
           <span>✦</span>
+
         </span>
 
         <span class="wishTitleEn">
@@ -715,7 +826,8 @@
         id="wishText"
         maxlength="60"
         rows="3"
-        placeholder="寫低你嘅聖誕願望…&#10;Write your Christmas wish…"
+        placeholder="寫低你嘅聖誕願望…
+Write your Christmas wish…"
         enterkeyhint="send"
         autocomplete="off"
         autocorrect="off"
@@ -727,7 +839,9 @@
       </div>
 
 
-      <div id="wishNote" hidden>
+      <div
+        id="wishNote"
+        hidden>
 
         <span class="wishNoteZh">
           你嘅願望會匿名傳送俾主辦單位
@@ -742,15 +856,22 @@
 
       <div id="wishActions">
 
-        <button id="wishCancel" type="button">
+        <button
+          id="wishCancel"
+          type="button">
+
           取消 Cancel
+
         </button>
+
 
         <button
           id="wishSubmit"
           type="button"
           disabled>
+
           送出 Send
+
         </button>
 
       </div>
@@ -766,6 +887,7 @@
     aria-live="polite">
 
     願望已經送上天 ✨
+
     <br>
 
     <span style="font-size:13px;">
@@ -773,7 +895,6 @@
     </span>
 
   </div>
-
 
 
   <!-- ========================================
@@ -790,10 +911,6 @@
 
     loading-screen="enabled: false">
 
-
-    <!-- ========================================
-         ASSETS
-         ======================================== -->
 
     <a-assets timeout="60000">
 
@@ -824,11 +941,6 @@
     </a-assets>
 
 
-
-    <!-- ========================================
-         360 VIDEO SPHERE
-         ======================================== -->
-
     <a-videosphere
 
       src="#christmasVideo"
@@ -837,11 +949,6 @@
 
     </a-videosphere>
 
-
-
-    <!-- ========================================
-         CAMERA
-         ======================================== -->
 
     <a-camera
 
@@ -862,7 +969,6 @@
   </a-scene>
 
 
-
   <script>
 
 
@@ -870,112 +976,96 @@
        ELEMENTS
        ======================================== */
 
-
     const loadingScreen =
-      document.querySelector('#loadingScreen');
+      document.querySelector(
+        '#loadingScreen'
+      );
 
 
     const loadingVideo =
-      document.querySelector('#loadingVideo');
+      document.querySelector(
+        '#loadingVideo'
+      );
 
 
     const christmasVideo =
-      document.querySelector('#christmasVideo');
+      document.querySelector(
+        '#christmasVideo'
+      );
 
 
     const backgroundMusic =
-      document.querySelector('#backgroundMusic');
+      document.querySelector(
+        '#backgroundMusic'
+      );
 
 
     const startButton =
-      document.querySelector('#startButton');
+      document.querySelector(
+        '#startButton'
+      );
 
 
     const camera =
-      document.querySelector('#camera');
-
+      document.querySelector(
+        '#camera'
+      );
 
 
     /* ========================================
        LOADING SETTINGS
        ======================================== */
 
-
-    /*
-    Loading 最少播放時間
-    3000ms = 3秒
-    */
-
-    const MIN_LOADING_TIME = 3000;
+    const MIN_LOADING_TIME =
+      3000;
 
 
-    /*
-    Loading Fade Out
-    1500ms = 1.5秒
-    */
+    const FADE_TIME =
+      1500;
 
-    const FADE_TIME = 1500;
-
-
-    /*
-    記錄 Loading 開始時間
-    */
 
     const loadingStartTime =
       Date.now();
 
 
-    /*
-    場景是否已開始
-    */
-
-    let sceneStarted = false;
+    let sceneStarted =
+      false;
 
 
-    /*
-    360影片是否 Ready
-    */
-
-    let videoReady = false;
+    let videoReady =
+      false;
 
 
-    /*
-    避免重複建立 Timer
-    */
-
-    let enterTimer = null;
-
+    let enterTimer =
+      null;
 
 
     /* ========================================
-       BACKGROUND MUSIC SETTINGS
+       BACKGROUND MUSIC
        ======================================== */
 
-
-    /*
-    最終音量：
-    0.6 = 60%
-    */
-
-    const MUSIC_TARGET_VOLUME = 0.6;
+    const MUSIC_TARGET_VOLUME =
+      0.6;
 
 
-    /*
-    音樂 Fade In：
-    2000ms = 2秒
-    */
-
-    const MUSIC_FADE_TIME = 2000;
+    const MUSIC_FADE_TIME =
+      2000;
 
 
-    let musicStarted = false;
+    let musicStarted =
+      false;
 
-    let musicFadeTimer = null;
 
-    let enterButtonScheduled = false;
+    let musicFadeTimer =
+      null;
 
-    let experienceStarting = false;
 
+    let enterButtonScheduled =
+      false;
+
+
+    let experienceStarting =
+      false;
 
 
     /* ========================================
@@ -984,18 +1074,27 @@
 
     function fadeInBackgroundMusic() {
 
-      clearInterval(musicFadeTimer);
+      clearInterval(
+        musicFadeTimer
+      );
 
-      const steps = 40;
+
+      const steps =
+        40;
+
 
       const interval =
-        MUSIC_FADE_TIME / steps;
+        MUSIC_FADE_TIME /
+        steps;
+
 
       const volumeStep =
-        MUSIC_TARGET_VOLUME / steps;
+        MUSIC_TARGET_VOLUME /
+        steps;
 
 
-      backgroundMusic.volume = 0;
+      backgroundMusic.volume =
+        0;
 
 
       musicFadeTimer =
@@ -1016,9 +1115,11 @@
               backgroundMusic.volume =
                 MUSIC_TARGET_VOLUME;
 
+
               clearInterval(
                 musicFadeTimer
               );
+
 
               return;
 
@@ -1037,9 +1138,8 @@
     }
 
 
-
     /* ========================================
-       PREPARE MUSIC FROM USER GESTURE
+       PREPARE MUSIC
        ======================================== */
 
     function prepareBackgroundMusic() {
@@ -1051,22 +1151,8 @@
       }
 
 
-      /*
-      iPhone Safari 要求有聲音播放
-      必須由使用者操作觸發。
-
-      按「進入360°體驗」時，
-      先用 0 音量開始播放。
-
-      Motion 權限處理完成後，
-      才真正 Fade In。
-
-      所以 Loading 及 Allow 畫面期間
-      不會聽到背景音樂。
-      */
-
-
-      backgroundMusic.volume = 0;
+      backgroundMusic.volume =
+        0;
 
 
       const p =
@@ -1084,7 +1170,8 @@
 
             function() {
 
-              musicStarted = true;
+              musicStarted =
+                true;
 
             }
 
@@ -1094,10 +1181,7 @@
 
             function() {
 
-              /*
-              如果 Safari 仍然阻止，
-              不影響進入360°。
-              */
+              /* Safari blocked audio */
 
             }
 
@@ -1106,12 +1190,13 @@
       }
 
 
-      musicStarted = true;
+      musicStarted =
+        true;
+
 
       return Promise.resolve();
 
     }
-
 
 
     /* ========================================
@@ -1131,7 +1216,8 @@
       }
 
 
-      enterButtonScheduled = true;
+      enterButtonScheduled =
+        true;
 
 
       const elapsed =
@@ -1171,23 +1257,11 @@
     }
 
 
-
     /* ========================================
-       REQUEST iPHONE MOTION PERMISSION
+       iPHONE MOTION PERMISSION
        ======================================== */
 
     async function requestMotionPermission() {
-
-      /*
-      iOS 13+ Safari：
-      Motion & Orientation 權限
-      必須由使用者按鈕觸發。
-
-      Android / Desktop /
-      不需要 requestPermission 的裝置
-      會直接繼續。
-      */
-
 
       try {
 
@@ -1225,7 +1299,6 @@
     }
 
 
-
     /* ========================================
        ENTER 360 SCENE
        ======================================== */
@@ -1239,17 +1312,13 @@
       }
 
 
-      sceneStarted = true;
+      sceneStarted =
+        true;
 
 
       startButton.style.display =
         'none';
 
-
-      /*
-      權限處理完成後，
-      才真正聽到背景音樂。
-      */
 
       if (musicStarted) {
 
@@ -1257,10 +1326,6 @@
 
       }
 
-
-      /*
-      Loading 開始淡出
-      */
 
       loadingScreen
         .classList
@@ -1278,11 +1343,6 @@
             'none';
 
 
-          /*
-          Loading 完全消失後
-          顯示許願按鈕
-          */
-
           showWishButton();
 
         },
@@ -1292,9 +1352,6 @@
       );
 
     }
-
-
-
     /* ========================================
        START 360 EXPERIENCE
        ======================================== */
@@ -1311,10 +1368,13 @@
       }
 
 
-      experienceStarting = true;
+      experienceStarting =
+        true;
 
 
-      startButton.disabled = true;
+      startButton.disabled =
+        true;
+
 
       startButton.style.opacity =
         '0.65';
@@ -1322,62 +1382,91 @@
 
       /*
       兩個 play() 都由
-      「進入360°體驗」的 click 直接觸發，
+      「進入360°體驗」按鈕直接觸發。
       對 iPhone Safari 較可靠。
       */
-
 
       const musicPromise =
         prepareBackgroundMusic();
 
 
-      christmasVideo.muted = true;
+      let videoPromise =
+        Promise.resolve();
 
 
-      const videoPromise =
-        christmasVideo
-          .play()
-          .catch(
+      try {
 
-            function() {
+        christmasVideo.muted =
+          true;
 
-              /*
-              即使播放失敗，
-              後面仍然會繼續處理。
-              */
 
-            }
+        const p =
+          christmasVideo.play();
 
-          );
+
+        if (
+          p &&
+          p.then
+        ) {
+
+          videoPromise =
+            p.catch(
+              function() {}
+            );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          '360 video play failed:',
+          error
+        );
+
+      }
 
 
       /*
-      現在才叫出 iPhone 官方
-      Motion & Orientation Allow。
-
-      A-Frame 自己的白色
-      Allow / Deny UI 已停用。
+      iPhone：
+      在使用者按下按鈕後，
+      才要求 Motion & Orientation 權限。
       */
 
-
-      await requestMotionPermission();
-
-
-      await Promise.allSettled(
-        [
-          musicPromise,
-          videoPromise
-        ]
-      );
+      const permission =
+        await requestMotionPermission();
 
 
       /*
-      即使用戶按 Don't Allow，
-      仍然進入360°。
-
-      只是不能靠手機轉動視角，
-      仍可用手指拖動畫面。
+      等待影片及音樂啟動。
       */
+
+      await Promise.allSettled([
+
+        musicPromise,
+
+        videoPromise
+
+      ]);
+
+
+      /*
+      即使使用者選擇 Don't Allow，
+      仍然可以進入360°場景，
+      只是不會使用陀螺儀。
+      */
+
+      if (
+        permission ===
+        'denied'
+      ) {
+
+        console.log(
+          'Motion permission denied. Touch controls remain available.'
+        );
+
+      }
 
 
       enter360Scene();
@@ -1385,114 +1474,15 @@
     }
 
 
-
     /* ========================================
-       PLAY / PRELOAD 360 VIDEO
+       ENTER BUTTON EVENT
        ======================================== */
-
-    function playChristmasVideo() {
-
-      christmasVideo.muted = true;
-
-
-      const playPromise =
-        christmasVideo.play();
-
-
-      if (
-        playPromise !==
-        undefined
-      ) {
-
-        playPromise.catch(
-
-          function() {
-
-            /*
-            Autoplay 被擋都不要立即進場。
-
-            loadeddata / canplay 後
-            仍然會顯示進入按鈕。
-
-            用戶按按鈕時再播放。
-            */
-
-          }
-
-        );
-
-      }
-
-    }
-
-
-
-    /* ========================================
-       360 VIDEO EVENTS
-       ======================================== */
-
-
-    christmasVideo.addEventListener(
-
-      'loadeddata',
-
-      function() {
-
-        videoReady = true;
-
-        scheduleEnterButton();
-
-      }
-
-    );
-
-
-    christmasVideo.addEventListener(
-
-      'canplay',
-
-      function() {
-
-        videoReady = true;
-
-        scheduleEnterButton();
-
-      }
-
-    );
-
-
-    christmasVideo.addEventListener(
-
-      'playing',
-
-      function() {
-
-        videoReady = true;
-
-        scheduleEnterButton();
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       ENTER BUTTON
-       ======================================== */
-
 
     startButton.addEventListener(
 
       'click',
 
-      function(event) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
+      function() {
 
         start360Experience();
 
@@ -1501,31 +1491,116 @@
     );
 
 
-
     /* ========================================
-       IMPORTANT
+       360 VIDEO READY
        ======================================== */
 
-    /*
-    Loading期間：
+    function markVideoReady() {
 
-    1. 不啟動背景音樂
+      if (videoReady) {
 
-    2. 不要求 Motion 權限
+        return;
 
-    3. 不會因第一次 touch / click
-       自動進入場景
+      }
 
-    所有有聲音播放及 Motion 權限，
-    都只由「進入360°體驗」按鈕觸發。
-    */
 
+      videoReady =
+        true;
+
+
+      scheduleEnterButton();
+
+    }
+
+
+    christmasVideo.addEventListener(
+
+      'canplay',
+
+      markVideoReady
+
+    );
+
+
+    christmasVideo.addEventListener(
+
+      'canplaythrough',
+
+      markVideoReady
+
+    );
+
+
+    christmasVideo.addEventListener(
+
+      'loadeddata',
+
+      function() {
+
+        if (
+          christmasVideo.readyState >= 3
+        ) {
+
+          markVideoReady();
+
+        }
+
+      }
+
+    );
 
 
     /* ========================================
-       INITIAL LOAD
+       PLAY 360 VIDEO
        ======================================== */
 
+    function playChristmasVideo() {
+
+      try {
+
+        christmasVideo.muted =
+          true;
+
+
+        const playPromise =
+          christmasVideo.play();
+
+
+        if (
+          playPromise &&
+          playPromise.catch
+        ) {
+
+          playPromise.catch(
+            function() {
+
+              /*
+              如果 Safari 暫時不允許，
+              使用者按 Enter 時會再播放。
+              */
+
+            }
+          );
+
+        }
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          'Unable to preload 360 video:',
+          error
+        );
+
+      }
+
+    }
+
+
+    /* ========================================
+       WINDOW LOAD
+       ======================================== */
 
     window.addEventListener(
 
@@ -1533,57 +1608,66 @@
 
       function() {
 
-
         /*
-        播放 Loading 動畫
+        Loading影片
         */
 
-        loadingVideo.muted = true;
+        try {
+
+          const loadingPromise =
+            loadingVideo.play();
 
 
-        loadingVideo
+          if (
+            loadingPromise &&
+            loadingPromise.catch
+          ) {
 
-          .play()
-          .catch(
+            loadingPromise.catch(
+              function() {}
+            );
 
-            function() {
+          }
 
-              /*
-              Loading影片如果被Safari阻止，
-              不影響後續流程。
-              */
+        }
 
-            }
-
-          );
-
-
-
-        /*
-        預先載入背景音樂
-        但不播放
-        */
-
-        backgroundMusic.load();
-
+        catch (error) {}
 
 
         /*
-        開始載入360影片
+        預先載入背景音樂，
+        但不播放。
         */
 
-        christmasVideo.load();
+        try {
 
+          backgroundMusic.load();
+
+        }
+
+        catch (error) {}
+
+
+        /*
+        預先載入360影片。
+        */
+
+        try {
+
+          christmasVideo.load();
+
+        }
+
+        catch (error) {}
 
 
         /*
         0.5秒後嘗試預先播放360影片。
+        因為影片 muted，
+        iPhone Safari 一般可以 autoplay。
 
-        因為影片是 muted，
-        iPhone Safari一般可以 autoplay。
-
-        這只是讓360影片預先Ready，
-        不會令Loading畫面消失。
+        這只是讓影片預先 Ready，
+        Loading 畫面不會消失。
         */
 
         setTimeout(
@@ -1598,50 +1682,99 @@
 
         );
 
-
       }
 
     );
 
+
+    /* ========================================
+       FALLBACK VIDEO READY CHECK
+       ======================================== */
+
+    const videoReadyCheck =
+      setInterval(
+
+        function() {
+
+          if (
+            christmasVideo.readyState >= 3
+          ) {
+
+            clearInterval(
+              videoReadyCheck
+            );
+
+
+            markVideoReady();
+
+          }
+
+        },
+
+        300
+
+      );
 
 
     /* ========================================
        PINCH ZOOM SETTINGS
        ======================================== */
 
-
     /*
-    開場 FOV
+    開場 FOV：
 
-    越大 = 看得越遠
-    越小 = Zoom得越近
+    數字越大 = 看得越遠
+    數字越小 = Zoom In
     */
 
-    let currentFov = 105;
+    let currentFov =
+      105;
 
 
-    /*
-    最大 Zoom In
-    */
-
-    const minFov = 35;
+    const MIN_FOV =
+      35;
 
 
-    /*
-    最大 Zoom Out
-    */
-
-    const maxFov = 120;
+    const MAX_FOV =
+      120;
 
 
-    let previousDistance = null;
+    let pinchStartDistance =
+      null;
 
+
+    let pinchStartFov =
+      currentFov;
+
+
+    function getTouchDistance(
+      touch1,
+      touch2
+    ) {
+
+      const dx =
+        touch1.clientX -
+        touch2.clientX;
+
+
+      const dy =
+        touch1.clientY -
+        touch2.clientY;
+
+
+      return Math.sqrt(
+
+        dx * dx +
+        dy * dy
+
+      );
+
+    }
 
 
     /* ========================================
-       PINCH START
+       TOUCH START
        ======================================== */
-
 
     document.addEventListener(
 
@@ -1649,66 +1782,54 @@
 
       function(event) {
 
-
         /*
-        如果正在操作許願介面，
-        不處理360 Zoom
+        如果正在使用許願介面，
+        不處理360°縮放。
         */
 
-        if (isInWishUI(event.target)) {
+        if (
+          typeof isInWishUI ===
+            'function' &&
+          isInWishUI(event.target)
+        ) {
 
           return;
 
         }
 
 
-        if (event.touches.length === 2) {
+        if (
+          event.touches.length ===
+          2
+        ) {
 
+          pinchStartDistance =
+            getTouchDistance(
 
-          const dx =
+              event.touches[0],
 
-            event.touches[0].clientX -
-
-            event.touches[1].clientX;
-
-
-          const dy =
-
-            event.touches[0].clientY -
-
-            event.touches[1].clientY;
-
-
-          previousDistance =
-
-            Math.sqrt(
-
-              dx * dx +
-
-              dy * dy
+              event.touches[1]
 
             );
 
 
-        }
+          pinchStartFov =
+            currentFov;
 
+        }
 
       },
 
       {
-
         passive: false
-
       }
 
     );
 
 
-
     /* ========================================
-       PINCH MOVE
+       TOUCH MOVE
        ======================================== */
-
 
     document.addEventListener(
 
@@ -1716,98 +1837,60 @@
 
       function(event) {
 
-
-        if (event.touches.length !== 2) {
-
-          return;
-
-        }
-
-
-        /*
-        許願介面上的觸碰
-        不處理 Zoom
-        */
-
-        if (isInWishUI(event.target)) {
+        if (
+          typeof isInWishUI ===
+            'function' &&
+          isInWishUI(event.target)
+        ) {
 
           return;
 
         }
 
 
-        event.preventDefault();
+        if (
+          event.touches.length === 2 &&
+          pinchStartDistance
+        ) {
+
+          event.preventDefault();
 
 
+          const currentDistance =
+            getTouchDistance(
 
-        const dx =
+              event.touches[0],
 
-          event.touches[0].clientX -
+              event.touches[1]
 
-          event.touches[1].clientX;
-
-
-        const dy =
-
-          event.touches[0].clientY -
-
-          event.touches[1].clientY;
+            );
 
 
-        const distance =
-
-          Math.sqrt(
-
-            dx * dx +
-
-            dy * dy
-
-          );
+          const scale =
+            pinchStartDistance /
+            currentDistance;
 
 
-
-        if (previousDistance !== null) {
-
-
-          const difference =
-
-            distance -
-
-            previousDistance;
+          let newFov =
+            pinchStartFov *
+            scale;
 
 
-
-          /*
-          手指拉開
-          = Zoom In
-          */
-
-          currentFov -=
-
-            difference * 0.12;
-
-
-
-          /*
-          限制 FOV
-          */
-
-          currentFov =
-
+          newFov =
             Math.max(
 
-              minFov,
+              MIN_FOV,
 
               Math.min(
-
-                maxFov,
-
-                currentFov
-
+                MAX_FOV,
+                newFov
               )
 
             );
 
+
+          currentFov =
+            newFov;
 
 
           camera.setAttribute(
@@ -1820,31 +1903,20 @@
 
           );
 
-
         }
-
-
-
-        previousDistance =
-          distance;
-
 
       },
 
       {
-
         passive: false
-
       }
 
     );
 
 
-
     /* ========================================
-       PINCH END
+       TOUCH END
        ======================================== */
-
 
     document.addEventListener(
 
@@ -1852,64 +1924,40 @@
 
       function(event) {
 
+        if (
+          event.touches.length <
+          2
+        ) {
 
-        if (event.touches.length < 2) {
-
-          previousDistance = null;
+          pinchStartDistance =
+            null;
 
         }
 
-
       },
 
       {
-
         passive: false
-
       }
 
     );
-
-
-
-    document.addEventListener(
-
-      'touchcancel',
-
-      function() {
-
-        previousDistance = null;
-
-      },
-
-      {
-
-        passive: false
-
-      }
-
-    );
-
 
 
     /* ========================================
        DESKTOP MOUSE WHEEL ZOOM
        ======================================== */
 
-
-    window.addEventListener(
+    document.addEventListener(
 
       'wheel',
 
       function(event) {
 
-
-        /*
-        如果滑鼠在許願介面，
-        不控制360 Zoom
-        */
-
-        if (isInWishUI(event.target)) {
+        if (
+          typeof isInWishUI ===
+            'function' &&
+          isInWishUI(event.target)
+        ) {
 
           return;
 
@@ -1919,37 +1967,22 @@
         event.preventDefault();
 
 
-
-        /*
-        滑輪向上
-        = Zoom In
-
-        滑輪向下
-        = Zoom Out
-        */
-
         currentFov +=
-
-          event.deltaY * 0.03;
-
+          event.deltaY *
+          0.03;
 
 
         currentFov =
-
           Math.max(
 
-            minFov,
+            MIN_FOV,
 
             Math.min(
-
-              maxFov,
-
+              MAX_FOV,
               currentFov
-
             )
 
           );
-
 
 
         camera.setAttribute(
@@ -1962,64 +1995,28 @@
 
         );
 
-
       },
 
       {
-
         passive: false
-
       }
 
     );
-
 
 
     /* ========================================
        WISH FEATURE
        ======================================== */
 
-
     /*
     Google Apps Script Web App
-
-    保留你原本使用的Google Sheet連接。
+    保留你原本使用的 Google Sheet 連接。
     */
 
     const WISH_ENDPOINT =
 
       'https://script.google.com/macros/s/AKfycbyCrBzBm5rgP0bsMPkpZ6HBzHGnrUgRfNm3-6aAEQH4u4ZQY8tUB2qT-0DPwjjX9uTI/exec';
 
-
-
-    /*
-    每個願望最多60個字
-    */
-
-    const WISH_MAX_LENGTH = 60;
-
-
-
-    /*
-    願望星星在畫面上
-    顯示的時間
-    */
-
-    const WISH_STAR_LIFETIME = 12000;
-
-
-
-    /*
-    同時最多顯示多少粒願望星
-    */
-
-    const MAX_VISIBLE_WISH_STARS = 18;
-
-
-
-    /*
-    許願功能 Elements
-    */
 
     const wishButton =
       document.querySelector(
@@ -2030,12 +2027,6 @@
     const wishOverlay =
       document.querySelector(
         '#wishOverlay'
-      );
-
-
-    const wishPanel =
-      document.querySelector(
-        '#wishPanel'
       );
 
 
@@ -2051,9 +2042,9 @@
       );
 
 
-    const wishNote =
+    const wishSubmit =
       document.querySelector(
-        '#wishNote'
+        '#wishSubmit'
       );
 
 
@@ -2063,48 +2054,23 @@
       );
 
 
-    const wishSubmit =
-      document.querySelector(
-        '#wishSubmit'
-      );
-
-
     const wishToast =
       document.querySelector(
         '#wishToast'
       );
 
 
-
-    /*
-    許願介面是否開啟
-    */
-
-    let wishPanelOpen = false;
-
-
-    /*
-    Toast Timer
-    */
-
-    let wishToastTimer = null;
-
-
-    /*
-    畫面上的願望星
-    */
-
-    const activeWishStars = [];
-
+    let wishSessionId =
+      null;
 
 
     /* ========================================
        CHECK WISH UI
        ======================================== */
 
-
-    function isInWishUI(target) {
-
+    function isInWishUI(
+      target
+    ) {
 
       if (!target) {
 
@@ -2116,20 +2082,8 @@
       return !!(
 
         target.closest &&
-        (
-
-          target.closest(
-            '#wishButton'
-          ) ||
-
-          target.closest(
-            '#wishOverlay'
-          ) ||
-
-          target.closest(
-            '#wishToast'
-          )
-
+        target.closest(
+          '#wishButton, #wishOverlay'
         )
 
       );
@@ -2137,14 +2091,11 @@
     }
 
 
-
     /* ========================================
        SHOW WISH BUTTON
        ======================================== */
 
-
     function showWishButton() {
-
 
       if (!wishButton) {
 
@@ -2165,9 +2116,9 @@
 
             function() {
 
-              wishButton.classList.add(
-                'show'
-              );
+              wishButton
+                .classList
+                .add('show');
 
             }
 
@@ -2180,14 +2131,13 @@
     }
 
 
-
     /* ========================================
        ENABLE / DISABLE LOOK CONTROLS
        ======================================== */
 
-
-    function setLookControls(enabled) {
-
+    function setLookControls(
+      enabled
+    ) {
 
       if (!camera) {
 
@@ -2209,31 +2159,22 @@
     }
 
 
-
     /* ========================================
        OPEN WISH PANEL
        ======================================== */
 
-
     function openWishPanel() {
 
-
-      if (
-        !wishOverlay ||
-        wishPanelOpen
-      ) {
+      if (!wishOverlay) {
 
         return;
 
       }
 
 
-      wishPanelOpen = true;
-
-
       /*
-      打開輸入框時，
-      暫停360畫面拖動。
+      開啟許願介面時，
+      暫停360°拖動。
       */
 
       setLookControls(false);
@@ -2253,9 +2194,9 @@
 
         function() {
 
-          wishOverlay.classList.add(
-            'open'
-          );
+          wishOverlay
+            .classList
+            .add('open');
 
         }
 
@@ -2265,34 +2206,11 @@
       updateWishCount();
 
 
-      /*
-      iPhone如果立即 focus，
-      有時會令畫面跳動。
-
-      所以稍等一下才focus。
-      */
-
       setTimeout(
 
         function() {
 
-          if (wishText) {
-
-            try {
-
-              wishText.focus({
-                preventScroll: true
-              });
-
-            }
-
-            catch (error) {
-
-              wishText.focus();
-
-            }
-
-          }
+          wishText.focus();
 
         },
 
@@ -2303,128 +2221,72 @@
     }
 
 
-
     /* ========================================
        CLOSE WISH PANEL
        ======================================== */
 
-
     function closeWishPanel() {
 
-
-      if (
-        !wishOverlay ||
-        !wishPanelOpen
-      ) {
+      if (!wishOverlay) {
 
         return;
 
       }
 
 
-      wishPanelOpen = false;
+      wishText.blur();
 
 
-      if (wishText) {
-
-        wishText.blur();
-
-      }
-
-
-      wishOverlay.classList.remove(
-        'open'
-      );
-
-
-      wishOverlay.setAttribute(
-        'aria-hidden',
-        'true'
-      );
+      wishOverlay
+        .classList
+        .remove('open');
 
 
       setTimeout(
 
         function() {
 
-          if (!wishPanelOpen) {
+          wishOverlay.style.display =
+            'none';
 
-            wishOverlay.style.display =
-              'none';
 
-          }
+          wishOverlay.setAttribute(
+            'aria-hidden',
+            'true'
+          );
+
+
+          /*
+          恢復360°拖動。
+          */
+
+          setLookControls(true);
 
         },
 
-        260
+        250
 
       );
-
-
-      /*
-      恢復360拖動畫面
-      */
-
-      setLookControls(true);
 
     }
 
 
-
     /* ========================================
-       UPDATE CHARACTER COUNT
+       WISH CHARACTER COUNT
        ======================================== */
 
-
     function updateWishCount() {
-
-
-      if (
-        !wishText ||
-        !wishCount ||
-        !wishSubmit
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-      防止超過60字
-      */
-
-      if (
-        wishText.value.length >
-        WISH_MAX_LENGTH
-      ) {
-
-        wishText.value =
-          wishText.value.slice(
-            0,
-            WISH_MAX_LENGTH
-          );
-
-      }
-
 
       const length =
         wishText.value.length;
 
 
       wishCount.textContent =
-
         length +
-        ' / ' +
-        WISH_MAX_LENGTH;
+        ' / 60';
 
-
-      /*
-      沒有文字就不能Send
-      */
 
       wishSubmit.disabled =
-
         wishText.value
           .trim()
           .length === 0;
@@ -2432,186 +2294,529 @@
     }
 
 
-
     /* ========================================
-       SHOW WISH TOAST
+       WISH SUCCESS TOAST
        ======================================== */
-
 
     function showWishToast() {
 
+      wishToast
+        .classList
+        .add('show');
 
-      if (!wishToast) {
+
+      setTimeout(
+
+        function() {
+
+          wishToast
+            .classList
+            .remove('show');
+
+        },
+
+        2600
+
+      );
+
+    }
+    /* ========================================
+       ONE 3D WISH STAR
+       ======================================== */
+
+    function createWishStar() {
+
+      /*
+      每次只建立一粒真正的五角星。
+
+      ★ 重要 ★
+
+      星星會加入 A-Frame / THREE.js
+      的360°世界。
+
+      它不是 document.body 上面的
+      2D HTML 元素。
+
+      因此：
+      - 你轉動手機
+      - 你拖動360°
+      - 你改變觀看方向
+
+      星星都不會跟著螢幕移動。
+
+      它會留在原本的360°天空位置。
+      */
+
+
+      const scene =
+        document.querySelector(
+          'a-scene'
+        );
+
+
+      if (
+        !scene ||
+        !scene.object3D ||
+        !scene.camera
+      ) {
 
         return;
 
       }
 
 
-      clearTimeout(
-        wishToastTimer
+      const threeCamera =
+        scene.camera;
+
+
+      threeCamera.updateMatrixWorld(
+        true
       );
 
 
-      wishToast.classList.add(
-        'show'
+      /* ========================================
+         CAMERA POSITION
+         ======================================== */
+
+      const cameraPosition =
+        new THREE.Vector3();
+
+
+      threeCamera.getWorldPosition(
+        cameraPosition
       );
 
 
-      wishToastTimer =
-        setTimeout(
+      /* ========================================
+         CAMERA DIRECTION
+         ======================================== */
 
-          function() {
-
-            wishToast.classList.remove(
-              'show'
-            );
-
-          },
-
-          2800
-
-        );
-
-    }
+      const direction =
+        new THREE.Vector3();
 
 
-
-    /* ========================================
-       RANDOM NUMBER
-       ======================================== */
-
-
-    function randomBetween(
-      min,
-      max
-    ) {
-
-      return (
-        Math.random() *
-        (max - min)
-      ) + min;
-
-    }
-
-
-
-    /* ========================================
-       CREATE WISH STAR
-       ======================================== */
-
-
-      const star =
-        document.createElement(
-          'div'
-        );
-
-
-      star.setAttribute(
-        'aria-hidden',
-        'true'
+      threeCamera.getWorldDirection(
+        direction
       );
 
 
-      star.textContent =
-        Math.random() > 0.45
-          ? '✦'
-          : '✧';
+      direction.normalize();
+
+
+      /* ========================================
+         STAR START POSITION
+         ======================================== */
+
+      /*
+      星星由使用者目前望緊的位置開始。
+
+      距離相機約 3.5 米。
+
+      再向下一點，
+      令它有「由下面升上天空」的感覺。
+      */
+
+
+      const startPosition =
+        cameraPosition
+          .clone()
+          .addScaledVector(
+            direction,
+            3.5
+          );
+
+
+      startPosition.y -=
+        1.15;
+
+
+      /* ========================================
+         STAR FINAL SKY POSITION
+         ======================================== */
+
+      /*
+      ★ 關鍵位置 ★
+
+      這個位置只會在
+      按「Send」的一刻計算一次。
+
+      之後不會再根據手機方向改變。
+
+      所以星星到達天空後，
+      就會固定在這個360°世界座標。
+      */
+
+
+      const endPosition =
+        cameraPosition
+          .clone()
+          .addScaledVector(
+            direction,
+            18
+          );
 
 
       /*
-      星星位置主要放在畫面上半部，
-      避免太接近許願按鈕。
+      向天空升高
       */
 
-      const startX =
-        randomBetween(
-          12,
-          88
+      endPosition.y +=
+        8.5;
+
+
+      /* ========================================
+         CREATE STAR CANVAS
+         ======================================== */
+
+      /*
+      用 Canvas 畫一粒真正的
+      金色五角星。
+      */
+
+
+      const canvas =
+        document.createElement(
+          'canvas'
         );
 
 
-      const startY =
-        randomBetween(
-          52,
-          78
+      canvas.width =
+        256;
+
+
+      canvas.height =
+        256;
+
+
+      const ctx =
+        canvas.getContext(
+          '2d'
         );
 
 
-      const endX =
-        startX +
-        randomBetween(
-          -8,
-          8
+      if (!ctx) {
+
+        return;
+
+      }
+
+
+      ctx.clearRect(
+        0,
+        0,
+        256,
+        256
+      );
+
+
+      /* ========================================
+         GOLDEN GLOW
+         ======================================== */
+
+      const glow =
+        ctx.createRadialGradient(
+
+          128,
+          128,
+          8,
+
+          128,
+          128,
+          118
+
         );
 
 
-      const endY =
-        randomBetween(
-          12,
-          36
+      glow.addColorStop(
+
+        0,
+
+        'rgba(255,240,170,0.65)'
+
+      );
+
+
+      glow.addColorStop(
+
+        0.42,
+
+        'rgba(255,205,85,0.25)'
+
+      );
+
+
+      glow.addColorStop(
+
+        1,
+
+        'rgba(255,190,50,0)'
+
+      );
+
+
+      ctx.fillStyle =
+        glow;
+
+
+      ctx.fillRect(
+
+        0,
+        0,
+        256,
+        256
+
+      );
+
+
+      /* ========================================
+         DRAW 5-POINT STAR
+         ======================================== */
+
+      const cx =
+        128;
+
+
+      const cy =
+        128;
+
+
+      const outerRadius =
+        68;
+
+
+      const innerRadius =
+        29;
+
+
+      ctx.beginPath();
+
+
+      for (
+        let i = 0;
+        i < 10;
+        i++
+      ) {
+
+
+        const radius =
+
+          i % 2 === 0
+
+            ? outerRadius
+
+            : innerRadius;
+
+
+        const angle =
+
+          -Math.PI / 2 +
+
+          i * Math.PI / 5;
+
+
+        const x =
+
+          cx +
+
+          Math.cos(
+            angle
+          ) *
+
+          radius;
+
+
+        const y =
+
+          cy +
+
+          Math.sin(
+            angle
+          ) *
+
+          radius;
+
+
+        if (
+          i === 0
+        ) {
+
+
+          ctx.moveTo(
+
+            x,
+            y
+
+          );
+
+
+        }
+
+        else {
+
+
+          ctx.lineTo(
+
+            x,
+            y
+
+          );
+
+
+        }
+
+
+      }
+
+
+      ctx.closePath();
+
+
+      /* ========================================
+         GOLD STAR GRADIENT
+         ======================================== */
+
+      const starGradient =
+        ctx.createLinearGradient(
+
+          80,
+          60,
+
+          176,
+          196
+
         );
 
 
-      const size =
-        randomBetween(
-          16,
-          28
+      starGradient.addColorStop(
+
+        0,
+
+        '#fff6bd'
+
+      );
+
+
+      starGradient.addColorStop(
+
+        0.48,
+
+        '#ffd45d'
+
+      );
+
+
+      starGradient.addColorStop(
+
+        1,
+
+        '#e6a51a'
+
+      );
+
+
+      ctx.fillStyle =
+        starGradient;
+
+
+      ctx.shadowColor =
+        'rgba(255,210,90,0.95)';
+
+
+      ctx.shadowBlur =
+        18;
+
+
+      ctx.fill();
+
+
+      /* ========================================
+         CANVAS → THREE.JS TEXTURE
+         ======================================== */
+
+      const texture =
+        new THREE.CanvasTexture(
+          canvas
         );
 
 
-      const duration =
-        randomBetween(
-          8000,
-          WISH_STAR_LIFETIME
+      texture.needsUpdate =
+        true;
+
+
+      /* ========================================
+         CREATE 3D STAR
+         ======================================== */
+
+      const material =
+        new THREE.SpriteMaterial({
+
+          map:
+            texture,
+
+          transparent:
+            true,
+
+          depthWrite:
+            false,
+
+          depthTest:
+            false,
+
+          opacity:
+            0
+
+        });
+
+
+      const star =
+        new THREE.Sprite(
+          material
         );
 
 
-      star.style.position =
-        'fixed';
+      /* ========================================
+         START POSITION
+         ======================================== */
+
+      star.position.copy(
+        startPosition
+      );
 
 
-      star.style.left =
-        startX + 'vw';
+      /* ========================================
+         START SIZE
+         ======================================== */
+
+      star.scale.set(
+
+        1.15,
+        1.15,
+        1
+
+      );
 
 
-      star.style.top =
-        startY + 'vh';
+      /* ========================================
+         ADD STAR TO 360 WORLD
+         ======================================== */
+
+      /*
+      ★★★ 最重要的一行 ★★★
+
+      以前如果是：
+
+      document.body.appendChild(...)
+
+      星星就會黐住手機畫面。
 
 
-      star.style.zIndex =
-        '10000';
+      現在是：
 
+      scene.object3D.add(star)
 
-      star.style.pointerEvents =
-        'none';
-
-
-      star.style.fontSize =
-        size + 'px';
-
-
-      star.style.color =
-        '#ffe6a3';
-
-
-      star.style.textShadow =
-
-        '0 0 6px rgba(255,220,130,0.95),' +
-
-        '0 0 14px rgba(255,190,80,0.75)';
-
-
-      star.style.opacity =
-        '0';
-
-
-      star.style.transform =
-        'translate(-50%, -50%) scale(0.4)';
-
-
-      star.style.willChange =
-        'transform, opacity, left, top';
+      所以星星真正存在於
+      360°世界裡面。
+      */
 
 
       scene.object3D.add(
@@ -2619,1049 +2824,485 @@
       );
 
 
-      activeWishStars.push(
-        star
-      );
+      /* ========================================
+         ONLY ONE STAR
+         ======================================== */
+
+      /*
+      如果上一粒願望星仍然存在，
+      就先刪除。
+
+      所以任何時間都只會有
+      一粒願望星。
+      */
+
+
+      if (
+
+        window.currentWishStar &&
+
+        window.currentWishStar !==
+          star &&
+
+        window.currentWishStar.parent
+
+      ) {
+
+
+        window.currentWishStar
+          .parent
+          .remove(
+
+            window.currentWishStar
+
+          );
+
+
+      }
+
+
+      window.currentWishStar =
+        star;
+
+
+      /* ========================================
+         ANIMATION SETTINGS
+         ======================================== */
+
+      const startTime =
+        performance.now();
 
 
       /*
-      如果星星太多，
-      移除最舊的一粒。
+      星星升上天空：
+
+      2600ms = 2.6秒
       */
 
-      while (
-        activeWishStars.length >
-        MAX_VISIBLE_WISH_STARS
+      const RISE_TIME =
+        2600;
+
+
+      /*
+      到達天空後固定：
+
+      4000ms = 4秒
+      */
+
+      const HOLD_TIME =
+        4000;
+
+
+      /*
+      最後淡出：
+
+      800ms = 0.8秒
+      */
+
+      const FADE_OUT_TIME =
+        800;
+
+
+      /* ========================================
+         ANIMATE STAR
+         ======================================== */
+
+      function animateWishStar(
+        now
       ) {
 
-        const oldStar =
-          activeWishStars.shift();
 
+        const elapsed =
+
+          now -
+          startTime;
+
+
+        /* ========================================
+           STAGE 1
+           STAR RISES INTO SKY
+           ======================================== */
 
         if (
-          oldStar &&
-          oldStar.parentNode
+          elapsed <
+          RISE_TIME
         ) {
 
-          oldStar.parentNode.removeChild(
-            oldStar
+
+          let progress =
+
+            elapsed /
+            RISE_TIME;
+
+
+          /*
+          Smooth Ease Out
+          */
+
+          progress =
+
+            1 -
+
+            Math.pow(
+
+              1 - progress,
+
+              3
+
+            );
+
+
+          /*
+          從起點飛向天空位置
+          */
+
+          star.position
+            .lerpVectors(
+
+              startPosition,
+
+              endPosition,
+
+              progress
+
+            );
+
+
+          /*
+          開始時 Fade In
+          */
+
+          material.opacity =
+
+            Math.min(
+
+              1,
+
+              elapsed /
+              350
+
+            );
+
+
+          /*
+          星星飛遠時稍微放大。
+
+          因為它距離相機越來越遠，
+          如果完全不放大，
+          最後會變得太細。
+          */
+
+          const scale =
+
+            1.15 +
+
+            progress *
+            1.55;
+
+
+          star.scale.set(
+
+            scale,
+            scale,
+            1
+
           );
+
+
+          requestAnimationFrame(
+            animateWishStar
+          );
+
+
+          return;
 
         }
 
+
+        /* ========================================
+           STAGE 2
+           STAR FIXED IN SKY
+           ======================================== */
+
+        if (
+
+          elapsed <
+
+          RISE_TIME +
+          HOLD_TIME
+
+        ) {
+
+
+          /*
+          ★★★ 關鍵 ★★★
+
+          星星已經到達天空。
+
+          現在只固定使用
+          endPosition。
+
+          不再讀：
+          - Camera rotation
+          - Device orientation
+          - 手機方向
+          - Screen position
+
+          所以你轉手機時，
+          星星不會跟著畫面走。
+          */
+
+
+          star.position.copy(
+            endPosition
+          );
+
+
+          /*
+          很輕微的星光閃爍。
+
+          星星本身的位置不會郁。
+          */
+
+
+          const twinkle =
+
+            0.88 +
+
+            Math.sin(
+
+              elapsed *
+              0.007
+
+            ) *
+
+            0.12;
+
+
+          material.opacity =
+            twinkle;
+
+
+          requestAnimationFrame(
+            animateWishStar
+          );
+
+
+          return;
+
+        }
+
+
+        /* ========================================
+           STAGE 3
+           FADE OUT
+           ======================================== */
+
+        const fadeProgress =
+
+          (
+
+            elapsed -
+
+            RISE_TIME -
+
+            HOLD_TIME
+
+          ) /
+
+          FADE_OUT_TIME;
+
+
+        if (
+          fadeProgress <
+          1
+        ) {
+
+
+          /*
+          淡出期間仍然固定在
+          同一個天空位置。
+          */
+
+
+          star.position.copy(
+            endPosition
+          );
+
+
+          material.opacity =
+
+            Math.max(
+
+              0,
+
+              1 -
+              fadeProgress
+
+            );
+
+
+          requestAnimationFrame(
+            animateWishStar
+          );
+
+
+          return;
+
+        }
+
+
+        /* ========================================
+           REMOVE STAR
+           ======================================== */
+
+        if (
+          star.parent
+        ) {
+
+
+          star.parent.remove(
+            star
+          );
+
+
+        }
+
+
+        if (
+
+          window.currentWishStar ===
+          star
+
+        ) {
+
+
+          window.currentWishStar =
+            null;
+
+
+        }
+
+
+        material.dispose();
+
+
+        texture.dispose();
+
+
       }
 
 
-      /*
-      星星飛上天空動畫
-      */
-
-      /* ========================================
-   星星慢慢升上天空
-   → 天空停留10秒
-   → 慢慢淡出
-   ======================================== */
-
-const RISE_TIME = 6000;      // 6秒升上天空
-const HOLD_TIME = 10000;     // 到達天空後停留10秒
-const FADE_TIME = 1500;      // 1.5秒淡出
-
-const totalDuration =
-  RISE_TIME +
-  HOLD_TIME +
-  FADE_TIME;
-
-const riseEnd =
-  RISE_TIME / totalDuration;
-
-const holdEnd =
-  (RISE_TIME + HOLD_TIME) / totalDuration;
-
-
-const animation =
-  star.animate(
-
-    [
-
-      /* 0秒：星星開始出現 */
-      {
-        offset: 0,
-
-        left:
-          startX + 'vw',
-
-        top:
-          startY + 'vh',
-
-        opacity: 0,
-
-        transform:
-          'translate(-50%, -50%) scale(0.4)'
-      },
-
-
-      /* 星星很快亮起 */
-      {
-        offset: 0.04,
-
-        left:
-          startX + 'vw',
-
-        top:
-          startY + 'vh',
-
-        opacity: 1,
-
-        transform:
-          'translate(-50%, -50%) scale(1.15)'
-      },
-
-
-      /* 約6秒：慢慢升到天空 */
-      {
-        offset: riseEnd,
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 1,
-
-        transform:
-          'translate(-50%, -50%) scale(0.85)'
-      },
-
-
-      /* 停留期間微微變亮 */
-      {
-        offset:
-          riseEnd +
-          ((holdEnd - riseEnd) * 0.25),
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 0.75,
-
-        transform:
-          'translate(-50%, -50%) scale(0.78)'
-      },
-
-
-      /* 微微閃爍 */
-      {
-        offset:
-          riseEnd +
-          ((holdEnd - riseEnd) * 0.50),
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 1,
-
-        transform:
-          'translate(-50%, -50%) scale(0.9)'
-      },
-
-
-      /* 再輕微暗一點 */
-      {
-        offset:
-          riseEnd +
-          ((holdEnd - riseEnd) * 0.75),
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 0.78,
-
-        transform:
-          'translate(-50%, -50%) scale(0.8)'
-      },
-
-
-      /* 10秒停留完成 */
-      {
-        offset: holdEnd,
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 1,
-
-        transform:
-          'translate(-50%, -50%) scale(0.85)'
-      },
-
-
-      /* 最後慢慢消失 */
-      {
-        offset: 1,
-
-        left:
-          endX + 'vw',
-
-        top:
-          endY + 'vh',
-
-        opacity: 0,
-
-        transform:
-          'translate(-50%, -50%) scale(0.65)'
-      }
-
-    ],
-
-
-    {
-
-      duration:
-        totalDuration,
-
-      easing:
-        'ease-in-out',
-
-      fill:
-        'forwards'
-
-    }
-
-  );
-
-
-/* 動畫完成後，
-   真正從網頁移除星星 */
-
-animation.onfinish =
-  function() {
-
-    const index =
-      activeWishStars.indexOf(
-        star
+      requestAnimationFrame(
+        animateWishStar
       );
 
 
-    if (index !== -1) {
-
-      activeWishStars.splice(
-        index,
-        1
-      );
-
     }
-
-
-    if (star.parentNode) {
-
-      star.parentNode.removeChild(
-        star
-      );
-
-    }
-
-  };
-
-    }
-
 
 
     /* ========================================
        CREATE WISH STAR BURST
        ======================================== */
 
+    /*
+    保留你原本的 function 名：
+
+    createWishStarBurst()
+
+    因為下面 submitWish()
+    原本就是呼叫這個 function。
+
+    但現在它不再 Burst 多粒星，
+    而是只建立一粒五角星。
+    */
 
 
-      const count =
-        Math.floor(
-          randomBetween(
-            4,
-            7
-          )
-        );
+    function createWishStarBurst() {
 
-
-      for (
-        let i = 0;
-        i < count;
-        i++
-      ) {
-
-
-        setTimeout(
-
-          function() {
-
-            createWishStar();
-
-          },
-
-          i * 130
-
-        );
-
-      }
+      createWishStar();
 
     }
 
-    /* ========================================
-   ONE 3D WISH STAR
-   ======================================== */
 
-/*
-只產生一粒五角星。
-
-重要：
-星星加入 A-Frame Scene，
-不是加入 document.body。
-
-因此星星會固定在360°世界座標，
-不會跟著手機畫面一起移動。
-*/
-
-function createWishStar() {
-
-  const scene =
-    document.querySelector('a-scene');
-
-  if (
-    !scene ||
-    !scene.camera
-  ) {
-    return;
-  }
-
-
-  const cam =
-    scene.camera;
-
-
-  cam.updateMatrixWorld(true);
-
-
-  /* ----------------------------------------
-     取得相機目前位置
-     ---------------------------------------- */
-
-  const cameraPosition =
-    new THREE.Vector3();
-
-  cam.getWorldPosition(
-    cameraPosition
-  );
-
-
-  /* ----------------------------------------
-     取得使用者目前望緊的方向
-     ---------------------------------------- */
-
-  const direction =
-    new THREE.Vector3();
-
-  cam.getWorldDirection(
-    direction
-  );
-
-
-
-  /* ========================================
-     STAR START POSITION
-     ======================================== */
-
-  /*
-  星星一開始出現在目前視線前方。
-
-  4 = 距離鏡頭4米
-  */
-
-  const startPosition =
-    cameraPosition
-      .clone()
-      .addScaledVector(
-        direction,
-        4
-      );
-
-
-  /*
-  稍微放低，
-  讓星星有「升上天」的感覺。
-  */
-
-  startPosition.y -= 1.2;
-
-
-
-  /* ========================================
-     FINAL SKY POSITION
-     ======================================== */
-
-  /*
-  最終位置不是 Screen Position，
-  而是真正的3D世界座標。
-
-  所以手機轉向後，
-  星星不會跟住畫面走。
-  */
-
-
-  const horizontalDirection =
-    direction.clone();
-
-
-  /*
-  最終位置向前約25米
-  */
-
-  const endPosition =
-    cameraPosition
-      .clone()
-      .addScaledVector(
-        horizontalDirection,
-        25
-      );
-
-
-  /*
-  升高到天空
-  */
-
-  endPosition.y += 12;
-
-
-
-  /* ========================================
-     CREATE STAR CANVAS
-     ======================================== */
-
-  /*
-  用 Canvas 畫真正五角星，
-  而不是 ✦ / ✧。
-  */
-
-  const canvas =
-    document.createElement(
-      'canvas'
-    );
-
-
-  canvas.width = 256;
-  canvas.height = 256;
-
-
-  const ctx =
-    canvas.getContext(
-      '2d'
-    );
-
-
-  ctx.clearRect(
-    0,
-    0,
-    256,
-    256
-  );
-
-
-  /*
-  金色光暈
-  */
-
-  const glow =
-    ctx.createRadialGradient(
-      128,
-      128,
-      10,
-      128,
-      128,
-      120
-    );
-
-
-  glow.addColorStop(
-    0,
-    'rgba(255,235,150,0.75)'
-  );
-
-
-  glow.addColorStop(
-    0.35,
-    'rgba(255,210,90,0.30)'
-  );
-
-
-  glow.addColorStop(
-    1,
-    'rgba(255,190,60,0)'
-  );
-
-
-  ctx.fillStyle =
-    glow;
-
-
-  ctx.fillRect(
-    0,
-    0,
-    256,
-    256
-  );
-
-
-
-  /* ========================================
-     DRAW 5-POINT STAR
-     ======================================== */
-
-  const cx = 128;
-  const cy = 128;
-
-  const outerRadius = 72;
-  const innerRadius = 31;
-
-
-  ctx.beginPath();
-
-
-  for (
-    let i = 0;
-    i < 10;
-    i++
-  ) {
-
-    const radius =
-      i % 2 === 0
-        ? outerRadius
-        : innerRadius;
-
-
-    const angle =
-      -Math.PI / 2 +
-      i * Math.PI / 5;
-
-
-    const x =
-      cx +
-      Math.cos(angle) *
-      radius;
-
-
-    const y =
-      cy +
-      Math.sin(angle) *
-      radius;
-
-
-    if (i === 0) {
-
-      ctx.moveTo(
-        x,
-        y
-      );
-
-    }
-
-    else {
-
-      ctx.lineTo(
-        x,
-        y
-      );
-
-    }
-
-  }
-
-
-  ctx.closePath();
-
-
-
-  /*
-  五角星金色漸變
-  */
-
-  const starGradient =
-    ctx.createLinearGradient(
-      80,
-      60,
-      180,
-      200
-    );
-
-
-  starGradient.addColorStop(
-    0,
-    '#fff4b0'
-  );
-
-
-  starGradient.addColorStop(
-    0.45,
-    '#ffd45a'
-  );
-
-
-  starGradient.addColorStop(
-    1,
-    '#e8a91b'
-  );
-
-
-  ctx.fillStyle =
-    starGradient;
-
-
-  ctx.shadowColor =
-    'rgba(255,210,80,0.95)';
-
-
-  ctx.shadowBlur =
-    18;
-
-
-  ctx.fill();
-
-
-
-  /* ========================================
-     THREE.JS TEXTURE
-     ======================================== */
-
-  const texture =
-    new THREE.CanvasTexture(
-      canvas
-    );
-
-
-  texture.needsUpdate =
-    true;
-
-
-
-  /* ========================================
-     CREATE 3D SPRITE
-     ======================================== */
-
-  const material =
-    new THREE.SpriteMaterial({
-
-      map: texture,
-
-      transparent: true,
-
-      depthWrite: false,
-
-      opacity: 0,
-
-      blending:
-        THREE.AdditiveBlending
-
-    });
-
-
-  const star =
-    new THREE.Sprite(
-      material
-    );
-
-
-  /*
-  初始位置
-  */
-
-  star.position.copy(
-    startPosition
-  );
-
-
-  /*
-  初始大小
-  */
-
-  star.scale.set(
-    1.5,
-    1.5,
-    1
-  );
-
-
-
-  /*
-  ★ 關鍵 ★
-
-  加入 A-Frame Scene 的
-  3D Object3D。
-
-  所以它是360°世界的一部分，
-  不是固定在手機螢幕。
-  */
-
-  scene.object3D.add(
-    star
-  );
-
-
-
-  /* ========================================
-     ANIMATION
-     ======================================== */
-
-  const startTime =
-    performance.now();
-
-
-  /*
-  上升時間
-  */
-
-  const RISE_TIME =
-    3000;
-
-
-  /*
-  到達天空後停留4秒
-  */
-
-  const HOLD_TIME =
-    4000;
-
-
-  /*
-  最後淡出1秒
-  */
-
-  const FADE_TIME =
-    1000;
-
-
-
-  function animateWishStar(
-    now
-  ) {
-
-
-    const elapsed =
-      now -
-      startTime;
-
-
-
-    /* ========================================
-       0–3秒：
-       星星升上天空
-       ======================================== */
-
-    if (
-      elapsed <
-      RISE_TIME
-    ) {
-
-
-      let progress =
-        elapsed /
-        RISE_TIME;
-
-
-      /*
-      Smooth easing
-      */
-
-      progress =
-        1 -
-        Math.pow(
-          1 - progress,
-          3
-        );
-
-
-      star.position.lerpVectors(
-
-        startPosition,
-
-        endPosition,
-
-        progress
-
-      );
-
-
-      /*
-      Fade In
-      */
-
-      material.opacity =
-        Math.min(
-          1,
-          elapsed / 500
-        );
-
-
-      /*
-      飛遠時稍微調整大小，
-      避免完全看不到。
-      */
-
-      const scale =
-        1.5 +
-        progress * 2.0;
-
-
-      star.scale.set(
-
-        scale,
-
-        scale,
-
-        1
-
-      );
-
-
-      requestAnimationFrame(
-        animateWishStar
-      );
-
-
-      return;
-
-    }
-
-
-
-    /* ========================================
-       3–7秒：
-       固定在天空
-       ======================================== */
-
-    if (
-      elapsed <
-      RISE_TIME +
-      HOLD_TIME
-    ) {
-
-
-      /*
-      ★ 不再修改 position ★
-
-      因此星星固定在同一個
-      360°天空位置。
-
-      用戶轉動手機時，
-      星星不會跟住畫面移動。
-      */
-
-
-      star.position.copy(
-        endPosition
-      );
-
-
-      /*
-      輕微閃爍
-      */
-
-      const twinkle =
-
-        0.82 +
-
-        Math.sin(
-          elapsed * 0.006
-        ) * 0.18;
-
-
-      material.opacity =
-        twinkle;
-
-
-      requestAnimationFrame(
-        animateWishStar
-      );
-
-
-      return;
-
-    }
-
-
-
-    /* ========================================
-       7–8秒：
-       淡出
-       ======================================== */
-
-    const fadeProgress =
-
-      (
-        elapsed -
-        RISE_TIME -
-        HOLD_TIME
-      ) /
-      FADE_TIME;
-
-
-
-    if (
-      fadeProgress < 1
-    ) {
-
-
-      material.opacity =
-        Math.max(
-          0,
-          1 - fadeProgress
-        );
-
-
-      /*
-      Position仍然完全不動
-      */
-
-      star.position.copy(
-        endPosition
-      );
-
-
-      requestAnimationFrame(
-        animateWishStar
-      );
-
-
-      return;
-
-    }
-
-
-
-    /* ========================================
-       REMOVE STAR
-       ======================================== */
-
-    scene.object3D.remove(
-      star
-    );
-
-
-    material.dispose();
-
-    texture.dispose();
-
-  }
-
-
-
-  requestAnimationFrame(
-    animateWishStar
-  );
-
-}
-
-
-
-/* ========================================
-   CREATE WISH STAR
-   ======================================== */
-
-/*
-保留這個 function 名，
-因為你下面 submitWish()
-原本會呼叫：
-
-createWishStarBurst();
-
-現在每次只產生一粒星。
-*/
-
-function createWishStarBurst() {
-
-  createWishStar();
-
-}
     /* ========================================
        DEVICE ID
        ======================================== */
 
+    function randomId() {
+
+      return (
+
+        Date.now()
+          .toString(36) +
+
+        '-' +
+
+        Math.random()
+          .toString(36)
+          .slice(2, 10)
+
+      );
+
+    }
+
+
     function getDeviceId() {
 
-      const key =
+      const KEY =
         'xmas360-device-id';
 
 
       try {
 
+
         let id =
           localStorage.getItem(
-            key
+            KEY
           );
 
 
         if (!id) {
 
+
           id =
-
-            'device-' +
-
-            Date.now()
-              .toString(36) +
-
-            '-' +
-
-            Math.random()
-              .toString(36)
-              .slice(2, 10);
+            randomId();
 
 
           localStorage.setItem(
-            key,
+
+            KEY,
+
             id
+
           );
+
 
         }
 
 
         return id;
 
+
       }
 
       catch (error) {
 
-        /*
-        如果瀏覽器不允許 localStorage，
-        仍然產生臨時匿名 ID。
-        */
 
-        return (
+        if (!wishSessionId) {
 
-          'device-' +
+          wishSessionId =
+            randomId();
 
-          Date.now()
-            .toString(36) +
+        }
 
-          '-' +
 
-          Math.random()
-            .toString(36)
-            .slice(2, 10)
+        return wishSessionId;
 
-        );
 
       }
 
     }
-
 
 
     /* ========================================
@@ -3669,14 +3310,9 @@ function createWishStarBurst() {
        ======================================== */
 
     function sendWishToGoogleSheet(
-      wish
+      text
     ) {
 
-
-      /*
-      如果沒有設定 Apps Script URL，
-      就不傳送。
-      */
 
       if (!WISH_ENDPOINT) {
 
@@ -3685,183 +3321,107 @@ function createWishStarBurst() {
       }
 
 
-      /*
-      使用 URLSearchParams，
-      Apps Script 可以直接讀取：
-      e.parameter.wish
-      e.parameter.deviceId
-      */
-
-
-      const body =
-        new URLSearchParams();
-
-
-      body.append(
-        'wish',
-        wish
-      );
-
-
-      body.append(
-        'deviceId',
-        getDeviceId()
-      );
-
-
-      body.append(
-        'timestamp',
-        new Date().toISOString()
-      );
-
-
       try {
 
 
         /*
-        no-cors：
-        GitHub Pages → Google Apps Script
-        不需要處理 CORS response。
-
-        keepalive：
-        即使用戶之後離開頁面，
-        瀏覽器仍有較大機會完成傳送。
+        保留願望資料傳送。
         */
 
-
-        const p =
-          fetch(
-
-            WISH_ENDPOINT,
-
-            {
-
-              method: 'POST',
-
-              mode: 'no-cors',
-
-              cache: 'no-store',
-
-              keepalive: true,
-
-              headers: {
-
-                'Content-Type':
-                  'text/plain;charset=utf-8'
-
-              },
-
-              body: body
-
-            }
-
-          );
+        const body =
+          new URLSearchParams();
 
 
-        /*
-        傳送失敗不影響使用者體驗。
-        */
+        body.append(
+          'wish',
+          text
+        );
 
-        if (
-          p &&
-          p.catch
-        ) {
 
-          p.catch(
-            function() {
+        body.append(
+          'deviceId',
+          getDeviceId()
+        );
 
-              /*
-              Offline / Network error
-              */
 
-            }
-          );
+        body.append(
+          'timestamp',
+          new Date()
+            .toISOString()
+        );
 
-        }
+
+        fetch(
+
+          WISH_ENDPOINT,
+
+          {
+
+            method:
+              'POST',
+
+            mode:
+              'no-cors',
+
+            headers: {
+
+              'Content-Type':
+                'text/plain;charset=utf-8'
+
+            },
+
+            body:
+              body.toString(),
+
+            keepalive:
+              true
+
+          }
+
+        ).catch(
+
+          function(error) {
+
+            console.warn(
+              'Wish upload failed:',
+              error
+            );
+
+          }
+
+        );
 
 
       }
 
       catch (error) {
 
-        /*
-        舊瀏覽器沒有 fetch，
-        直接忽略。
-        */
+
+        console.warn(
+          'Wish upload error:',
+          error
+        );
+
 
       }
 
-    }
-
-
-
-    /* ========================================
-       WISH NOTE
-       ======================================== */
-
-
-    /*
-    有設定 Google Apps Script
-    才顯示匿名傳送提示。
-    */
-
-    if (wishNote) {
-
-      wishNote.hidden =
-        !WISH_ENDPOINT;
 
     }
-
-
-
-    /* ========================================
-       REMOVE OLD WISH STORAGE
-       ======================================== */
-
-
-    /*
-    願望星會淡出移除，
-    不會重新載入舊願望。
-
-    清除舊版本 localStorage，
-    避免長期累積資料。
-
-    Device ID：
-    xmas360-device-id
-    會繼續保留。
-    */
-
-
-    try {
-
-      localStorage.removeItem(
-        'xmas360-wishes-v1'
-      );
-
-    }
-
-    catch (error) {
-
-      /*
-      localStorage unavailable
-      */
-
-    }
-
 
 
     /* ========================================
        SUBMIT WISH
        ======================================== */
 
-
     function submitWish() {
 
 
-      if (
-        !wishText ||
-        !wishSubmit
-      ) {
+      const text =
+        wishText.value
+          .trim();
+
+
+      if (!text) {
 
         return;
 
@@ -3869,54 +3429,16 @@ function createWishStarBurst() {
 
 
       /*
-      移除前後空格
-      */
-
-      let wish =
-        wishText.value.trim();
-
-
-      /*
-      空白願望不處理
-      */
-
-      if (!wish) {
-
-        return;
-
-      }
-
-
-      /*
-      再次限制最多60字
-      */
-
-      wish =
-        wish.slice(
-          0,
-          WISH_MAX_LENGTH
-        );
-
-
-      /*
-      防止重複快速按 Send
-      */
-
-      wishSubmit.disabled =
-        true;
-
-
-      /*
-      傳送到 Google Sheet
+      先傳送到 Google Sheet。
       */
 
       sendWishToGoogleSheet(
-        wish
+        text
       );
 
 
       /*
-      清空輸入框
+      清空輸入。
       */
 
       wishText.value =
@@ -3927,33 +3449,35 @@ function createWishStarBurst() {
 
 
       /*
-      關閉許願視窗
+      關閉許願視窗。
       */
 
       closeWishPanel();
 
 
       /*
-      顯示成功提示
+      顯示成功提示。
       */
 
       showWishToast();
 
 
       /*
-      願望化成星星飛上天空
+      ★ 願望化成一粒五角星
+      飛上360°天空。
+
+      現在每次只會有一粒。
       */
 
       createWishStarBurst();
 
-    }
 
+    }
 
 
     /* ========================================
        WISH BUTTON EVENT
        ======================================== */
-
 
     if (wishButton) {
 
@@ -3977,14 +3501,13 @@ function createWishStarBurst() {
 
       );
 
-    }
 
+    }
 
 
     /* ========================================
        WISH CANCEL EVENT
        ======================================== */
-
 
     if (wishCancel) {
 
@@ -4008,95 +3531,13 @@ function createWishStarBurst() {
 
       );
 
-    }
-
-
-
-    /* ========================================
-       WISH TEXT INPUT
-       ======================================== */
-
-
-    if (wishText) {
-
-
-      wishText.addEventListener(
-
-        'input',
-
-        function() {
-
-          updateWishCount();
-
-        }
-
-      );
-
-
-
-      /*
-      阻止輸入框的 touch
-      傳到 A-Frame。
-      */
-
-      wishText.addEventListener(
-
-        'touchstart',
-
-        function(event) {
-
-          event.stopPropagation();
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
-
-
-      wishText.addEventListener(
-
-        'touchmove',
-
-        function(event) {
-
-          event.stopPropagation();
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
-
-
-      wishText.addEventListener(
-
-        'touchend',
-
-        function(event) {
-
-          event.stopPropagation();
-
-        },
-
-        {
-          passive: true
-        }
-
-      );
 
     }
-
 
 
     /* ========================================
        WISH SUBMIT EVENT
        ======================================== */
-
 
     if (wishSubmit) {
 
@@ -4120,14 +3561,85 @@ function createWishStarBurst() {
 
       );
 
+
     }
 
 
-
     /* ========================================
-       CLICK OUTSIDE WISH PANEL
+       WISH TEXT INPUT
        ======================================== */
 
+    if (wishText) {
+
+
+      wishText.addEventListener(
+
+        'input',
+
+        function() {
+
+
+          updateWishCount();
+
+
+        }
+
+      );
+
+
+      wishText.addEventListener(
+
+        'keydown',
+
+        function(event) {
+
+
+          /*
+          手機鍵盤按 Send / Enter：
+
+          如果不是 Shift + Enter，
+          就直接送出願望。
+          */
+
+
+          if (
+
+            event.key ===
+              'Enter' &&
+
+            !event.shiftKey
+
+          ) {
+
+
+            event.preventDefault();
+
+
+            if (
+              !wishSubmit.disabled
+            ) {
+
+
+              submitWish();
+
+
+            }
+
+
+          }
+
+
+        }
+
+      );
+
+
+    }
+
+
+    /* ========================================
+       CLICK OUTSIDE PANEL
+       ======================================== */
 
     if (wishOverlay) {
 
@@ -4139,19 +3651,14 @@ function createWishStarBurst() {
         function(event) {
 
 
-          /*
-          只有直接按 Overlay 背景
-          才關閉。
-
-          按 Panel 內部不會關閉。
-          */
-
           if (
             event.target ===
             wishOverlay
           ) {
 
+
             closeWishPanel();
+
 
           }
 
@@ -4160,29 +3667,22 @@ function createWishStarBurst() {
 
       );
 
+
     }
 
 
-
     /* ========================================
-       PREVENT PANEL EVENT PROPAGATION
+       PREVENT WISH PANEL TOUCH
+       FROM MOVING 360 SCENE
        ======================================== */
+
+    const wishPanel =
+      document.querySelector(
+        '#wishPanel'
+      );
 
 
     if (wishPanel) {
-
-
-      wishPanel.addEventListener(
-
-        'click',
-
-        function(event) {
-
-          event.stopPropagation();
-
-        }
-
-      );
 
 
       wishPanel.addEventListener(
@@ -4219,105 +3719,94 @@ function createWishStarBurst() {
       );
 
 
-      wishPanel.addEventListener(
+    }
+    /* ========================================
+       RESUME MEDIA
+       ======================================== */
 
-        'touchend',
+    function resumeMedia() {
 
-        function(event) {
+      /*
+      只在已經進入360°場景後處理。
+      */
 
-          event.stopPropagation();
+      if (!sceneStarted) {
 
-        },
+        return;
 
-        {
-          passive: true
+      }
+
+
+      /*
+      恢復360°影片。
+      */
+
+      try {
+
+        if (
+          christmasVideo.paused
+        ) {
+
+          const videoPromise =
+            christmasVideo.play();
+
+
+          if (
+            videoPromise &&
+            videoPromise.catch
+          ) {
+
+            videoPromise.catch(
+              function() {}
+            );
+
+          }
+
         }
 
-      );
+      }
+
+      catch (error) {}
+
+
+      /*
+      恢復背景音樂。
+      */
+
+      try {
+
+        if (
+          musicStarted &&
+          backgroundMusic.paused
+        ) {
+
+          const musicPromise =
+            backgroundMusic.play();
+
+
+          if (
+            musicPromise &&
+            musicPromise.catch
+          ) {
+
+            musicPromise.catch(
+              function() {}
+            );
+
+          }
+
+        }
+
+      }
+
+      catch (error) {}
 
     }
 
 
-
     /* ========================================
-       KEYBOARD
+       PAGE VISIBILITY
        ======================================== */
-
-
-    document.addEventListener(
-
-      'keydown',
-
-      function(event) {
-
-
-        /*
-        ESC 關閉許願視窗
-        */
-
-        if (
-          event.key ===
-          'Escape' &&
-          wishPanelOpen
-        ) {
-
-          closeWishPanel();
-
-          return;
-
-        }
-
-
-        /*
-        Ctrl / Command + Enter
-        送出願望
-        */
-
-        if (
-
-          wishPanelOpen &&
-
-          (
-            event.ctrlKey ||
-            event.metaKey
-          ) &&
-
-          event.key ===
-          'Enter'
-
-        ) {
-
-          event.preventDefault();
-
-          submitWish();
-
-        }
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       KEEP 360 VIDEO PLAYING
-       ======================================== */
-
-
-    /*
-    iPhone Safari 有時在：
-    - 切換 App
-    - 鎖屏
-    - 回到 Safari
-
-    之後會暫停影片。
-
-    回到網頁時，
-    如果已經正式進入360場景，
-    就嘗試恢復播放。
-    */
-
 
     document.addEventListener(
 
@@ -4325,68 +3814,23 @@ function createWishStarBurst() {
 
       function() {
 
-
         if (
           document.visibilityState ===
-            'visible' &&
-          sceneStarted
+          'visible'
         ) {
 
-
-          christmasVideo
-            .play()
-            .catch(
-
-              function() {
-
-                /*
-                如果 Safari 阻止，
-                不影響其他功能。
-                */
-
-              }
-
-            );
-
-
-          /*
-          背景音樂同樣嘗試恢復。
-          */
-
-
-          if (musicStarted) {
-
-
-            backgroundMusic
-              .play()
-              .catch(
-
-                function() {
-
-                  /*
-                  等下一次使用者操作
-                  */
-
-                }
-
-              );
-
-          }
-
+          resumeMedia();
 
         }
-
 
       }
 
     );
 
 
-
     /* ========================================
-       PAGE FOCUS
+       PAGE SHOW
        ======================================== */
-
 
     window.addEventListener(
 
@@ -4394,57 +3838,54 @@ function createWishStarBurst() {
 
       function() {
 
+        if (sceneStarted) {
 
-        if (!sceneStarted) {
-
-          return;
-
-        }
-
-
-        /*
-        Safari Back Forward Cache
-        回到頁面時，
-        恢復360影片。
-        */
-
-
-        christmasVideo
-          .play()
-          .catch(
+          setTimeout(
 
             function() {
 
-              /*
-              Ignore
-              */
+              resumeMedia();
 
-            }
+            },
+
+            100
 
           );
 
+        }
 
       }
 
     );
 
 
+    /* ========================================
+       WINDOW FOCUS
+       ======================================== */
+
+    window.addEventListener(
+
+      'focus',
+
+      function() {
+
+        if (sceneStarted) {
+
+          resumeMedia();
+
+        }
+
+      }
+
+    );
+
 
     /* ========================================
        PREVENT DOUBLE TAP ZOOM
        ======================================== */
 
-
-    /*
-    iPhone Safari：
-    避免快速 Double Tap
-    導致整個網頁放大。
-
-    但許願輸入介面除外。
-    */
-
-
-    let lastTouchEnd = 0;
+    let lastTouchEnd =
+      0;
 
 
     document.addEventListener(
@@ -4453,8 +3894,15 @@ function createWishStarBurst() {
 
       function(event) {
 
+        /*
+        許願介面不需要阻止。
+        */
 
-        if (isInWishUI(event.target)) {
+        if (
+          typeof isInWishUI ===
+            'function' &&
+          isInWishUI(event.target)
+        ) {
 
           return;
 
@@ -4479,7 +3927,6 @@ function createWishStarBurst() {
         lastTouchEnd =
           now;
 
-
       },
 
       {
@@ -4489,18 +3936,9 @@ function createWishStarBurst() {
     );
 
 
-
     /* ========================================
        ORIENTATION CHANGE
        ======================================== */
-
-
-    /*
-    手機由直向轉橫向、
-    或橫向轉直向後，
-    重新讓 A-Frame 更新尺寸。
-    */
-
 
     window.addEventListener(
 
@@ -4508,54 +3946,206 @@ function createWishStarBurst() {
 
       function() {
 
-
         setTimeout(
 
           function() {
 
-
             window.dispatchEvent(
-
               new Event(
                 'resize'
               )
-
             );
-
 
           },
 
-          250
+          300
 
         );
-
 
       }
 
     );
 
 
-
     /* ========================================
-       RESIZE
+       VIDEO ERROR
        ======================================== */
 
+    christmasVideo.addEventListener(
 
-    window.addEventListener(
+      'error',
 
-      'resize',
+      function(event) {
 
-      function() {
+        console.error(
+          'Christmas 360 video error:',
+          event
+        );
+
+      }
+
+    );
 
 
-        /*
-        保持 FOV
-        不會因 resize 回復預設值。
-        */
+    /* ========================================
+       LOADING VIDEO ERROR
+       ======================================== */
+
+    loadingVideo.addEventListener(
+
+      'error',
+
+      function(event) {
+
+        console.error(
+          'Loading video error:',
+          event
+        );
+
+      }
+
+    );
 
 
-        if (camera) {
+    /* ========================================
+       BACKGROUND MUSIC ERROR
+       ======================================== */
 
+    backgroundMusic.addEventListener(
+
+      'error',
+
+      function(event) {
+
+        console.error(
+          'Background music error:',
+          event
+        );
+
+      }
+
+    );
+
+
+    /* ========================================
+       REFRESH LOOK CONTROLS
+       ======================================== */
+
+    function refreshLookControls() {
+
+      if (!camera) {
+
+        return;
+
+      }
+
+
+      const controls =
+        camera.components &&
+        camera.components[
+          'look-controls'
+        ];
+
+
+      if (!controls) {
+
+        return;
+
+      }
+
+
+      /*
+      重新啟動 A-Frame look-controls，
+      讓 iPhone 在取得 Motion 權限後
+      正確接收方向資料。
+      */
+
+      try {
+
+        controls.pause();
+
+      }
+
+      catch (error) {}
+
+
+      try {
+
+        controls.play();
+
+      }
+
+      catch (error) {}
+
+    }
+
+
+    /* ========================================
+       USER INTERACTION FALLBACK
+       ======================================== */
+
+    function resumeMediaAfterInteraction() {
+
+      if (!sceneStarted) {
+
+        return;
+
+      }
+
+
+      resumeMedia();
+
+    }
+
+
+    document.addEventListener(
+
+      'pointerdown',
+
+      resumeMediaAfterInteraction,
+
+      {
+        passive: true
+      }
+
+    );
+
+
+    document.addEventListener(
+
+      'touchstart',
+
+      resumeMediaAfterInteraction,
+
+      {
+        passive: true
+      }
+
+    );
+
+
+    /* ========================================
+       SCENE READY
+       ======================================== */
+
+    const aframeScene =
+      document.querySelector(
+        'a-scene'
+      );
+
+
+    if (aframeScene) {
+
+
+      aframeScene.addEventListener(
+
+        'loaded',
+
+        function() {
+
+          /*
+          確保開場FOV正確。
+          */
 
           camera.setAttribute(
 
@@ -4568,783 +4158,87 @@ function createWishStarBurst() {
           );
 
 
-        }
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       VIDEO ERROR HANDLING
-       ======================================== */
-
-
-    christmasVideo.addEventListener(
-
-      'error',
-
-      function() {
-
-
-        /*
-        如果360影片真的載入失敗，
-        Loading不能永遠卡住。
-
-        仍然顯示進入按鈕，
-        方便測試及排錯。
-        */
-
-
-        console.warn(
-          'Christmas 360 video failed to load.'
-        );
-
-
-        videoReady = true;
-
-
-        scheduleEnterButton();
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       LOADING VIDEO ERROR
-       ======================================== */
-
-
-    loadingVideo.addEventListener(
-
-      'error',
-
-      function() {
-
-
-        /*
-        Loading影片失敗時，
-        背景保持黑色。
-
-        360影片準備好後
-        仍會正常顯示進入按鈕。
-        */
-
-
-        console.warn(
-          'Loading video failed to load.'
-        );
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       MUSIC ERROR
-       ======================================== */
-
-
-    backgroundMusic.addEventListener(
-
-      'error',
-
-      function() {
-
-
-        /*
-        音樂失敗不阻止360場景。
-        */
-
-
-        console.warn(
-          'Background music failed to load.'
-        );
-
-
-      }
-
-    );
-    /* ========================================
-       MOTION PERMISSION RESULT
-       ======================================== */
-
-    /*
-    iPhone Safari：
-
-    A-Frame 自己的白色 Motion Permission UI
-    已經在 <a-scene> 關閉：
-
-    device-orientation-permission-ui="enabled: false"
-
-    Motion 權限只會由：
-
-    「進入 360° 體驗」
-
-    按鈕觸發。
-
-    使用者按：
-    Allow
-    → 可以使用手機方向感應
-
-    Don't Allow
-    → 仍然可以用手指拖動畫面
-    */
-
-
-
-    /* ========================================
-       RESTART LOOK CONTROLS
-       ======================================== */
-
-    function refreshLookControls() {
-
-      if (!camera) {
-
-        return;
-
-      }
-
-
-      /*
-      取得目前 look-controls component
-      */
-
-      const controls =
-        camera.components[
-          'look-controls'
-        ];
-
-
-      /*
-      如果 A-Frame component
-      已經初始化，
-      暫時停用再重新啟用。
-
-      這樣 iPhone 在 Allow 後，
-      A-Frame 可以重新接收
-      Device Orientation。
-      */
-
-      if (controls) {
-
-        try {
-
-          controls.pause();
-
-        }
-
-        catch (error) {
-
           /*
-          Ignore
-          */
-
-        }
-
-
-        setTimeout(
-
-          function() {
-
-            try {
-
-              controls.play();
-
-            }
-
-            catch (error) {
-
-              /*
-              Ignore
-              */
-
-            }
-
-          },
-
-          50
-
-        );
-
-      }
-
-    }
-
-
-
-    /* ========================================
-       MOTION PERMISSION HELPER
-       ======================================== */
-
-    async function requestMotionPermissionAndRefresh() {
-
-
-      let result =
-        'not-required';
-
-
-      try {
-
-
-        /*
-        iPhone / iPad Safari
-        */
-
-        if (
-
-          typeof DeviceOrientationEvent !==
-            'undefined' &&
-
-          typeof DeviceOrientationEvent
-            .requestPermission ===
-            'function'
-
-        ) {
-
-
-          result =
-
-            await DeviceOrientationEvent
-              .requestPermission();
-
-
-          /*
-          使用者按 Allow
+          如果影片已經有足夠資料，
+          立即標記 Ready。
           */
 
           if (
-            result ===
-            'granted'
+            christmasVideo.readyState >=
+            3
           ) {
 
-
-            refreshLookControls();
-
+            markVideoReady();
 
           }
-
-
-          return result;
-
-        }
-
-
-        /*
-        Android / Desktop
-        通常不需要這個 Permission API。
-        */
-
-        return 'not-required';
-
-
-      }
-
-      catch (error) {
-
-
-        console.warn(
-          'Motion permission error:',
-          error
-        );
-
-
-        return 'error';
-
-      }
-
-    }
-
-
-
-    /* ========================================
-       REPLACE MOTION REQUEST FUNCTION
-       ======================================== */
-
-    /*
-    Part 1 裡面的 start360Experience()
-    會呼叫 requestMotionPermission()。
-
-    所以這裡把該函數更新為：
-
-    Request Permission
-          ↓
-    iPhone Allow
-          ↓
-    Refresh A-Frame look-controls
-    */
-
-
-    requestMotionPermission =
-      requestMotionPermissionAndRefresh;
-
-
-
-    /* ========================================
-       FIRST INTERACTION AFTER SCENE START
-       ======================================== */
-
-    function resumeMediaAfterInteraction() {
-
-
-      /*
-      未正式進入360°
-      不處理。
-      */
-
-      if (!sceneStarted) {
-
-        return;
-
-      }
-
-
-      /*
-      確保360影片繼續播放。
-      */
-
-      if (
-        christmasVideo &&
-        christmasVideo.paused
-      ) {
-
-
-        christmasVideo
-          .play()
-          .catch(
-
-            function() {
-
-              /*
-              Ignore
-              */
-
-            }
-
-          );
-
-      }
-
-
-      /*
-      如果背景音樂之前未成功播放，
-      再利用這次 User Gesture
-      嘗試一次。
-      */
-
-      if (
-        backgroundMusic &&
-        backgroundMusic.paused
-      ) {
-
-
-        backgroundMusic
-          .play()
-
-          .then(
-
-            function() {
-
-
-              musicStarted = true;
-
-
-              /*
-              如果音量仍然是0，
-              重新 Fade In。
-              */
-
-              if (
-                backgroundMusic.volume <
-                MUSIC_TARGET_VOLUME
-              ) {
-
-                fadeInBackgroundMusic();
-
-              }
-
-
-            }
-
-          )
-
-          .catch(
-
-            function() {
-
-              /*
-              Safari仍然阻止的話，
-              不影響360。
-              */
-
-            }
-
-          );
-
-      }
-
-    }
-
-
-
-    /*
-    使用 pointerdown，
-    Desktop / Android / iPhone
-    都可以處理。
-    */
-
-    document.addEventListener(
-
-      'pointerdown',
-
-      function(event) {
-
-
-        /*
-        許願輸入介面不需要
-        觸發 media resume。
-        */
-
-        if (isInWishUI(event.target)) {
-
-          return;
-
-        }
-
-
-        resumeMediaAfterInteraction();
-
-
-      },
-
-      {
-        passive: true
-      }
-
-    );
-
-
-
-    /* ========================================
-       iOS TOUCH FALLBACK
-       ======================================== */
-
-    document.addEventListener(
-
-      'touchstart',
-
-      function(event) {
-
-
-        if (isInWishUI(event.target)) {
-
-          return;
-
-        }
-
-
-        resumeMediaAfterInteraction();
-
-
-      },
-
-      {
-        passive: true
-      }
-
-    );
-
-
-
-    /* ========================================
-       CAMERA READY
-       ======================================== */
-
-    camera.addEventListener(
-
-      'loaded',
-
-      function() {
-
-
-        /*
-        確保初始 FOV 正確。
-        */
-
-        camera.setAttribute(
-
-          'camera',
-
-          'fov',
-
-          currentFov
-
-        );
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       SCENE READY
-       ======================================== */
-
-    const scene =
-      document.querySelector(
-        'a-scene'
-      );
-
-
-    if (scene) {
-
-
-      scene.addEventListener(
-
-        'loaded',
-
-        function() {
-
-
-          /*
-          A-Frame Scene Ready。
-
-          注意：
-          這裡不要求 Motion Permission，
-          亦不播放背景音樂。
-
-          一定要等使用者按：
-          「進入360°體驗」
-          */
-
-
-          if (camera) {
-
-
-            camera.setAttribute(
-
-              'camera',
-
-              'fov',
-
-              currentFov
-
-            );
-
-
-          }
-
 
         }
 
       );
 
+
     }
 
 
-
     /* ========================================
-       SAFARI PAGE RESTORE
-       ======================================== */
-
-    window.addEventListener(
-
-      'pageshow',
-
-      function(event) {
-
-
-        /*
-        如果 Safari 從 BFCache
-        恢復頁面，
-        Loading 已經完成的話
-        不重新顯示 Loading。
-        */
-
-
-        if (
-          sceneStarted &&
-          loadingScreen
-        ) {
-
-
-          loadingScreen.style.display =
-            'none';
-
-
-          startButton.style.display =
-            'none';
-
-
-          showWishButton();
-
-
-        }
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       SAFARI AUDIO INTERRUPTION
-       ======================================== */
-
-    /*
-    iPhone：
-
-    Control Center、
-    電話、
-    Siri、
-    切換 App
-
-    都可能令 Audio 暫停。
-
-    回到頁面後會先嘗試恢復，
-    如果 Safari 要求新 User Gesture，
-    下一次 touch 會由上面的
-    resumeMediaAfterInteraction()
-    再啟動。
-    */
-
-    window.addEventListener(
-
-      'focus',
-
-      function() {
-
-
-        if (!sceneStarted) {
-
-          return;
-
-        }
-
-
-        christmasVideo
-          .play()
-          .catch(
-            function() {}
-          );
-
-
-        if (musicStarted) {
-
-
-          backgroundMusic
-            .play()
-            .catch(
-              function() {}
-            );
-
-
-        }
-
-
-      }
-
-    );
-
-
-
-    /* ========================================
-       INITIAL WISH UI
+       INITIAL WISH COUNT
        ======================================== */
 
     updateWishCount();
-
 
 
     /* ========================================
        INITIAL CAMERA FOV
        ======================================== */
 
-    if (camera) {
+    camera.setAttribute(
 
+      'camera',
 
-      camera.setAttribute(
+      'fov',
 
-        'camera',
+      currentFov
 
-        'fov',
-
-        currentFov
-
-      );
-
-
-    }
-
+    );
 
 
     /* ========================================
-       FINAL SAFETY CHECK
+       EXTRA VIDEO READY FALLBACK
        ======================================== */
 
     /*
-    某些 Safari 版本：
+    某些 iPhone Safari
+    canplay / canplaythrough
+    觸發時間不穩定。
 
-    canplay / loadeddata
-    event 可能在 JS listener
-    建立前已經發生。
-
-    所以檢查 readyState。
-
-    readyState >= 2
-    = 已經有目前播放位置的資料。
+    所以再做一個 readyState 檢查。
     */
 
-    if (
-      christmasVideo.readyState >= 2
-    ) {
+    let readyAttempts =
+      0;
 
 
-      videoReady = true;
-
-
-      scheduleEnterButton();
-
-
-    }
-
-
-
-    /*
-    再做一個保險檢查。
-
-    如果影片載入較慢，
-    每500ms檢查一次。
-
-    一旦 Ready，
-    就顯示進入按鈕。
-    */
-
-    const videoReadyCheck =
+    const readyStateTimer =
       setInterval(
 
         function() {
 
 
+          readyAttempts++;
+
+
           if (
-            videoReady ||
-            sceneStarted
+            christmasVideo.readyState >=
+            3
           ) {
 
 
             clearInterval(
-              videoReadyCheck
+              readyStateTimer
             );
+
+
+            markVideoReady();
 
 
             return;
@@ -5352,19 +4246,18 @@ function createWishStarBurst() {
           }
 
 
+          /*
+          最多檢查約30秒。
+          */
+
           if (
-            christmasVideo.readyState >= 2
+            readyAttempts >
+            100
           ) {
 
 
-            videoReady = true;
-
-
-            scheduleEnterButton();
-
-
             clearInterval(
-              videoReadyCheck
+              readyStateTimer
             );
 
 
@@ -5373,15 +4266,38 @@ function createWishStarBurst() {
 
         },
 
-        500
+        300
 
       );
 
 
-
     /* ========================================
-       END
+       CLEAN UP WHEN PAGE LEAVES
        ======================================== */
+
+    window.addEventListener(
+
+      'pagehide',
+
+      function() {
+
+        /*
+        不需要刪除360影片，
+        只停止暫時計時器。
+        */
+
+        if (enterTimer) {
+
+          clearTimeout(
+            enterTimer
+          );
+
+        }
+
+      }
+
+    );
+
 
   </script>
 
