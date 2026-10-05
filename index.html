@@ -16,964 +16,6 @@
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-
-
-  <style>
-
-    html,
-    body {
-
-      margin: 0;
-      padding: 0;
-
-      width: 100%;
-      height: 100%;
-
-      overflow: hidden;
-
-      background: black;
-
-      touch-action: none;
-
-    }
-
-
-    /* ========================================
-       LOADING SCREEN
-       ======================================== */
-
-    #loadingScreen {
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      z-index: 9999;
-
-      background: black;
-
-      opacity: 1;
-
-      transition: opacity 1.5s ease;
-
-    }
-
-
-    #loadingScreen.hide {
-
-      opacity: 0;
-
-      pointer-events: none;
-
-    }
-
-
-    /* ========================================
-       LOADING VIDEO
-       ======================================== */
-
-    #loadingVideo {
-
-      position: absolute;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-    }
-
-
-    /* ========================================
-       ENTER BUTTON
-       ======================================== */
-
-    #startButton {
-
-      position: fixed;
-
-      left: 50%;
-      bottom: 100px;
-
-      transform: translateX(-50%);
-
-      z-index: 10000;
-
-      padding: 14px 28px;
-
-      border: none;
-      border-radius: 30px;
-
-      background: rgba(255,255,255,0.92);
-
-      color: #222;
-
-      font-size: 17px;
-
-      display: none;
-
-      cursor: pointer;
-
-      white-space: nowrap;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang HK",
-        "PingFang TC",
-        "Noto Sans CJK TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-      -webkit-tap-highlight-color: transparent;
-
-      touch-action: manipulation;
-
-    }
-
-
-    /* ========================================
-       A-FRAME
-       ======================================== */
-
-    a-scene {
-
-      width: 100%;
-      height: 100%;
-
-    }
-
-
-    /* ========================================
-       WISH BUTTON
-       ======================================== */
-
-    #wishButton {
-
-      position: fixed;
-
-      right:
-        calc(
-          18px +
-          env(safe-area-inset-right, 0px)
-        );
-
-      bottom:
-        calc(
-          26px +
-          env(safe-area-inset-bottom, 0px)
-        );
-
-      z-index: 10001;
-
-      display: none;
-
-      align-items: center;
-
-      gap: 6px;
-
-      padding: 12px 22px;
-
-      border: none;
-
-      border-radius: 30px;
-
-      background:
-        rgba(255,255,255,0.92);
-
-      color: #222;
-
-      font-size: 17px;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang HK",
-        "PingFang TC",
-        "Noto Sans CJK TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-      letter-spacing: 1px;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 0 0 1px
-        rgba(255,215,120,0.55),
-
-        0 4px 18px
-        rgba(255,200,90,0.35);
-
-      opacity: 0;
-
-      transform:
-        translateY(12px);
-
-      transition:
-        opacity 0.6s ease,
-        transform 0.6s ease;
-
-      -webkit-tap-highlight-color:
-        transparent;
-
-      user-select: none;
-      -webkit-user-select: none;
-
-      touch-action: manipulation;
-
-    }
-
-
-    #wishButton.show {
-
-      opacity: 1;
-
-      transform:
-        translateY(0);
-
-      animation:
-        wishGlow
-        3.2s
-        ease-in-out
-        0.6s
-        infinite;
-
-    }
-
-
-    #wishButton:active {
-
-      transform:
-        scale(0.96);
-
-    }
-
-
-    #wishButton .wishIcon {
-
-      color: #d9a520;
-
-      font-size: 18px;
-
-      line-height: 1;
-
-    }
-
-
-    .wishButtonText {
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      line-height: 1.05;
-
-    }
-
-
-    .wishButtonZh {
-
-      font-size: 16px;
-
-    }
-
-
-    .wishButtonEn {
-
-      margin-top: 3px;
-
-      font-size: 9px;
-
-      letter-spacing: 0.8px;
-
-      opacity: 0.72;
-
-      text-transform: uppercase;
-
-    }
-
-
-    @keyframes wishGlow {
-
-      0%,
-      100% {
-
-        box-shadow:
-
-          0 0 0 1px
-          rgba(255,215,120,0.55),
-
-          0 4px 18px
-          rgba(255,200,90,0.30);
-
-      }
-
-
-      50% {
-
-        box-shadow:
-
-          0 0 0 1px
-          rgba(255,215,120,0.85),
-
-          0 4px 26px
-          rgba(255,200,90,0.60);
-
-      }
-
-    }
-
-
-    /* ========================================
-       WISH OVERLAY
-       ======================================== */
-
-    #wishOverlay {
-
-      position: fixed;
-
-      top: 0;
-      left: 0;
-
-      width: 100%;
-      height: 100%;
-
-      z-index: 10002;
-
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      box-sizing: border-box;
-
-      padding:
-
-        calc(
-          16px +
-          env(safe-area-inset-top, 0px)
-        )
-
-        calc(
-          16px +
-          env(safe-area-inset-right, 0px)
-        )
-
-        calc(
-          16px +
-          env(safe-area-inset-bottom, 0px)
-        )
-
-        calc(
-          16px +
-          env(safe-area-inset-left, 0px)
-        );
-
-      background:
-        rgba(0,0,0,0.35);
-
-      -webkit-backdrop-filter:
-        blur(2px);
-
-      backdrop-filter:
-        blur(2px);
-
-      opacity: 0;
-
-      transition:
-        opacity 0.25s ease;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang HK",
-        "PingFang TC",
-        "Noto Sans CJK TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-    }
-
-
-    #wishOverlay.open {
-
-      opacity: 1;
-
-    }
-
-
-    /* ========================================
-       WISH PANEL
-       ======================================== */
-
-    #wishPanel {
-
-      width: 100%;
-
-      max-width: 360px;
-
-      box-sizing: border-box;
-
-      padding:
-        20px 18px 16px;
-
-      border-radius: 22px;
-
-      background:
-        rgba(255,255,255,0.95);
-
-      color: #222;
-
-      box-shadow:
-
-        0 0 0 1px
-        rgba(255,215,120,0.6),
-
-        0 10px 40px
-        rgba(0,0,0,0.35);
-
-      transform:
-        translateY(10px)
-        scale(0.98);
-
-      transition:
-        transform 0.25s ease;
-
-    }
-
-
-    #wishOverlay.open
-    #wishPanel {
-
-      transform:
-        translateY(0)
-        scale(1);
-
-    }
-
-
-    #wishTitle {
-
-      margin:
-        0 0 15px;
-
-      text-align: center;
-
-      font-weight: 600;
-
-      color: #a8750a;
-
-    }
-
-
-    .wishTitleZh {
-
-      display: block;
-
-      font-size: 20px;
-
-      letter-spacing: 2px;
-
-    }
-
-
-    .wishTitleEn {
-
-      display: block;
-
-      margin-top: 5px;
-
-      font-size: 10px;
-
-      letter-spacing: 1.8px;
-
-      font-weight: 500;
-
-      opacity: 0.68;
-
-    }
-
-
-    /* ========================================
-       WISH TEXTAREA
-       ======================================== */
-
-    #wishText {
-
-      width: 100%;
-
-      box-sizing: border-box;
-
-      min-height: 100px;
-
-      resize: none;
-
-      padding: 13px 14px;
-
-      border:
-        1px solid
-        rgba(180,145,70,0.35);
-
-      border-radius: 14px;
-
-      outline: none;
-
-      background:
-        rgba(255,255,255,0.86);
-
-      color: #222;
-
-      font-size: 16px;
-
-      line-height: 1.55;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang HK",
-        "PingFang TC",
-        "Noto Sans CJK TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-      -webkit-appearance: none;
-
-      appearance: none;
-
-      touch-action: auto;
-
-    }
-
-
-    #wishText:focus {
-
-      border-color:
-        rgba(205,160,50,0.75);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(255,210,90,0.13);
-
-    }
-
-
-    #wishCount {
-
-      margin-top: 6px;
-
-      text-align: right;
-
-      font-size: 11px;
-
-      color: #777;
-
-    }
-
-
-    /* ========================================
-       WISH NOTE
-       ======================================== */
-
-    #wishNote {
-
-      margin-top: 11px;
-
-      text-align: center;
-
-      color: #777;
-
-    }
-
-
-    .wishNoteZh {
-
-      display: block;
-
-      font-size: 11px;
-
-    }
-
-
-    .wishNoteEn {
-
-      display: block;
-
-      margin-top: 2px;
-
-      font-size: 9px;
-
-    }
-
-
-    /* ========================================
-       WISH ACTIONS
-       ======================================== */
-
-    #wishActions {
-
-      display: flex;
-
-      gap: 10px;
-
-      margin-top: 15px;
-
-    }
-
-
-    #wishActions button {
-
-      flex: 1;
-
-      padding:
-        11px 10px;
-
-      border: none;
-
-      border-radius: 14px;
-
-      font-size: 14px;
-
-      cursor: pointer;
-
-      font-family:
-        inherit;
-
-      touch-action:
-        manipulation;
-
-      -webkit-tap-highlight-color:
-        transparent;
-
-    }
-
-
-    #wishCancel {
-
-      background:
-        #eeeeee;
-
-      color:
-        #555;
-
-    }
-
-
-    #wishSubmit {
-
-      background:
-        linear-gradient(
-          135deg,
-          #e6bd55,
-          #bd8413
-        );
-
-      color:
-        white;
-
-    }
-
-
-    #wishSubmit:disabled {
-
-      opacity: 0.45;
-
-      cursor: default;
-
-    }
-
-
-    /* ========================================
-       WISH TOAST
-       ======================================== */
-
-    #wishToast {
-
-      position: fixed;
-
-      left: 50%;
-
-      top:
-        calc(
-          24px +
-          env(safe-area-inset-top, 0px)
-        );
-
-      transform:
-        translateX(-50%)
-        translateY(-15px);
-
-      z-index: 10003;
-
-      box-sizing: border-box;
-
-      width:
-        calc(100% - 40px);
-
-      max-width: 330px;
-
-      padding:
-        11px 18px;
-
-      border-radius: 18px;
-
-      background:
-        rgba(255,255,255,0.94);
-
-      color:
-        #9b6c0a;
-
-      text-align:
-        center;
-
-      font-size:
-        15px;
-
-      line-height:
-        1.35;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "PingFang HK",
-        "PingFang TC",
-        "Noto Sans CJK TC",
-        "Microsoft JhengHei",
-        sans-serif;
-
-      box-shadow:
-        0 5px 25px
-        rgba(0,0,0,0.25);
-
-      opacity: 0;
-
-      pointer-events: none;
-
-      transition:
-        opacity 0.35s ease,
-        transform 0.35s ease;
-
-    }
-
-
-    #wishToast.show {
-
-      opacity: 1;
-
-      transform:
-        translateX(-50%)
-        translateY(0);
-
-    }
-
-  </style>
-
-</head>
-
-
-<body>
-
-
-  <!-- ========================================
-       LOADING SCREEN
-       ======================================== -->
-
-  <div id="loadingScreen">
-
-    <video
-      id="loadingVideo"
-      src="loading_v2.mp4"
-      autoplay
-      muted
-      playsinline
-      webkit-playsinline>
-    </video>
-
-
-    <button
-      id="startButton"
-      type="button">
-
-      進入360°體驗
-      <br>
-
-      <span
-        style="
-          font-size:10px;
-          opacity:0.7;
-          letter-spacing:1px;
-        ">
-
-        ENTER 360° EXPERIENCE
-
-      </span>
-
-    </button>
-
-  </div>
-
-
-  <!-- ========================================
-       BACKGROUND MUSIC
-       ======================================== -->
-
-  <audio
-    id="backgroundMusic"
-    src="christmassong2025.mp3"
-    preload="auto"
-    loop>
-  </audio>
-
-
-  <!-- ========================================
-       WISH BUTTON
-       ======================================== -->
-
-  <button
-    id="wishButton"
-    type="button"
-    aria-label="許願 Wish">
-
-    <span class="wishIcon">
-      ✦
-    </span>
-
-    <span class="wishButtonText">
-
-      <span class="wishButtonZh">
-        許願
-      </span>
-
-      <span class="wishButtonEn">
-        Wish
-      </span>
-
-    </span>
-
-  </button>
-
-
-  <!-- ========================================
-       WISH PANEL
-       ======================================== -->
-
-  <div
-    id="wishOverlay"
-    aria-hidden="true">
-
-    <div
-      id="wishPanel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="wishTitle">
-
-
-      <h2 id="wishTitle">
-
-        <span class="wishTitleZh">
-
-          <span>✦</span>
-
-          聖誕許願
-
-          <span>✦</span>
-
-        </span>
-
-
-        <span class="wishTitleEn">
-
-          CHRISTMAS WISH
-
-        </span>
-
-      </h2>
-
-
-      <textarea
-        id="wishText"
-        maxlength="60"
-        rows="3"
-        placeholder="寫低你嘅聖誕願望…&#10;Write your Christmas wish…"
-        enterkeyhint="send"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"></textarea>
-
-
-      <div id="wishCount">
-        0 / 60
-      </div>
-
-
-      <div
-        id="wishNote"
-        hidden>
-
-        <span class="wishNoteZh">
-
-          你嘅願望會匿名傳送俾主辦單位
-
-        </span>
-
-        <span class="wishNoteEn">
-
-          Your wish will be sent anonymously to the organizer.
-
-        </span>
-
-      </div>
-
-
-      <div id="wishActions">
-
-        <button
-          id="wishCancel"
-          type="button">
-
-          取消 Cancel
-
-        </button>
-
-
-        <button
-          id="wishSubmit"
-          type="button"
-          disabled>
-
-          送出 Send
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- ========================================
-       WISH SUCCESS MESSAGE
-       ======================================== -->
-
-  <div
-    id="wishToast"
-    role="status"
-    aria-live="polite">
-
-    願望已經送上天 ✨
-
-    <br>
-
     <span style="font-size:13px;">
 
       Your wish has been sent to the stars.
@@ -1072,125 +114,70 @@
        ======================================== */
 
     const loadingScreen =
-      document.querySelector(
-        '#loadingScreen'
-      );
-
+      document.querySelector('#loadingScreen');
 
     const loadingVideo =
-      document.querySelector(
-        '#loadingVideo'
-      );
-
+      document.querySelector('#loadingVideo');
 
     const christmasVideo =
-      document.querySelector(
-        '#christmasVideo'
-      );
-
+      document.querySelector('#christmasVideo');
 
     const backgroundMusic =
-      document.querySelector(
-        '#backgroundMusic'
-      );
-
+      document.querySelector('#backgroundMusic');
 
     const startButton =
-      document.querySelector(
-        '#startButton'
-      );
-
+      document.querySelector('#startButton');
 
     const camera =
-      document.querySelector(
-        '#camera'
-      );
-
+      document.querySelector('#camera');
 
     const sceneEl =
-      document.querySelector(
-        'a-scene'
-      );
+      document.querySelector('a-scene');
 
 
     /* ========================================
        LOADING SETTINGS
        ======================================== */
 
-    /*
-    Loading 最少播放3秒
-    */
+    const MIN_LOADING_TIME = 3000;
 
-    const MIN_LOADING_TIME =
-      3000;
+    const FADE_TIME = 1500;
 
+    const loadingStartTime = Date.now();
 
-    /*
-    Loading Fade Out 1.5秒
-    */
+    let sceneStarted = false;
 
-    const FADE_TIME =
-      1500;
+    let videoReady = false;
 
+    let enterTimer = null;
 
-    const loadingStartTime =
-      Date.now();
+    let enterButtonScheduled = false;
 
-
-    let sceneStarted =
-      false;
-
-
-    let videoReady =
-      false;
-
-
-    let enterTimer =
-      null;
-
-
-    let enterButtonScheduled =
-      false;
-
-
-    let experienceStarting =
-      false;
+    let experienceStarting = false;
 
 
     /* ========================================
        BACKGROUND MUSIC
        ======================================== */
 
-    const MUSIC_TARGET_VOLUME =
-      0.6;
+    const MUSIC_TARGET_VOLUME = 0.6;
 
+    const MUSIC_FADE_TIME = 2000;
 
-    const MUSIC_FADE_TIME =
-      2000;
+    let musicStarted = false;
 
-
-    let musicStarted =
-      false;
-
-
-    let musicFadeTimer =
-      null;
+    let musicFadeTimer = null;
 
 
     /* ========================================
        CAMERA / ZOOM SETTINGS
        ======================================== */
 
-    let currentFov =
-      105;
+    let currentFov = 105;
 
+    const minFov = 35;
 
-    const minFov =
-      35;
-
-
-    const maxFov =
-      120;
+    const maxFov = 120;
 
 
     /* ========================================
@@ -1198,35 +185,19 @@
        ======================================== */
 
     const WISH_ENDPOINT =
-
       'https://script.google.com/macros/s/AKfycbyCrBzBm5rgP0bsMPkpZ6HBzHGnrUgRfNm3-6aAEQH4u4ZQY8tUB2qT-0DPwjjX9uTI/exec';
 
-
-    const WISH_MAX_LENGTH =
-      60;
+    const WISH_MAX_LENGTH = 60;
 
 
     /* ========================================
        ★ FIXED BIG STAR TARGET ★
-       ========================================
-
-       這是剛才用 iPhone
-       對準背景大星星後
-       實機校準得到的位置：
-
-       Yaw   = 2.04°
-       Pitch = 0.89°
-
-       Part 3 的願望星會使用
-       這兩個固定角度。
-
        ======================================== */
 
     const BIG_STAR_YAW =
       THREE.MathUtils.degToRad(
         2.04
       );
-
 
     const BIG_STAR_PITCH =
       THREE.MathUtils.degToRad(
@@ -1239,73 +210,37 @@
        ======================================== */
 
     const wishButton =
-      document.querySelector(
-        '#wishButton'
-      );
-
+      document.querySelector('#wishButton');
 
     const wishOverlay =
-      document.querySelector(
-        '#wishOverlay'
-      );
-
+      document.querySelector('#wishOverlay');
 
     const wishPanel =
-      document.querySelector(
-        '#wishPanel'
-      );
-
+      document.querySelector('#wishPanel');
 
     const wishText =
-      document.querySelector(
-        '#wishText'
-      );
-
+      document.querySelector('#wishText');
 
     const wishCount =
-      document.querySelector(
-        '#wishCount'
-      );
-
+      document.querySelector('#wishCount');
 
     const wishNote =
-      document.querySelector(
-        '#wishNote'
-      );
-
+      document.querySelector('#wishNote');
 
     const wishCancel =
-      document.querySelector(
-        '#wishCancel'
-      );
-
+      document.querySelector('#wishCancel');
 
     const wishSubmit =
-      document.querySelector(
-        '#wishSubmit'
-      );
-
+      document.querySelector('#wishSubmit');
 
     const wishToast =
-      document.querySelector(
-        '#wishToast'
-      );
+      document.querySelector('#wishToast');
+
+    let wishPanelOpen = false;
+
+    let wishToastTimer = null;
 
 
-    let wishPanelOpen =
-      false;
-
-
-    let wishToastTimer =
-      null;
-
-
-    /*
-    只保留一粒願望星。
-    */
-
-    window.currentWishStar =
-      null;
     /* ========================================
        SHOW ENTER BUTTON
        ======================================== */
@@ -1318,7 +253,6 @@
       ) {
         return;
       }
-
 
       startButton.style.display =
         'block';
@@ -1340,15 +274,11 @@
         return;
       }
 
-
-      enterButtonScheduled =
-        true;
-
+      enterButtonScheduled = true;
 
       const elapsed =
         Date.now() -
         loadingStartTime;
-
 
       const remaining =
         Math.max(
@@ -1357,18 +287,12 @@
           elapsed
         );
 
-
       enterTimer =
         setTimeout(
-
           function() {
-
             showEnterButton();
-
           },
-
           remaining
-
         );
 
     }
@@ -1384,10 +308,7 @@
         return;
       }
 
-
-      videoReady =
-        true;
-
+      videoReady = true;
 
       scheduleEnterButton();
 
@@ -1399,29 +320,22 @@
       markVideoReady
     );
 
-
     christmasVideo.addEventListener(
       'canplaythrough',
       markVideoReady
     );
 
-
     christmasVideo.addEventListener(
-
       'loadeddata',
-
       function() {
 
         if (
           christmasVideo.readyState >= 3
         ) {
-
           markVideoReady();
-
         }
 
       }
-
     );
 
 
@@ -1433,13 +347,10 @@
 
       try {
 
-        christmasVideo.muted =
-          true;
-
+        christmasVideo.muted = true;
 
         const playPromise =
           christmasVideo.play();
-
 
         if (
           playPromise &&
@@ -1447,12 +358,7 @@
         ) {
 
           playPromise.catch(
-            function() {
-              /*
-              iPhone Safari 如果暫時阻止播放，
-              按 Enter 時會再次嘗試。
-              */
-            }
+            function() {}
           );
 
         }
@@ -1479,13 +385,10 @@
 
       try {
 
-        backgroundMusic.volume =
-          0;
-
+        backgroundMusic.volume = 0;
 
         const playPromise =
           backgroundMusic.play();
-
 
         if (
           playPromise &&
@@ -1495,25 +398,15 @@
           return playPromise
 
             .then(
-
               function() {
-
-                musicStarted =
-                  true;
-
+                musicStarted = true;
               }
-
             )
 
             .catch(
-
               function() {
-
-                musicStarted =
-                  false;
-
+                musicStarted = false;
               }
-
             );
 
         }
@@ -1522,11 +415,9 @@
 
       catch (error) {
 
-        musicStarted =
-          false;
+        musicStarted = false;
 
       }
-
 
       return Promise.resolve();
 
@@ -1543,7 +434,6 @@
         return;
       }
 
-
       if (musicFadeTimer) {
 
         cancelAnimationFrame(
@@ -1552,32 +442,24 @@
 
       }
 
-
       const startTime =
         performance.now();
-
 
       function fadeStep(now) {
 
         const progress =
           Math.min(
-
             1,
-
             (
               now -
               startTime
             ) /
             MUSIC_FADE_TIME
-
           );
 
-
         backgroundMusic.volume =
-
           MUSIC_TARGET_VOLUME *
           progress;
-
 
         if (
           progress < 1
@@ -1592,13 +474,11 @@
 
         else {
 
-          musicFadeTimer =
-            null;
+          musicFadeTimer = null;
 
         }
 
       }
-
 
       musicFadeTimer =
         requestAnimationFrame(
@@ -1613,11 +493,6 @@
        ======================================== */
 
     function requestMotionPermission() {
-
-      /*
-      iPhone / iOS 13+
-      必須由使用者按鈕直接觸發。
-      */
 
       if (
 
@@ -1634,17 +509,12 @@
           .requestPermission()
 
           .then(
-
             function(permissionState) {
-
               return permissionState;
-
             }
-
           )
 
           .catch(
-
             function(error) {
 
               console.warn(
@@ -1652,20 +522,12 @@
                 error
               );
 
-
               return 'denied';
 
             }
-
           );
 
       }
-
-
-      /*
-      Android / Desktop
-      不需要 Apple requestPermission。
-      */
 
       return Promise.resolve(
         'granted'
@@ -1684,63 +546,34 @@
         return;
       }
 
-
-      sceneStarted =
-        true;
-
-
-      /*
-      隱藏 Enter Button
-      */
+      sceneStarted = true;
 
       startButton.style.display =
         'none';
 
-
-      /*
-      音樂開始 Fade In
-      */
-
       fadeInMusic();
-
-
-      /*
-      Loading 畫面淡出
-      */
 
       loadingScreen.classList.add(
         'hide'
       );
 
-
       setTimeout(
-
         function() {
 
           loadingScreen.style.display =
             'none';
 
         },
-
         FADE_TIME
-
       );
 
-
-      /*
-      顯示許願按鈕
-      */
-
       setTimeout(
-
         function() {
 
           showWishButton();
 
         },
-
         500
-
       );
 
     }
@@ -1759,44 +592,19 @@
         return;
       }
 
+      experienceStarting = true;
 
-      experienceStarting =
-        true;
-
-
-      startButton.disabled =
-        true;
-
-
-      /*
-      非常重要：
-
-      音樂 play()
-      必須直接在使用者按 Enter
-      的操作內開始。
-
-      這樣 iPhone Safari
-      才比較容易允許播放音樂。
-      */
+      startButton.disabled = true;
 
       const musicPromise =
         prepareBackgroundMusic();
 
-
-      /*
-      同一個使用者操作中，
-      再次確保360影片正在播放。
-      */
-
       try {
 
-        christmasVideo.muted =
-          true;
-
+        christmasVideo.muted = true;
 
         const videoPromise =
           christmasVideo.play();
-
 
         if (
           videoPromise &&
@@ -1814,24 +622,10 @@
       catch (error) {}
 
 
-      /*
-      直接要求 iPhone
-      Motion & Orientation 權限。
-      */
-
       requestMotionPermission()
 
         .then(
-
           function(permissionState) {
-
-            /*
-            即使使用者按 Don't Allow，
-            仍然可以進入360°。
-
-            只是沒有陀螺儀，
-            仍可用手指拖動。
-            */
 
             if (
               permissionState ===
@@ -1844,25 +638,20 @@
 
             }
 
-
             return musicPromise;
 
           }
-
         )
 
         .then(
-
           function() {
 
             enter360Scene();
 
           }
-
         )
 
         .catch(
-
           function(error) {
 
             console.warn(
@@ -1870,16 +659,9 @@
               error
             );
 
-
-            /*
-            即使權限出錯，
-            仍然讓使用者進入。
-            */
-
             enter360Scene();
 
           }
-
         );
 
     }
@@ -1890,18 +672,14 @@
        ======================================== */
 
     startButton.addEventListener(
-
       'click',
-
       function(event) {
 
         event.preventDefault();
 
-
         start360Experience();
 
       }
-
     );
 
 
@@ -1910,20 +688,13 @@
        ======================================== */
 
     window.addEventListener(
-
       'load',
-
       function() {
-
-        /*
-        Loading Video
-        */
 
         try {
 
           const loadingPromise =
             loadingVideo.play();
-
 
           if (
             loadingPromise &&
@@ -1941,16 +712,11 @@
         catch (error) {}
 
 
-        /*
-        預先載入背景音樂
-        */
-
         try {
 
           backgroundMusic.load();
 
         }
-
         catch (error) {}
 
 
@@ -1961,9 +727,7 @@
         setTimeout(
 
           function() {
-
             prepareChristmasVideo();
-
           },
 
           300
@@ -1992,7 +756,6 @@
               videoReadyTimer
             );
 
-
             markVideoReady();
 
           }
@@ -2011,7 +774,6 @@
     let pinchStartDistance =
       null;
 
-
     let pinchStartFov =
       currentFov;
 
@@ -2025,11 +787,9 @@
         touch1.clientX -
         touch2.clientX;
 
-
       const dy =
         touch1.clientY -
         touch2.clientY;
-
 
       return Math.sqrt(
         dx * dx +
@@ -2051,11 +811,8 @@
         !target ||
         !target.closest
       ) {
-
         return false;
-
       }
-
 
       return !!target.closest(
         '#wishButton, #wishOverlay'
@@ -2082,20 +839,15 @@
           return;
         }
 
-
         if (
           event.touches.length === 2
         ) {
 
           pinchStartDistance =
             getTouchDistance(
-
               event.touches[0],
-
               event.touches[1]
-
             );
-
 
           pinchStartFov =
             currentFov;
@@ -2129,62 +881,43 @@
           return;
         }
 
-
         if (
-
           event.touches.length === 2 &&
           pinchStartDistance
-
         ) {
 
           event.preventDefault();
 
-
           const currentDistance =
             getTouchDistance(
-
               event.touches[0],
-
               event.touches[1]
-
             );
-
 
           const ratio =
             pinchStartDistance /
             currentDistance;
 
-
           let newFov =
             pinchStartFov *
             ratio;
 
-
           newFov =
             Math.max(
-
               minFov,
-
               Math.min(
                 maxFov,
                 newFov
               )
-
             );
-
 
           currentFov =
             newFov;
 
-
           camera.setAttribute(
-
             'camera',
-
             'fov',
-
             currentFov
-
           );
 
         }
@@ -2244,36 +977,25 @@
           return;
         }
 
-
         event.preventDefault();
-
 
         currentFov +=
           event.deltaY *
           0.03;
 
-
         currentFov =
           Math.max(
-
             minFov,
-
             Math.min(
               maxFov,
               currentFov
             )
-
           );
 
-
         camera.setAttribute(
-
           'camera',
-
           'fov',
-
           currentFov
-
         );
 
       },
@@ -2293,7 +1015,6 @@
 
       wishButton.style.display =
         'flex';
-
 
       requestAnimationFrame(
 
@@ -2330,15 +1051,10 @@
         return;
       }
 
-
       camera.setAttribute(
-
         'look-controls',
-
         'enabled',
-
         enabled
-
       );
 
     }
@@ -2354,10 +1070,8 @@
         return;
       }
 
-
       wishPanelOpen =
         true;
-
 
       /*
       暫停360°拖動，
@@ -2368,19 +1082,13 @@
         false
       );
 
-
       wishOverlay.style.display =
         'flex';
 
-
       wishOverlay.setAttribute(
-
         'aria-hidden',
-
         'false'
-
       );
-
 
       requestAnimationFrame(
 
@@ -2394,13 +1102,10 @@
 
       );
 
-
       setTimeout(
 
         function() {
-
           wishText.focus();
-
         },
 
         180
@@ -2424,23 +1129,21 @@
           callback();
         }
 
-
         return;
 
       }
 
-
       wishPanelOpen =
         false;
-
-
-      wishText.blur();
-
 
       wishOverlay.classList.remove(
         'open'
       );
 
+      wishOverlay.setAttribute(
+        'aria-hidden',
+        'true'
+      );
 
       setTimeout(
 
@@ -2449,24 +1152,9 @@
           wishOverlay.style.display =
             'none';
 
-
-          wishOverlay.setAttribute(
-
-            'aria-hidden',
-
-            'true'
-
-          );
-
-
-          /*
-          恢復360°操作
-          */
-
           setLookControls(
             true
           );
-
 
           if (callback) {
             callback();
@@ -2474,7 +1162,7 @@
 
         },
 
-        250
+        260
 
       );
 
@@ -2482,67 +1170,88 @@
 
 
     /* ========================================
-       UPDATE WISH COUNTER
+       WISH TEXT COUNTER
        ======================================== */
 
-    function updateWishCounter() {
+    function updateWishCount() {
 
       const length =
         wishText.value.length;
 
-
       wishCount.textContent =
-
         length +
         ' / ' +
         WISH_MAX_LENGTH;
 
-
-      wishSubmit.disabled =
-
-        wishText.value
-          .trim()
-          .length === 0;
-
     }
+
+
+    wishText.addEventListener(
+      'input',
+      updateWishCount
+    );
 
 
     /* ========================================
-       WISH TOAST
+       WISH BUTTON
        ======================================== */
 
-    function showWishToast() {
+    wishButton.addEventListener(
 
-      if (wishToastTimer) {
+      'click',
 
-        clearTimeout(
-          wishToastTimer
-        );
+      function(event) {
+
+        event.preventDefault();
+
+        openWishPanel();
 
       }
 
-
-      wishToast.classList.add(
-        'show'
-      );
+    );
 
 
-      wishToastTimer =
-        setTimeout(
+    /* ========================================
+       CANCEL WISH
+       ======================================== */
 
-          function() {
+    wishCancel.addEventListener(
 
-            wishToast.classList.remove(
-              'show'
-            );
+      'click',
 
-          },
+      function(event) {
 
-          3000
+        event.preventDefault();
 
-        );
+        closeWishPanel();
 
-    }
+      }
+
+    );
+
+
+    /* ========================================
+       CLICK OUTSIDE PANEL
+       ======================================== */
+
+    wishOverlay.addEventListener(
+
+      'click',
+
+      function(event) {
+
+        if (
+          event.target ===
+          wishOverlay
+        ) {
+
+          closeWishPanel();
+
+        }
+
+      }
+
+    );
 
 
     /* ========================================
@@ -2576,7 +1285,6 @@
       const key =
         'christmas360_device_id';
 
-
       try {
 
         let id =
@@ -2584,12 +1292,10 @@
             key
           );
 
-
         if (!id) {
 
           id =
             randomId();
-
 
           localStorage.setItem(
             key,
@@ -2597,7 +1303,6 @@
           );
 
         }
-
 
         return id;
 
@@ -2610,27 +1315,161 @@
       }
 
     }
+
+
     /* ========================================
        CREATE WISH STAR
+       最多同時保留 5 粒星星
+       ======================================== */
+
+    const MAX_WISH_STARS = 5;
+
+    const wishStars = [];
+
+    let nextWishStarSlot = 0;
+
+
+    /*
+    5 粒星星的固定位置。
+
+    全部以你設定的：
+    Yaw   = 2.04°
+    Pitch = 30.89°
+
+    作為中心。
+
+    所以5粒星星會分散在
+    大星星附近，而不會全部重疊。
+    */
+
+    const WISH_STAR_OFFSETS = [
+
+      {
+        yaw: -7.0,
+        pitch: -1.5
+      },
+
+      {
+        yaw: -3.5,
+        pitch: 2.0
+      },
+
+      {
+        yaw: 0.0,
+        pitch: 0.0
+      },
+
+      {
+        yaw: 3.5,
+        pitch: 2.2
+      },
+
+      {
+        yaw: 7.0,
+        pitch: -1.0
+      }
+
+    ];
+
+
+    /* ========================================
+       REMOVE OLD WISH STAR
+       ======================================== */
+
+    function removeWishStar(
+      record,
+      duration = 700
+    ) {
+
+      if (
+        !record ||
+        !record.star ||
+        record.removing
+      ) {
+        return;
+      }
+
+      record.removing =
+        true;
+
+      const star =
+        record.star;
+
+      const material =
+        star.material;
+
+      const startOpacity =
+        material.opacity;
+
+      const startTime =
+        performance.now();
+
+
+      function fade(now) {
+
+        const t =
+          Math.min(
+            (
+              now -
+              startTime
+            ) /
+            duration,
+            1
+          );
+
+        material.opacity =
+          startOpacity *
+          (1 - t);
+
+        if (
+          t < 1
+        ) {
+
+          requestAnimationFrame(
+            fade
+          );
+
+        }
+
+        else {
+
+          if (
+            star.parent
+          ) {
+
+            star.parent.remove(
+              star
+            );
+
+          }
+
+          if (
+            material.map
+          ) {
+
+            material.map.dispose();
+
+          }
+
+          material.dispose();
+
+        }
+
+      }
+
+
+      requestAnimationFrame(
+        fade
+      );
+
+    }
+
+
+    /* ========================================
+       CREATE ONE 5-POINT STAR
        ======================================== */
 
     function createWishStar() {
-
-      /*
-      願望星會真正加入
-      A-Frame / THREE.js 的360°世界。
-
-      起點：
-      使用者許願時正在觀看的位置。
-
-      終點：
-      固定鎖定背景的大星星。
-
-      校準位置：
-      Yaw   = 2.04°
-      Pitch = 0.89°
-      */
-
 
       if (
         !sceneEl ||
@@ -2650,56 +1489,35 @@
       const threeCamera =
         sceneEl.camera;
 
-
       threeCamera.updateMatrixWorld(
         true
       );
 
 
-      /* ========================================
-         CAMERA POSITION
-         ======================================== */
+      /*
+      星星由使用者目前看到的位置
+      稍低的位置開始升上去。
+      */
 
       const cameraPosition =
         new THREE.Vector3();
-
 
       threeCamera.getWorldPosition(
         cameraPosition
       );
 
 
-      /* ========================================
-         CURRENT VIEW DIRECTION
-         ======================================== */
-
-      /*
-      這個方向只用來決定：
-
-      願望星由使用者眼前
-      哪個位置開始出現。
-
-      不會影響最後終點。
-      */
-
       const viewDirection =
         new THREE.Vector3();
-
 
       threeCamera.getWorldDirection(
         viewDirection
       );
 
-
       viewDirection.normalize();
 
 
-      /* ========================================
-         START POSITION
-         ======================================== */
-
       const startPosition =
-
         cameraPosition
           .clone()
           .addScaledVector(
@@ -2707,139 +1525,141 @@
             3.5
           );
 
-
-      /*
-      起點稍為向下。
-
-      視覺上就會像星星
-      由下方慢慢升上天空。
-      */
-
       startPosition.y -=
         1.15;
 
 
-      /* ========================================
-         FIXED BIG STAR DIRECTION
-         ======================================== */
-
       /*
-      ★★★★★★★★★★★★★★★★★★★★★★★
-
-      這裡使用 Part 1 已設定的：
-
-      BIG_STAR_YAW
-      BIG_STAR_PITCH
-
-      即：
-
-      Yaw   = 2.04°
-      Pitch = 0.89°
-
-      ★★★★★★★★★★★★★★★★★★★★★★★
+      如果天空已經有5粒，
+      第6粒出現之前，
+      先移除最舊的一粒。
       */
 
-      const bigStarDirection =
+      if (
+        wishStars.length >=
+        MAX_WISH_STARS
+      ) {
 
-        new THREE.Vector3(
+        const oldest =
+          wishStars.shift();
 
-          -Math.sin(
-            BIG_STAR_YAW
-          ) *
-          Math.cos(
-            BIG_STAR_PITCH
-          ),
+        removeWishStar(
+          oldest,
+          700
+        );
 
-
-          Math.sin(
-            BIG_STAR_PITCH
-          ),
+      }
 
 
-          -Math.cos(
-            BIG_STAR_YAW
-          ) *
-          Math.cos(
-            BIG_STAR_PITCH
-          )
+      /*
+      選擇5個位置其中一個。
+      */
 
+      const slot =
+        nextWishStarSlot;
+
+      nextWishStarSlot =
+        (
+          nextWishStarSlot +
+          1
+        ) %
+        MAX_WISH_STARS;
+
+
+      const offset =
+        WISH_STAR_OFFSETS[
+          slot
+        ];
+
+
+      /*
+      以你目前指定的大星星位置：
+
+      BIG_STAR_YAW   = 2.04°
+      BIG_STAR_PITCH = 30.89°
+
+      加上每粒星星的小偏移。
+      */
+
+      const targetYaw =
+        BIG_STAR_YAW +
+        THREE.MathUtils.degToRad(
+          offset.yaw
         );
 
 
-      bigStarDirection.normalize();
+      const targetPitch =
+        BIG_STAR_PITCH +
+        THREE.MathUtils.degToRad(
+          offset.pitch
+        );
 
 
-      /* ========================================
-         FIXED END POSITION
-         ======================================== */
+      const targetDirection =
+        new THREE.Vector3(
+
+          -Math.sin(
+            targetYaw
+          ) *
+          Math.cos(
+            targetPitch
+          ),
+
+          Math.sin(
+            targetPitch
+          ),
+
+          -Math.cos(
+            targetYaw
+          ) *
+          Math.cos(
+            targetPitch
+          )
+
+        ).normalize();
+
 
       /*
-      ★★★ 最重要的一行 ★★★
+      ★ 重要 ★
 
-      這裡故意不加入：
+      星星的最終位置直接固定
+      在360°世界座標。
 
-      cameraPosition
-
-      因此終點不是
-      「相對於目前 Camera」。
-
-      而是360°世界內
-      一個固定的位置。
+      所以手機轉動時，
+      星星不會跟著Camera移動。
       */
 
-
       const endPosition =
-
-        bigStarDirection
+        targetDirection
           .clone()
           .multiplyScalar(
             18
           );
 
 
-      /*
-      所以使用者：
-
-      向左看
-      向右看
-      向上看
-      向下看
-      轉動手機
-
-      都不會改變 endPosition。
-      */
-
-
       /* ========================================
-         CREATE STAR CANVAS
+         DRAW STAR TEXTURE
          ======================================== */
 
       const starCanvas =
-
         document.createElement(
           'canvas'
         );
 
-
       starCanvas.width =
         256;
-
 
       starCanvas.height =
         256;
 
 
       const ctx =
-
         starCanvas.getContext(
           '2d'
         );
 
-
       if (!ctx) {
-
         return;
-
       }
 
 
@@ -2851,72 +1671,50 @@
       );
 
 
-      /* ========================================
-         GOLDEN GLOW
-         ======================================== */
+      /*
+      金色柔光
+      */
 
       const glow =
-
         ctx.createRadialGradient(
-
           128,
           128,
           8,
-
           128,
           128,
           120
-
         );
 
 
       glow.addColorStop(
-
         0,
-
         'rgba(255,245,180,0.95)'
-
       );
 
-
       glow.addColorStop(
-
         0.22,
-
         'rgba(255,220,90,0.55)'
-
       );
 
-
       glow.addColorStop(
-
         0.55,
-
         'rgba(255,190,40,0.18)'
-
       );
 
-
       glow.addColorStop(
-
         1,
-
         'rgba(255,180,20,0)'
-
       );
 
 
       ctx.fillStyle =
         glow;
 
-
       ctx.fillRect(
-
         0,
         0,
         256,
         256
-
       );
 
 
@@ -2925,25 +1723,17 @@
          ======================================== */
 
       function drawFivePointStar(
-
         context,
-
         centerX,
         centerY,
-
         outerRadius,
         innerRadius
-
       ) {
 
-
         let rotation =
-
           -Math.PI / 2;
 
-
         const step =
-
           Math.PI / 5;
 
 
@@ -2951,44 +1741,30 @@
 
 
         for (
-
           let i = 0;
-
           i < 10;
-
           i++
-
         ) {
 
-
           const radius =
-
             i % 2 === 0
-
               ? outerRadius
-
               : innerRadius;
 
 
           const x =
-
             centerX +
-
             Math.cos(
               rotation
             ) *
-
             radius;
 
 
           const y =
-
             centerY +
-
             Math.sin(
               rotation
             ) *
-
             radius;
 
 
@@ -3025,119 +1801,78 @@
 
 
       drawFivePointStar(
-
         ctx,
-
         128,
         128,
-
         66,
         28
-
       );
 
 
-      /* ========================================
-         STAR GLOW
-         ======================================== */
-
       ctx.shadowColor =
-
         'rgba(255,220,80,0.95)';
-
 
       ctx.shadowBlur =
         18;
 
 
-      /* ========================================
-         STAR GOLD GRADIENT
-         ======================================== */
-
       const starGradient =
-
         ctx.createLinearGradient(
-
           128,
           62,
-
           128,
           194
-
         );
 
 
       starGradient.addColorStop(
-
         0,
-
         '#fff7b0'
-
       );
 
-
       starGradient.addColorStop(
-
         0.45,
-
         '#ffd85a'
-
       );
 
-
       starGradient.addColorStop(
-
         1,
-
         '#e8a91f'
-
       );
 
 
       ctx.fillStyle =
         starGradient;
 
-
       ctx.fill();
 
 
-      /* ========================================
-         STAR BORDER
-         ======================================== */
+      ctx.shadowBlur =
+        0;
 
       ctx.lineWidth =
         3;
 
-
       ctx.strokeStyle =
-
-        'rgba(255,248,190,0.95)';
-
+        'rgba(255,245,190,0.95)';
 
       ctx.stroke();
 
 
       /* ========================================
-         CANVAS → THREE TEXTURE
+         THREE.JS SPRITE
          ======================================== */
 
       const texture =
-
         new THREE.CanvasTexture(
           starCanvas
         );
-
 
       texture.needsUpdate =
         true;
 
 
-      /* ========================================
-         CREATE SPRITE MATERIAL
-         ======================================== */
-
       const material =
-
         new THREE.SpriteMaterial({
 
           map:
@@ -3158,12 +1893,7 @@
         });
 
 
-      /* ========================================
-         CREATE STAR SPRITE
-         ======================================== */
-
       const star =
-
         new THREE.Sprite(
           material
         );
@@ -3175,318 +1905,156 @@
 
 
       star.scale.set(
-
         1.15,
         1.15,
-        1
-
+        1.15
       );
 
 
-      /* ========================================
-         REMOVE PREVIOUS WISH STAR
-         ======================================== */
+      star.renderOrder =
+        9999;
 
-      /*
-      每次只容許一粒願望星。
-
-      如果上一粒仍未消失，
-      就先移除上一粒。
-      */
-
-      if (
-        window.currentWishStar
-      ) {
-
-
-        const oldStar =
-          window.currentWishStar;
-
-
-        if (
-          oldStar.parent
-        ) {
-
-          oldStar.parent.remove(
-            oldStar
-          );
-
-        }
-
-
-        if (
-          oldStar.material
-        ) {
-
-
-          if (
-            oldStar.material.map
-          ) {
-
-            oldStar.material.map.dispose();
-
-          }
-
-
-          oldStar.material.dispose();
-
-        }
-
-
-        window.currentWishStar =
-          null;
-
-      }
-
-
-      /* ========================================
-         ADD STAR TO 360 WORLD
-         ======================================== */
-
-      /*
-      ★ 不是 document.body
-      ★ 不是 position:fixed
-      ★ 不是 DOM Overlay
-
-      而是真正加入
-      A-Frame 3D Scene。
-      */
 
       sceneEl.object3D.add(
         star
       );
 
 
-      window.currentWishStar =
-        star;
+      const record = {
+
+        star:
+          star,
+
+        slot:
+          slot,
+
+        removing:
+          false
+
+      };
+
+
+      wishStars.push(
+        record
+      );
 
 
       /* ========================================
-         ANIMATION SETTINGS
+         STAR RISE ANIMATION
          ======================================== */
-
-      /*
-      飛向背景大星星：
-      2.6秒
-      */
 
       const RISE_TIME =
         2600;
-
-
-      /*
-      到達後停留：
-      4秒
-      */
-
-      const HOLD_TIME =
-        4000;
-
-
-      /*
-      最後淡出：
-      0.8秒
-      */
-
-      const FADE_OUT_TIME =
-        800;
 
 
       const animationStart =
         performance.now();
 
 
-      /* ========================================
-         ANIMATE WISH STAR
-         ======================================== */
+      function animate(now) {
 
-      function animateWishStar(
-        now
-      ) {
+        if (
+          record.removing ||
+          !star.parent
+        ) {
+          return;
+        }
+
+
+        const progress =
+          Math.min(
+            (
+              now -
+              animationStart
+            ) /
+            RISE_TIME,
+            1
+          );
 
 
         /*
-        如果這粒星已經被
-        新願望取代，
-        就停止舊動畫。
+        Ease Out Cubic
         */
 
-        if (
-          window.currentWishStar !==
-          star
-        ) {
-
-          return;
-
-        }
-
-
-        const elapsed =
-
-          now -
-          animationStart;
-
-
-        /* ====================================
-           STAGE 1
-           RISE / FLY
-           ==================================== */
-
-        if (
-          elapsed <
-          RISE_TIME
-        ) {
-
-
-          const rawProgress =
-
-            elapsed /
-            RISE_TIME;
-
-
-          /*
-          Ease Out Cubic：
-
-          開始快一點，
-          接近大星星時慢慢減速。
-          */
-
-          const progress =
-
-            1 -
-
-            Math.pow(
-
-              1 -
-              rawProgress,
-
-              3
-
-            );
-
-
-          /* ====================================
-             MOVE TO FIXED BIG STAR
-             ==================================== */
-
-          star.position
-            .lerpVectors(
-
-              startPosition,
-
-              endPosition,
-
-              progress
-
-            );
-
-
-          /* ====================================
-             FADE IN
-             ==================================== */
-
-          const fadeIn =
-
-            Math.min(
-
-              1,
-
-              elapsed /
-              350
-
-            );
-
-
-          /*
-          輕微閃爍，
-          但不改變位置。
-          */
-
-          const twinkle =
-
-            0.92 +
-
-            Math.sin(
-              elapsed *
-              0.018
-            ) *
-            0.08;
-
-
-          material.opacity =
-
-            Math.min(
-
-              1,
-
-              fadeIn *
-              twinkle
-
-            );
-
-
-          /* ====================================
-             SCALE
-             ==================================== */
-
-          /*
-          因為終點距離比較遠，
-          星星逐漸稍為放大，
-          避免飛遠後變得太細。
-          */
-
-          const scale =
-
-            1.15 +
-
-            progress *
-            1.55;
-
-
-          star.scale.set(
-
-            scale,
-            scale,
-            1
-
+        const eased =
+          1 -
+          Math.pow(
+            1 - progress,
+            3
           );
 
+
+        star.position.lerpVectors(
+          startPosition,
+          endPosition,
+          eased
+        );
+
+
+        /*
+        開始時柔和Fade In
+        */
+
+        const fadeIn =
+          Math.min(
+            progress /
+            0.18,
+            1
+          );
+
+
+        /*
+        輕微閃爍
+        */
+
+        const twinkle =
+          0.92 +
+          Math.sin(
+            now *
+            0.006 +
+            slot
+          ) *
+          0.08;
+
+
+        material.opacity =
+          fadeIn *
+          twinkle;
+
+
+        /*
+        星星升上去時
+        慢慢變大。
+        */
+
+        const scale =
+          1.15 +
+          1.25 *
+          eased;
+
+
+        star.scale.set(
+          scale,
+          scale,
+          scale
+        );
+
+
+        if (
+          progress < 1
+        ) {
 
           requestAnimationFrame(
-            animateWishStar
+            animate
           );
-
-
-          return;
 
         }
 
-
-        /* ====================================
-           STAGE 2
-           HOLD ON BIG STAR
-           ==================================== */
-
-        if (
-
-          elapsed <
-
-          RISE_TIME +
-          HOLD_TIME
-
-        ) {
-
+        else {
 
           /*
-          ★★★★★★★★★★★★★★★★★★★
-
-          強制固定在
-          校準的大星星位置。
-
-          這裡完全不重新讀取
-          Camera Direction。
-
-          ★★★★★★★★★★★★★★★★★★★
+          到達天空後，
+          固定於最終世界座標。
           */
 
           star.position.copy(
@@ -3495,188 +2063,74 @@
 
 
           star.scale.set(
-
-            2.7,
-            2.7,
-            1
-
+            2.4,
+            2.4,
+            2.4
           );
-
-
-          const twinkle =
-
-            0.90 +
-
-            Math.sin(
-
-              elapsed *
-              0.012
-
-            ) *
-
-            0.10;
 
 
           material.opacity =
-
-            Math.max(
-
-              0,
-
-              Math.min(
-                1,
-                twinkle
-              )
-
-            );
-
-
-          requestAnimationFrame(
-            animateWishStar
-          );
-
-
-          return;
-
-        }
-
-
-        /* ====================================
-           STAGE 3
-           FADE OUT
-           ==================================== */
-
-        const fadeElapsed =
-
-          elapsed -
-
-          RISE_TIME -
-
-          HOLD_TIME;
-
-
-        if (
-          fadeElapsed <
-          FADE_OUT_TIME
-        ) {
+            1;
 
 
           /*
-          淡出時亦繼續鎖死
-          在大星星位置。
+          不再自動消失，
+          保持在天空，
+          直至第6粒出現時才移除最舊一粒。
           */
 
-          star.position.copy(
-            endPosition
-          );
-
-
-          const fadeProgress =
-
-            fadeElapsed /
-            FADE_OUT_TIME;
-
-
-          material.opacity =
-
-            Math.max(
-
-              0,
-
-              1 -
-              fadeProgress
-
-            );
-
-
-          /*
-          淡出時只輕微放大。
-          */
-
-          const fadeScale =
-
-            2.7 +
-
-            fadeProgress *
-            0.15;
-
-
-          star.scale.set(
-
-            fadeScale,
-            fadeScale,
-            1
-
-          );
-
-
-          requestAnimationFrame(
-            animateWishStar
-          );
-
-
-          return;
-
-        }
-
-
-        /* ====================================
-           REMOVE STAR
-           ==================================== */
-
-        if (
-          star.parent
-        ) {
-
-          star.parent.remove(
-            star
-          );
-
-        }
-
-
-        texture.dispose();
-
-
-        material.dispose();
-
-
-        if (
-          window.currentWishStar ===
-          star
-        ) {
-
-          window.currentWishStar =
-            null;
+          animateTwinkle();
 
         }
 
       }
 
 
+      /* ========================================
+         STAR TWINKLE AFTER ARRIVAL
+         ======================================== */
+
+      function animateTwinkle() {
+
+        if (
+          record.removing ||
+          !star.parent
+        ) {
+          return;
+        }
+
+
+        const now =
+          performance.now();
+
+
+        material.opacity =
+          0.90 +
+          Math.sin(
+            now *
+            0.0035 +
+            slot
+          ) *
+          0.10;
+
+
+        requestAnimationFrame(
+          animateTwinkle
+        );
+
+      }
+
+
       requestAnimationFrame(
-        animateWishStar
+        animate
       );
 
     }
 
 
     /* ========================================
-       CREATE WISH STAR BURST
+       ONE WISH = ONE STAR
        ======================================== */
-
-    /*
-    保留這個 Function 名稱，
-    因為你原本 HTML
-    Submit Wish 的程式會呼叫：
-
-    createWishStarBurst()
-
-    但現在不再一次產生
-    4～7粒星星。
-
-    每次只建立一粒。
-    */
 
     function createWishStarBurst() {
 
@@ -3693,16 +2147,11 @@
       wish
     ) {
 
-
       if (!WISH_ENDPOINT) {
-
         return;
-
       }
 
-
       try {
-
 
         const data =
           new URLSearchParams();
@@ -3764,33 +2213,60 @@
           function(error) {
 
             console.warn(
-
               'Wish upload failed:',
-
               error
-
             );
 
           }
 
         );
 
-
       }
 
       catch (error) {
 
-
         console.warn(
-
           'Wish upload error:',
-
           error
-
         );
 
+      }
+
+    }
+    /* ========================================
+       SHOW WISH SUCCESS TOAST
+       ======================================== */
+
+    function showWishToast() {
+
+      if (wishToastTimer) {
+
+        clearTimeout(
+          wishToastTimer
+        );
 
       }
+
+
+      wishToast.classList.add(
+        'show'
+      );
+
+
+      wishToastTimer =
+        setTimeout(
+
+          function() {
+
+            wishToast.classList.remove(
+              'show'
+            );
+
+          },
+
+          3200
+
+        );
 
     }
 
@@ -3799,195 +2275,125 @@
        SUBMIT WISH
        ======================================== */
 
-    function submitWish() {
-
-
-      const wish =
-
-        wishText.value
-          .trim();
-
-
-      if (!wish) {
-
-        return;
-
-      }
-
-
-      /* ====================================
-         SEND TO GOOGLE SHEET
-         ==================================== */
-
-      sendWishToGoogleSheet(
-        wish
-      );
-
-
-      /* ====================================
-         CLEAR TEXT
-         ==================================== */
-
-      wishText.value =
-        '';
-
-
-      updateWishCounter();
-
-
-      /* ====================================
-         CLOSE PANEL
-         ==================================== */
-
-      closeWishPanel(
-
-        function() {
-
-
-          /*
-          顯示成功訊息。
-          */
-
-          showWishToast();
-
-
-          /*
-          ★★★★★★★★★★★★★★★★★★★
-
-          建立一粒願望星。
-
-          它會由使用者眼前出現，
-          然後飛向：
-
-          Yaw   2.04°
-          Pitch 0.89°
-
-          ★★★★★★★★★★★★★★★★★★★
-          */
-
-          createWishStarBurst();
-
-
-        }
-
-      );
-
-    }
-
-
-    /* ========================================
-       WISH BUTTON
-       ======================================== */
-
-    wishButton.addEventListener(
-
-      'click',
-
-      function(event) {
-
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        openWishPanel();
-
-
-      }
-
-    );
-
-
-    /* ========================================
-       CANCEL BUTTON
-       ======================================== */
-
-    wishCancel.addEventListener(
-
-      'click',
-
-      function(event) {
-
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        closeWishPanel();
-
-
-      }
-
-    );
-
-
-    /* ========================================
-       SUBMIT BUTTON
-       ======================================== */
-
     wishSubmit.addEventListener(
 
       'click',
 
       function(event) {
 
-
         event.preventDefault();
 
-        event.stopPropagation();
 
-
-        submitWish();
-
-
-      }
-
-    );
-
-
-    /* ========================================
-       WISH TEXT INPUT
-       ======================================== */
-
-    wishText.addEventListener(
-
-      'input',
-
-      function() {
+        const wish =
+          wishText.value
+            .trim();
 
 
         /*
-        防止某些 Browser
-        超過60字。
+        如果沒有輸入願望
         */
 
-        if (
+        if (!wish) {
 
-          wishText.value.length >
+          wishNote.textContent =
+            '請輸入你的願望。 Please enter your wish.';
 
-          WISH_MAX_LENGTH
+          wishText.focus();
 
-        ) {
-
-
-          wishText.value =
-
-            wishText.value.slice(
-
-              0,
-
-              WISH_MAX_LENGTH
-
-            );
-
+          return;
 
         }
 
 
-        updateWishCounter();
+        /*
+        限制最多60個字
+        */
 
+        if (
+          wish.length >
+          WISH_MAX_LENGTH
+        ) {
+
+          wishNote.textContent =
+            '願望最多60個字。 Maximum 60 characters.';
+
+          wishText.focus();
+
+          return;
+
+        }
+
+
+        /*
+        避免重複按送出
+        */
+
+        wishSubmit.disabled =
+          true;
+
+
+        /*
+        傳送願望到 Google Sheet
+        */
+
+        sendWishToGoogleSheet(
+          wish
+        );
+
+
+        /*
+        清空文字框
+        */
+
+        wishText.value =
+          '';
+
+        updateWishCount();
+
+
+        /*
+        關閉許願視窗
+        */
+
+        closeWishPanel(
+
+          function() {
+
+            /*
+            ★ 每成功許願一次
+            ★ 只產生一粒星星
+            */
+
+            createWishStarBurst();
+
+
+            /*
+            顯示成功訊息
+            */
+
+            showWishToast();
+
+
+            /*
+            重新允許送出
+            */
+
+            setTimeout(
+
+              function() {
+
+                wishSubmit.disabled =
+                  false;
+
+              },
+
+              600
+
+            );
+
+          }
+
+        );
 
       }
 
@@ -3995,7 +2401,7 @@
 
 
     /* ========================================
-       ENTER KEY
+       ENTER KEY / KEYBOARD
        ======================================== */
 
     wishText.addEventListener(
@@ -4004,59 +2410,20 @@
 
       function(event) {
 
+        /*
+        手機輸入時，
+        不使用 Enter 直接送出，
+        避免誤觸。
+        */
 
         if (
-
           event.key ===
-            'Enter' &&
-
-          !event.shiftKey
-
+          'Escape'
         ) {
-
-
-          event.preventDefault();
-
-
-          if (
-            !wishSubmit.disabled
-          ) {
-
-            submitWish();
-
-          }
-
-
-        }
-
-
-      }
-
-    );
-
-
-    /* ========================================
-       CLICK OUTSIDE PANEL
-       ======================================== */
-
-    wishOverlay.addEventListener(
-
-      'click',
-
-      function(event) {
-
-
-        if (
-          event.target ===
-          wishOverlay
-        ) {
-
 
           closeWishPanel();
 
-
         }
-
 
       }
 
@@ -4064,8 +2431,8 @@
 
 
     /* ========================================
-       PREVENT PANEL TOUCH
-       FROM MOVING 360 VIEW
+       PREVENT TOUCH PROPAGATION
+       INSIDE WISH PANEL
        ======================================== */
 
     wishPanel.addEventListener(
@@ -4103,129 +2470,65 @@
 
 
     /* ========================================
-       ESC KEY
+       RESET NOTE WHEN TYPING
        ======================================== */
 
-    document.addEventListener(
+    wishText.addEventListener(
 
-      'keydown',
+      'input',
 
-      function(event) {
+      function() {
 
-
-        if (
-
-          event.key ===
-            'Escape' &&
-
-          wishPanelOpen
-
-        ) {
-
-
-          closeWishPanel();
-
-
-        }
-
+        wishNote.textContent =
+          '願望最多60個字。 Maximum 60 characters.';
 
       }
 
     );
+
+
     /* ========================================
-       RESUME MEDIA
+       PREVENT DOUBLE TAP ZOOM
+       ON UI BUTTONS
        ======================================== */
 
-    function resumeMedia() {
+    [
+      startButton,
+      wishButton,
+      wishCancel,
+      wishSubmit
+    ].forEach(
 
-      if (!sceneStarted) {
-        return;
-      }
+      function(element) {
 
-
-      /* ====================================
-         RESUME 360 VIDEO
-         ==================================== */
-
-      try {
-
-        if (
-          christmasVideo.paused
-        ) {
-
-          const videoPromise =
-            christmasVideo.play();
-
-
-          if (
-            videoPromise &&
-            videoPromise.catch
-          ) {
-
-            videoPromise.catch(
-              function() {}
-            );
-
-          }
-
+        if (!element) {
+          return;
         }
 
-      }
 
-      catch (error) {
+        element.addEventListener(
 
-        console.warn(
-          'Resume 360 video failed:',
-          error
+          'touchend',
+
+          function(event) {
+
+            event.stopPropagation();
+
+          },
+
+          {
+            passive: true
+          }
+
         );
 
       }
 
-
-      /* ====================================
-         RESUME BACKGROUND MUSIC
-         ==================================== */
-
-      try {
-
-        if (
-          musicStarted &&
-          backgroundMusic.paused
-        ) {
-
-          const musicPromise =
-            backgroundMusic.play();
-
-
-          if (
-            musicPromise &&
-            musicPromise.catch
-          ) {
-
-            musicPromise.catch(
-              function() {}
-            );
-
-          }
-
-        }
-
-      }
-
-      catch (error) {
-
-        console.warn(
-          'Resume music failed:',
-          error
-        );
-
-      }
-
-    }
+    );
 
 
     /* ========================================
-       PAGE VISIBILITY
+       HANDLE VISIBILITY CHANGE
        ======================================== */
 
     document.addEventListener(
@@ -4234,159 +2537,73 @@
 
       function() {
 
-        if (
-          document.visibilityState ===
-          'visible'
-        ) {
-
-          resumeMedia();
-
-        }
-
-      }
-
-    );
-
-
-    /* ========================================
-       PAGE SHOW
-       ======================================== */
-
-    window.addEventListener(
-
-      'pageshow',
-
-      function() {
-
-        if (!sceneStarted) {
-          return;
-        }
-
-
-        setTimeout(
-
-          function() {
-
-            resumeMedia();
-
-          },
-
-          100
-
-        );
-
-      }
-
-    );
-
-
-    /* ========================================
-       WINDOW FOCUS
-       ======================================== */
-
-    window.addEventListener(
-
-      'focus',
-
-      function() {
-
-        if (
-          sceneStarted
-        ) {
-
-          resumeMedia();
-
-        }
-
-      }
-
-    );
-
-
-    /* ========================================
-       USER INTERACTION FALLBACK
-       ======================================== */
-
-    function resumeMediaAfterInteraction() {
-
-      if (!sceneStarted) {
-        return;
-      }
-
-
-      resumeMedia();
-
-    }
-
-
-    document.addEventListener(
-
-      'pointerdown',
-
-      resumeMediaAfterInteraction,
-
-      {
-        passive: true
-      }
-
-    );
-
-
-    /* ========================================
-       PREVENT DOUBLE TAP ZOOM
-       ======================================== */
-
-    let lastTouchEnd =
-      0;
-
-
-    document.addEventListener(
-
-      'touchend',
-
-      function(event) {
-
         /*
-        如果使用者正在操作
-        許願介面，
-        不阻止正常按鈕操作。
+        如果使用者切換App／Safari分頁，
+        回來後嘗試繼續播放360影片。
         */
 
         if (
-          isWishUI(
-            event.target
-          )
+          document.visibilityState ===
+          'visible' &&
+          sceneStarted
         ) {
 
-          return;
+          try {
+
+            const videoPromise =
+              christmasVideo.play();
+
+
+            if (
+              videoPromise &&
+              videoPromise.catch
+            ) {
+
+              videoPromise.catch(
+                function() {}
+              );
+
+            }
+
+          }
+
+          catch (error) {}
+
+
+          /*
+          音樂如果已經成功啟動，
+          亦嘗試繼續播放。
+          */
+
+          if (
+            musicStarted
+          ) {
+
+            try {
+
+              const musicPromise =
+                backgroundMusic.play();
+
+
+              if (
+                musicPromise &&
+                musicPromise.catch
+              ) {
+
+                musicPromise.catch(
+                  function() {}
+                );
+
+              }
+
+            }
+
+            catch (error) {}
+
+          }
 
         }
 
-
-        const now =
-          Date.now();
-
-
-        if (
-
-          now -
-          lastTouchEnd <=
-          300
-
-        ) {
-
-          event.preventDefault();
-
-        }
-
-
-        lastTouchEnd =
-          now;
-
-      },
-
-      {
-        passive: false
       }
 
     );
@@ -4402,27 +2619,19 @@
 
       function() {
 
-        /*
-        iPhone 轉方向後，
-        稍等一下再通知
-        A-Frame 更新尺寸。
-        */
-
         setTimeout(
 
           function() {
 
             window.dispatchEvent(
-
               new Event(
                 'resize'
               )
-
             );
 
           },
 
-          300
+          250
 
         );
 
@@ -4432,364 +2641,42 @@
 
 
     /* ========================================
-       CHRISTMAS VIDEO ERROR
+       INITIAL WISH COUNT
        ======================================== */
 
-    christmasVideo.addEventListener(
-
-      'error',
-
-      function(event) {
-
-        console.error(
-
-          'Christmas 360 video error:',
-
-          event
-
-        );
-
-      }
-
-    );
+    updateWishCount();
 
 
     /* ========================================
-       LOADING VIDEO ERROR
+       SAFETY FALLBACK
+
+       如果部分手機影片載入事件沒有正常觸發，
+       最遲仍會顯示進入按鈕。
        ======================================== */
 
-    loadingVideo.addEventListener(
-
-      'error',
-
-      function(event) {
-
-        console.error(
-
-          'Loading video error:',
-
-          event
-
-        );
-
-      }
-
-    );
-
-
-    /* ========================================
-       MUSIC ERROR
-       ======================================== */
-
-    backgroundMusic.addEventListener(
-
-      'error',
-
-      function(event) {
-
-        console.error(
-
-          'Background music error:',
-
-          event
-
-        );
-
-      }
-
-    );
-
-
-    /* ========================================
-       A-FRAME SCENE READY
-       ======================================== */
-
-    if (sceneEl) {
-
-      sceneEl.addEventListener(
-
-        'loaded',
-
-        function() {
-
-
-          /* ====================================
-             INITIAL CAMERA FOV
-             ==================================== */
-
-          camera.setAttribute(
-
-            'camera',
-
-            'fov',
-
-            currentFov
-
-          );
-
-
-          /* ====================================
-             CHECK 360 VIDEO
-             ==================================== */
-
-          if (
-
-            christmasVideo.readyState >=
-            3
-
-          ) {
-
-            markVideoReady();
-
-          }
-
-        }
-
-      );
-
-    }
-
-
-    /* ========================================
-       INITIAL WISH COUNTER
-       ======================================== */
-
-    updateWishCounter();
-
-
-    /* ========================================
-       INITIAL CAMERA FOV
-       ======================================== */
-
-    camera.setAttribute(
-
-      'camera',
-
-      'fov',
-
-      currentFov
-
-    );
-
-
-    /* ========================================
-       EXTRA VIDEO READY FALLBACK
-       ======================================== */
-
-    /*
-    某些 iPhone Safari
-    canplay / canplaythrough
-    的觸發時間不太穩定。
-
-    所以另外每300ms
-    檢查一次 readyState。
-    */
-
-    let readyAttempts =
-      0;
-
-
-    const readyStateTimer =
-      setInterval(
-
-        function() {
-
-
-          readyAttempts++;
-
-
-          if (
-
-            christmasVideo.readyState >=
-            3
-
-          ) {
-
-
-            clearInterval(
-              readyStateTimer
-            );
-
-
-            markVideoReady();
-
-
-            return;
-
-          }
-
-
-          /*
-          最多檢查約30秒。
-          */
-
-          if (
-            readyAttempts >
-            100
-          ) {
-
-            clearInterval(
-              readyStateTimer
-            );
-
-          }
-
-        },
-
-        300
-
-      );
-
-
-    /* ========================================
-       LOADING VIDEO FALLBACK
-       ======================================== */
-
-    /*
-    如果 Loading Video
-    已經播放完，
-    但360影片仍然未準備好，
-
-    Loading 畫面仍然保留，
-    等360影片 Ready 後
-    才顯示 Enter Button。
-    */
-
-    loadingVideo.addEventListener(
-
-      'ended',
+    setTimeout(
 
       function() {
 
         if (
-          !videoReady
+          !sceneStarted &&
+          !experienceStarting
         ) {
 
-          /*
-          保留 Loading 最後一格，
-          不直接進入360。
-          */
-
-          try {
-
-            loadingVideo.pause();
-
-          }
-
-          catch (error) {}
+          showEnterButton();
 
         }
 
-      }
+      },
+
+      7000
 
     );
-
-
-    /* ========================================
-       PAGE HIDE
-       ======================================== */
-
-    window.addEventListener(
-
-      'pagehide',
-
-      function() {
-
-        if (
-          enterTimer
-        ) {
-
-          clearTimeout(
-            enterTimer
-          );
-
-        }
-
-      }
-
-    );
-
-
-    /* ========================================
-       CLEANUP CURRENT WISH STAR
-       ======================================== */
-
-    window.addEventListener(
-
-      'pagehide',
-
-      function() {
-
-        if (
-          !window.currentWishStar
-        ) {
-
-          return;
-
-        }
-
-
-        const star =
-          window.currentWishStar;
-
-
-        if (
-          star.parent
-        ) {
-
-          star.parent.remove(
-            star
-          );
-
-        }
-
-
-        if (
-          star.material
-        ) {
-
-
-          if (
-            star.material.map
-          ) {
-
-            star.material.map.dispose();
-
-          }
-
-
-          star.material.dispose();
-
-        }
-
-
-        window.currentWishStar =
-          null;
-
-      }
-
-    );
-
-
-    /* ========================================
-       FINAL READY CHECK
-       ======================================== */
-
-    if (
-      christmasVideo.readyState >=
-      3
-    ) {
-
-      markVideoReady();
-
-    }
 
 
   </script>
 
-
 </body>
 
 </html>
-
 
